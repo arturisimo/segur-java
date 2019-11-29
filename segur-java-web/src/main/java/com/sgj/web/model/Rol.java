@@ -10,8 +10,8 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="roles")
-@NamedQuery(name="Role.findAll", query="SELECT r FROM Role r")
-public class Role implements Serializable {
+@NamedQuery(name="Rol.findAll", query="SELECT r FROM Rol r")
+public class Rol implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -24,7 +24,7 @@ public class Role implements Serializable {
 	@JoinColumn(name="usuario")
 	private Usuario usuarioBean;
 
-	public Role() {
+	public Rol() {
 	}
 
 	public int getId() {

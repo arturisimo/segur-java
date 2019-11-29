@@ -1,8 +1,15 @@
-package com.sgj.web.model;
+package com.sgj.clientes.model;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 
 /**
@@ -16,6 +23,7 @@ public class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 
 	private byte enabled;
@@ -24,9 +32,7 @@ public class Usuario implements Serializable {
 
 	private String usuario;
 
-	//bi-directional many-to-one association to Cliente
-	@OneToMany(mappedBy="usuario")
-	private List<Cliente> clientes;
+	
 
 	//bi-directional many-to-one association to Role
 	@OneToMany(mappedBy="usuarioBean")
@@ -67,27 +73,8 @@ public class Usuario implements Serializable {
 		this.usuario = usuario;
 	}
 
-	public List<Cliente> getClientes() {
-		return this.clientes;
-	}
+	
 
-	public void setClientes(List<Cliente> clientes) {
-		this.clientes = clientes;
-	}
-
-	public Cliente addCliente(Cliente cliente) {
-		getClientes().add(cliente);
-		cliente.setUsuario(this);
-
-		return cliente;
-	}
-
-	public Cliente removeCliente(Cliente cliente) {
-		getClientes().remove(cliente);
-		cliente.setUsuario(null);
-
-		return cliente;
-	}
 
 	public List<Rol> getRoles() {
 		return this.roles;
@@ -95,20 +82,6 @@ public class Usuario implements Serializable {
 
 	public void setRoles(List<Rol> roles) {
 		this.roles = roles;
-	}
-
-	public Rol addRole(Rol role) {
-		getRoles().add(role);
-		role.setUsuarioBean(this);
-
-		return role;
-	}
-
-	public Rol removeRole(Rol role) {
-		getRoles().remove(role);
-		role.setUsuarioBean(null);
-
-		return role;
 	}
 
 }
