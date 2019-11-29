@@ -40,12 +40,6 @@ public class Cliente implements Serializable {
 
 	private byte policia;
 
-	
-	@OneToOne
-	@JoinColumn(name="idUsuario")
-	private Usuario usuario;
-	
-
 	public Cliente() {
 	}
 
@@ -111,14 +105,6 @@ public class Cliente implements Serializable {
 
 	public void setPolicia(byte policia) {
 		this.policia = policia;
-	}
-
-	public Usuario getUsuario() {
-		return this.usuario;
-	}
-
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
 	}
 
 }
