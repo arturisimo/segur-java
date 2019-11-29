@@ -26,11 +26,11 @@ CREATE TABLE `alarmas` (
 
 CREATE TABLE `clientes` (
   `id` int(10) UNSIGNED NOT NULL,
-  `nombre` varchar(45) CHARACTER SET latin1 NOT NULL,
-  `email` varchar(45) CHARACTER SET latin1 NOT NULL,
-  `dni` varchar(45) CHARACTER SET latin1 NOT NULL,
-  `cuenta` varchar(45) CHARACTER SET latin1 NOT NULL,
-  `direccion` varchar(45) CHARACTER SET latin1 NOT NULL,
+  `nombre` varchar(45) CHARACTER SET utf8 NOT NULL,
+  `email` varchar(45) CHARACTER SET utf8 NOT NULL,
+  `dni` varchar(45) CHARACTER SET utf8 NOT NULL,
+  `cuenta` varchar(45) CHARACTER SET utf8 NOT NULL,
+  `direccion` varchar(45) CHARACTER SET utf8 NOT NULL,
   `estado` tinyint(1) NOT NULL,
   `policia` tinyint(1) NOT NULL,
   `idUsuario` int(10) UNSIGNED NOT NULL
@@ -44,7 +44,7 @@ CREATE TABLE `clientes` (
 
 CREATE TABLE `estados` (
   `id` int(10) UNSIGNED NOT NULL,
-  `descripcion` varchar(45) CHARACTER SET latin1 NOT NULL
+  `descripcion` varchar(45) CHARACTER SET utf8 NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Estado del sensor';
 
 --
@@ -67,7 +67,7 @@ CREATE TABLE `policias` (
   `id` int(10) UNSIGNED NOT NULL,
   `direccion` int(10) UNSIGNED NOT NULL,
   `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `zona` varchar(45) CHARACTER SET latin1 NOT NULL
+  `zona` varchar(45) CHARACTER SET utf8 NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Log de avisos a la policía';
 
 -- --------------------------------------------------------
@@ -78,8 +78,8 @@ CREATE TABLE `policias` (
 
 CREATE TABLE `roles` (
   `id` int(10) UNSIGNED NOT NULL,
-  `usuario` varchar(45) CHARACTER SET latin1 NOT NULL,
-  `authority` varchar(45) CHARACTER SET latin1 NOT NULL
+  `usuario` varchar(45) CHARACTER SET utf8 NOT NULL,
+  `authority` varchar(45) CHARACTER SET utf8 NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
@@ -92,7 +92,7 @@ CREATE TABLE `sensores` (
   `id` int(10) UNSIGNED NOT NULL,
   `idCliente` int(10) UNSIGNED NOT NULL,
   `estado` int(10) UNSIGNED NOT NULL,
-  `zona` varchar(45) CHARACTER SET latin1 NOT NULL COMMENT 'Zona de la casa donde está el sensor'
+  `zona` varchar(45) CHARACTER SET utf8 NOT NULL COMMENT 'Zona de la casa donde está el sensor'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
@@ -103,14 +103,26 @@ CREATE TABLE `sensores` (
 
 CREATE TABLE `usuarios` (
   `id` int(10) UNSIGNED NOT NULL,
-  `usuario` varchar(45) CHARACTER SET latin1 NOT NULL,
-  `password` varchar(45) CHARACTER SET latin1 NOT NULL,
+  `usuario` varchar(45) CHARACTER SET utf8 NOT NULL,
+  `password` varchar(100) CHARACTER SET utf8 NOT NULL,
   `enabled` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
---
--- �ndices para tablas volcadas
---
+
+INSERT INTO `usuarios` (`id`, `usuario`, `password`, `enabled`) VALUES
+(1, 'admin', '$2a$10$CJ5p.7NfVg32n1CQ0aqpZuawZ/7eiTPgP.OUieLRPlNGuJpoWJkFu',  1),
+(2, 'arturo', '$2a$10$5IQiDJaSWMF/eaZKAW00hu5YhJFe4QYBZuGDvdzdPAtJriXqd1eSO', 1),
+(3, 'carlos', '$2a$10$JxWjJ5Cy8i30c4caI2KtNOLiyP8VKT7qHI1r63nStEPkhZJOETJIi',  1),
+(4, 'javi', '$2a$10$tS/VK7pGTGGz.6TPzthDN.s8Y/doz.4cxacPpSZYDuqaKgebeQaAm',  1);
+
+
+INSERT INTO `roles` (`id`, `usuario`, `authority`) VALUES
+(1, 'admin', 'ROLE_ADMIN'),
+(2, 'arturo', 'ROLE_USER'),
+(3, 'carlos', 'ROLE_USER'),
+(4, 'javi', 'ROLE_USER');
+
+
 
 --
 -- Indices de la tabla `alarmas`
