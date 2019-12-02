@@ -3,6 +3,8 @@ package com.sgj.web.model;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 /**
  * The persistent class for the roles database table.
@@ -15,16 +17,23 @@ public class Rol implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 
 	private String authority;
 
-	//bi-directional many-to-one association to Usuario
 	@ManyToOne
-	@JoinColumn(name="usuario")
+	@JoinColumn(name="usuario", nullable = false, insertable = false, updatable = false)
 	private Usuario usuarioBean;
 
 	public Rol() {
+	}
+	
+	public Rol(int id, String authority, Usuario usuarioBean) {
+		super();
+		this.id = id;
+		this.authority = authority;
+		this.usuarioBean = usuarioBean;
 	}
 
 	public int getId() {

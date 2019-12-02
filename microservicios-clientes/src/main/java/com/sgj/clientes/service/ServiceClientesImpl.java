@@ -22,10 +22,14 @@ public class ServiceClientesImpl implements ServiceClientes {
 
 	@Override
 	public void guardarCliente(Cliente c) {
-		if (!daoClientes.existsById(c.getId())) {
+		
+		try {
 			daoClientes.save(c);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-
+		
+		
 	}
 
 	@Override

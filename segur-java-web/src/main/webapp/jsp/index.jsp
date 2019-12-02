@@ -35,24 +35,59 @@
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="#">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
           </ul>
+          <ul class="nav navbar-nav navbar-right">
+			<li>	
+				<a href="https://github.com/arturisimo/segur-java" title="github.com/arturisimo/segur-java"><img class="github" src='<c:url value="/resources/img/github.ico" />'></a>
+			</li>
+			<li><a href="#" id="actionRegistro">registro</a></li>
+			<li><a href="<c:url value="/clientes" />"><span class="glyphicon glyphicon-off"></span> </a></li>
+		  </ul>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
 
     <div class="container">
-			
-			<div class="jumbotron">
+		<div class="jumbotron">
 			<div class="container">
 				<h1>hola pública</h1>
-				<p>.....</p>
 			</div>
 		</div>
-    
-
-    </div><!-- /.container -->
+		
+		<div id="containerRegistro" class="hidden">
+			
+			<div id="messageKO" class="alert alert-danger hidden">
+				<strong>Error:</strong><span id="errorMessage"></span>
+		    </div>
+		    <div id="messageOK" class="alert alert-success hidden">
+				<strong>OK:</strong><span id="message"></span>
+		    </div>
+			
+			<form action="" method="POST" role="form">
+				<legend>Datos de alta como cliente</legend>
+			
+				<div class="form-group">
+					<label for="usuario">Usuario</label>
+					<input type="text" class="form-control" id="usuario" placeholder="usuario">
+				</div>
+				<div class="form-group">
+					<label for="password">Password</label>
+					<input type="password" class="form-control" id="password" placeholder="usuario">
+				</div>
+				<div class="form-group">
+					<label for="email">Email</label>
+					<input type="text" class="form-control" id="email" placeholder="email">
+				</div>
+				<div class="form-group">
+					<label for="nombre">Nombre</label>
+					<input type="text" class="form-control" id="nombre" placeholder="nombre">
+				</div>
+				<a id="altaAction" href="#" class="btn btn-primary">Alta</a>
+			</form>
+			
+		
+		</div>
+   </div><!-- /.container -->
 
 
     <!-- Bootstrap core JavaScript
@@ -60,7 +95,6 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="http://getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
+    <script src="<c:url value="/resources/js/clientes.js" />"></script>
   </body>
 </html>

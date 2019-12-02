@@ -1,8 +1,16 @@
 package com.sgj.web.model;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 
 /**
@@ -11,46 +19,56 @@ import java.util.List;
  */
 @Entity
 @Table(name="usuarios")
-@NamedQuery(name="Usuario.findAll", query="SELECT u FROM Usuario u")
 public class Usuario implements Serializable {
-	private static final long serialVersionUID = 1L;
+	
+	private static final long serialVersionUID = -5890583493090274031L;
 
 	@Id
-	private int id;
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Integer id;
 
-	private byte enabled;
-
+	private boolean enabled;
+	
 	private String password;
 
 	private String usuario;
-
-	//bi-directional many-to-one association to Cliente
-	@OneToMany(mappedBy="usuario")
-	private List<Cliente> clientes;
-
+	
 	//bi-directional many-to-one association to Role
-	@OneToMany(mappedBy="usuarioBean")
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name="usuario", nullable = false, insertable = true, updatable = false)
 	private List<Rol> roles;
-
+	
 	public Usuario() {
+		super();
+	}
+	
+	
+	public Usuario(int id, boolean enabled, String password, String usuario) {
+		super();
+		this.id = id;
+		this.enabled = enabled;
+		this.password = password;
+		this.usuario = usuario;
 	}
 
-	public int getId() {
-		return this.id;
+	public Usuario(String usuario) {
+		this.usuario = usuario;
 	}
 
-	public void setId(int id) {
+
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public byte getEnabled() {
-		return this.enabled;
+	public boolean isEnabled() {
+		return enabled;
 	}
-
-	public void setEnabled(byte enabled) {
+	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
-
 	public String getPassword() {
 		return this.password;
 	}
@@ -67,28 +85,6 @@ public class Usuario implements Serializable {
 		this.usuario = usuario;
 	}
 
-	public List<Cliente> getClientes() {
-		return this.clientes;
-	}
-
-	public void setClientes(List<Cliente> clientes) {
-		this.clientes = clientes;
-	}
-
-	public Cliente addCliente(Cliente cliente) {
-		getClientes().add(cliente);
-		cliente.setUsuario(this);
-
-		return cliente;
-	}
-
-	public Cliente removeCliente(Cliente cliente) {
-		getClientes().remove(cliente);
-		cliente.setUsuario(null);
-
-		return cliente;
-	}
-
 	public List<Rol> getRoles() {
 		return this.roles;
 	}
@@ -96,19 +92,6 @@ public class Usuario implements Serializable {
 	public void setRoles(List<Rol> roles) {
 		this.roles = roles;
 	}
-
-	public Rol addRole(Rol role) {
-		getRoles().add(role);
-		role.setUsuarioBean(this);
-
-		return role;
-	}
-
-	public Rol removeRole(Rol role) {
-		getRoles().remove(role);
-		role.setUsuarioBean(null);
-
-		return role;
-	}
+	
 
 }
