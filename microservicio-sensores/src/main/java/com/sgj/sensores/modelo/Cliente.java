@@ -4,10 +4,15 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 
 /**
@@ -37,9 +42,7 @@ public class Cliente implements Serializable {
 
 	private byte policia;
 
-
-	//bi-directional many-to-one association to Sensore
-	@OneToMany(mappedBy="cliente")
+	@OneToMany(mappedBy="cliente", fetch = FetchType.LAZY)
 	private List<Sensor> sensores;
 
 	public Cliente() {

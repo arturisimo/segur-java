@@ -9,6 +9,7 @@ import com.sgj.sensores.modelo.Sensor;
 
 public interface DaoSensor extends JpaRepository<Sensor,Integer> {
 	//objetivo daoSensor.cambiarEstado(idSensor,estado);
-	@Query("select * From Sensor s Where s.idCliente=?1")
+	@Query("select s From Sensor s Where s.cliente.id=?1")
 	List<Sensor> sensorPorIdCliente(int idCliente);
+	
 }

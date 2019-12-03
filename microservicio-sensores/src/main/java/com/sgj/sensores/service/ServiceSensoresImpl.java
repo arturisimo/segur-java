@@ -58,7 +58,7 @@ public class ServiceSensoresImpl implements ServiceSensores {
 				listaAlarmasAux = daoAlarma.alarmaPorIdSensor(s.getId());
 				if(listaAlarmasAux != null) {
 					for(Alarma a : listaAlarmasAux){
-						listaAlarmasFinal.add(new Alarma(a.getFecha(),a.getPolicia(),a.getSensore()));
+						listaAlarmasFinal.add(new Alarma(a.getFecha(),a.getPolicia(),a.getSensor()));
 					}
 				}
 			}
@@ -182,6 +182,11 @@ public class ServiceSensoresImpl implements ServiceSensores {
 		daoSensor.deleteById(idSensor);
 		}
 
+	}
+
+	@Override
+	public List<Sensor> listadoByCliente(Integer id) {
+		return daoSensor.sensorPorIdCliente(id);
 	}
 	
 	

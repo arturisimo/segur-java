@@ -37,10 +37,10 @@ public class SensoresController {
 				return serviceSensores.saltosAlarmaPorDni(dni);
 			}
 //	public List<Sensor> estadoSensores (Cliente cliente);	
-	
-		@PostMapping(value="estadoSensores",consumes=MediaType.APPLICATION_JSON_VALUE,produces=MediaType.APPLICATION_JSON_VALUE)
-			public List<Sensor> estadoSensores (@RequestBody Cliente c) {
-				return serviceSensores.estadoSensores(c);
+
+		@GetMapping(value="estadoSensores/{id}",produces=MediaType.APPLICATION_JSON_VALUE)
+			public List<Sensor> estadoSensores (@PathVariable("id") Integer id) {
+				return serviceSensores.listadoByCliente(id);
 			}
 
 // public List<Alarma> saltosAlarmaPorFecha(int idCliente, Timestamp fechaInicio, Timestamp fechaFin);

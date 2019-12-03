@@ -19,4 +19,5 @@ public interface ServiceSensores {
 	public void provocarAlarma (int idSensor);
 	public void eliminarSensor (int idSensor);
 	public void crearSensor (Sensor sensor);
+	public List<Sensor> listadoByCliente(Integer id);
 }

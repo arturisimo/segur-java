@@ -9,6 +9,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 /**
  * The persistent class for the estados database table.
@@ -25,15 +27,9 @@ public class Estado implements Serializable {
 
 	private String descripcion;
 
-	//bi-directional many-to-one association to Sensore
-	@OneToMany(mappedBy="estadoBean")
-	private List<Sensor> sensores;
-
 	public Estado() {
 	}
 
-	
-	
 	public Estado(int id, String descripcion) {
 		super();
 		this.id = id;
@@ -58,26 +54,6 @@ public class Estado implements Serializable {
 		this.descripcion = descripcion;
 	}
 
-	public List<Sensor> getSensores() {
-		return this.sensores;
-	}
-
-	public void setSensores(List<Sensor> sensores) {
-		this.sensores = sensores;
-	}
-
-	public Sensor addSensore(Sensor sensore) {
-		getSensores().add(sensore);
-		sensore.setEstadoBean(this);
-
-		return sensore;
-	}
-
-	public Sensor removeSensore(Sensor sensore) {
-		getSensores().remove(sensore);
-		sensore.setEstadoBean(null);
-
-		return sensore;
-	}
+	
 
 }

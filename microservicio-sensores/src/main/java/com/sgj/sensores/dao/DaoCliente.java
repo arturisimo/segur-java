@@ -10,7 +10,7 @@ import com.sgj.sensores.modelo.Estado;
 
 public interface DaoCliente extends JpaRepository<Estado,Integer> {
 	
-	@Query("select * From Cliente c Where c.dni=?1")
+	@Query("select c From Cliente c Where c.dni=?1")
 	List<Cliente> clientePorDni(String dni);
 	
 }

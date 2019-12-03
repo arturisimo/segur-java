@@ -4,12 +4,17 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 
 /**
@@ -18,7 +23,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="sensores")
-@NamedQuery(name="Sensore.findAll", query="SELECT s FROM Sensor s")
+@NamedQuery(name="Sensor.findAll", query="SELECT s FROM Sensor s")
 public class Sensor implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -26,18 +31,17 @@ public class Sensor implements Serializable {
 	private int id;
 
 	private String zona;
-
-	//bi-directional many-to-one association to Alarma
-	@OneToMany(mappedBy="sensore")
+	
+	@JsonIgnore
+	@OneToMany(mappedBy="sensor", fetch = FetchType.EAGER)
 	private List<Alarma> alarmas;
-
-	//bi-directional many-to-one association to Cliente
-	@ManyToOne
+	
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="idCliente")
 	private Cliente cliente;
 
-	//bi-directional many-to-one association to Estado
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="estado")
 	private Estado estadoBean;
 
@@ -70,14 +74,14 @@ public class Sensor implements Serializable {
 
 	public Alarma addAlarma(Alarma alarma) {
 		getAlarmas().add(alarma);
-		alarma.setSensore(this);
+		alarma.setSensor(this);
 
 		return alarma;
 	}
 
 	public Alarma removeAlarma(Alarma alarma) {
 		getAlarmas().remove(alarma);
-		alarma.setSensore(null);
+		alarma.setSensor(null);
 
 		return alarma;
 	}

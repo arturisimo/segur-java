@@ -7,9 +7,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 
-@EntityScan(basePackages = {"modelo"})
-@EnableJpaRepositories(basePackages = {"dao"})
-@ComponentScan(basePackages = {"controller","service"})
+@EntityScan(basePackages = {"com.sgj.sensores.modelo"})
+@EnableJpaRepositories(basePackages = {"com.sgj.sensores.dao"})
+@ComponentScan(basePackages = {"com.sgj.sensores.controller","com.sgj.sensores.service"})
 @SpringBootApplication
 public class MicroservicioSensoresApplication {
 

@@ -10,9 +10,9 @@ import com.sgj.sensores.modelo.Alarma;
 
 public interface DaoAlarma extends JpaRepository<Alarma,Integer> {
 	
-	@Query("select * From Alarma a Where (a.fecha>=?1 and a.fecha<=?2)")
+	@Query("select a From Alarma a Where (a.fecha>=?1 and a.fecha<=?2)")
 	List<Alarma> alarmasPorFecha(Timestamp fechaInicio, Timestamp fechaFin);
 	
-	@Query("select * From Alarma a Where a.idSensor=?1")
+	@Query("select a From Alarma a Where a.sensor.id=?1")
 	List<Alarma> alarmaPorIdSensor(int idSensor);
 }

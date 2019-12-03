@@ -4,11 +4,16 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 
 /**
@@ -28,19 +33,18 @@ public class Alarma implements Serializable {
 
 	private byte policia;
 
-	//bi-directional many-to-one association to Sensore
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="idSensor")
-	private Sensor sensore;
+	private Sensor sensor;
 
 	public Alarma() {
 	}
 
-	public Alarma(Timestamp fecha, byte policia, Sensor sensore) {
+	public Alarma(Timestamp fecha, byte policia, Sensor sensor) {
 		super();
 		this.fecha = fecha;
 		this.policia = policia;
-		this.sensore = sensore;
+		this.sensor = sensor;
 	}
 
 	public int getId() {
@@ -67,12 +71,12 @@ public class Alarma implements Serializable {
 		this.policia = policia;
 	}
 
-	public Sensor getSensore() {
-		return this.sensore;
+	public Sensor getSensor() {
+		return this.sensor;
 	}
 
-	public void setSensore(Sensor sensore) {
-		this.sensore = sensore;
+	public void setSensor(Sensor sensor) {
+		this.sensor = sensor;
 	}
 
 }
