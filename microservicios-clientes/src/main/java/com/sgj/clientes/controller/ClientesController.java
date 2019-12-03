@@ -28,6 +28,11 @@ public class ClientesController {
 		return cliente;
 	}
 	
+	@GetMapping(value="/clientes/{idUsuario}", produces=MediaType.APPLICATION_JSON_VALUE)
+	public Cliente buscarClienteByUsuario(@PathVariable("idUsuario") Integer idUsuario) {
+		return serviceClientes.getClienteByIdUsuario(idUsuario);
+	}
+	
 	@GetMapping(value="/clientes", produces=MediaType.APPLICATION_JSON_VALUE)
 	public List<Cliente> listarClientes(){
 		List<Cliente> lista = serviceClientes.clientes();

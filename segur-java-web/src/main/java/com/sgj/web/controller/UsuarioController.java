@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +23,12 @@ public class UsuarioController {
 	@PostMapping(value="/alta-usuario", consumes=MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Usuario> alta(@RequestBody Usuario usuarioPost) {
 		Usuario usuario = serviceUsuario.save(usuarioPost);
+		return new ResponseEntity<>(usuario, HttpStatus.OK);
+	}
+	
+	@GetMapping(value="/usuario", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Usuario> alta(@RequestBody String nombreUsuario) {
+		Usuario usuario = serviceUsuario.findByUsuario(nombreUsuario);
 		return new ResponseEntity<>(usuario, HttpStatus.OK);
 	}
 	

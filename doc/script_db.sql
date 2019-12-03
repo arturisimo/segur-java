@@ -122,7 +122,12 @@ INSERT INTO `roles` (`id`, `usuario`, `authority`) VALUES
 (3, 'carlos', 'ROLE_USER'),
 (4, 'javi', 'ROLE_USER');
 
-
+INSERT INTO `sensores` (`idCliente`, `estado`, `zona`) VALUES ('1', '3', 'Dormitorio');
+INSERT INTO `sensores` (`idCliente`, `estado`, `zona`) VALUES ('1', '3', 'Pasillo');
+INSERT INTO `sensores` (`idCliente`, `estado`, `zona`) VALUES ('1', '2', 'Garaje');
+INSERT INTO `sensores` (`idCliente`, `estado`, `zona`) VALUES ('2', '3', 'Dormitorio');
+INSERT INTO `sensores` (`idCliente`, `estado`, `zona`) VALUES ('2', '3', 'Pasillo');
+INSERT INTO `sensores` (`idCliente`, `estado`, `zona`) VALUES ('2', '2', 'Garaje');
 
 --
 -- Indices de la tabla `alarmas`

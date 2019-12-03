@@ -36,4 +36,9 @@ public class ServiceUsuarioImpl implements ServiceUsuario {
 		return usuarioRepository.findAll();
 	}
 
+	@Override
+	public Usuario findByUsuario(String nombreUsuario) {
+		return usuarioRepository.findByUsuario(nombreUsuario);
+	}
+
 }

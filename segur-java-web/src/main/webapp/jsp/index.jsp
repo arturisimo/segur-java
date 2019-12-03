@@ -41,7 +41,7 @@
 				<a href="https://github.com/arturisimo/segur-java" title="github.com/arturisimo/segur-java"><img class="github" src='<c:url value="/resources/img/github.ico" />'></a>
 			</li>
 			<li><a href="#" id="actionRegistro">registro</a></li>
-			<li><a href="<c:url value="/clientes" />"><span class="glyphicon glyphicon-off"></span> </a></li>
+			<li><a href="<c:url value="/cliente" />"><span class="glyphicon glyphicon-off"></span> </a></li>
 		  </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -87,9 +87,8 @@
 			
 		
 		</div>
-   </div><!-- /.container -->
-
-
+    </div><!-- /.container -->
+	
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->

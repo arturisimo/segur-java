@@ -12,9 +12,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 
 /**
@@ -28,18 +26,20 @@ public class Sensor implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private int id;
+	private Integer id;
 
 	private String zona;
+	
+	private Integer idCliente;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy="sensor", fetch = FetchType.EAGER)
 	private List<Alarma> alarmas;
 	
-	@JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="idCliente")
-	private Cliente cliente;
+//	@JsonIgnore
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(name="idCliente")
+//	private Cliente cliente;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="estado")
@@ -48,11 +48,11 @@ public class Sensor implements Serializable {
 	public Sensor() {
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -72,27 +72,13 @@ public class Sensor implements Serializable {
 		this.alarmas = alarmas;
 	}
 
-	public Alarma addAlarma(Alarma alarma) {
-		getAlarmas().add(alarma);
-		alarma.setSensor(this);
-
-		return alarma;
-	}
-
-	public Alarma removeAlarma(Alarma alarma) {
-		getAlarmas().remove(alarma);
-		alarma.setSensor(null);
-
-		return alarma;
-	}
-
-	public Cliente getCliente() {
-		return this.cliente;
-	}
-
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
-	}
+//	public Cliente getCliente() {
+//		return this.cliente;
+//	}
+//
+//	public void setCliente(Cliente cliente) {
+//		this.cliente = cliente;
+//	}
 
 	public Estado getEstadoBean() {
 		return this.estadoBean;
@@ -102,4 +88,15 @@ public class Sensor implements Serializable {
 		this.estadoBean = estadoBean;
 	}
 
+	public Integer getIdCliente() {
+		return idCliente;
+	}
+
+	public void setIdCliente(Integer idCliente) {
+		this.idCliente = idCliente;
+	}
+	
+	
+	
+	
 }

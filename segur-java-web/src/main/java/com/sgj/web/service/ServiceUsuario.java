@@ -10,4 +10,6 @@ public interface ServiceUsuario {
 
 	List<Usuario> findAll();
 
+	Usuario findByUsuario(String nombreUsuario);
+
 }

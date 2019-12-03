@@ -9,4 +9,5 @@ public interface ServiceClientes {
 	Cliente obtenerCliente(Integer id);
 	void eliminarCliente(Integer id);
 	void guardarCliente(Cliente c);
+	Cliente getClienteByIdUsuario(Integer idUsuario);
 }

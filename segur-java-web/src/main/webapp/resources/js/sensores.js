@@ -1,29 +1,101 @@
-sensores = {
+sensor = {
 			urlClientes : "http://localhost:9000/clientes/clientes",
-}
+			urlSensor : "http://localhost:8100/alarmas/sensores",
+			urlUsuario : "http://localhost:8080/segur-java-web/usuario",
+			getUsuario : function(nombreUsuario) {
+				console.log("peticion AJAX GET " +  sensor.urlUsuario+"/"+nombreUsuario);
+				$.get(sensor.urlUsuario+"/"+urlUsuario, function(data,status){
+					debugger;
+					return body;
+				}).fail(function(e) {
+					sensor.error(e);
+				});
+			},
+			getCliente : function(idUsuario) {
+				console.log("peticion AJAX GET " +  sensor.urlClientes+"/"+idUsuario);
+				$.get(sensor.urlSensor+"/"+id, function(data,status){
+					var body = "";
+					$.each(data,function(i,sensor) {
+						body += "<tr><td>"+sensor.zona+"</td><td>"+sensor.estadoBean.descripcion+"</td>";
+					});
+					$("table tbody").html(body)
+				}).fail(function(e) {
+					sensor.error(e);
+				});
+			},
+			listarSensores : function(id) {
+					console.log("peticion AJAX GET " +  sensor.urlSensor+"/"+id);
+					$.get(sensor.urlSensor+"/"+id, function(data,status){
+						var body = "";
+						$.each(data,function(i,sensor) {
+							body += "<tr><td>"+sensor.zona+"</td><td>"+sensor.estadoBean.descripcion+"</td>";
+						});
+						$("table tbody").html(body)
+					}).fail(function(e) {
+						sensor.error(e);
+					});
+			},
+			editCliente : function(clienteForm) {
+				 console.log("peticion AJAX POST " + clienteForm);
+				 $.ajax({
+					 	type: "POST",
+				        contentType: "application/json",
+				        url: sensor.urlClientes,
+				        data: clienteForm,
+				        dataType: 'json',
+				        success: function (data) {
+				        	sensor.confirm(data);
+				        },
+				        error: function (e) {
+				        	sensor.error(e);
+				        }
+				    });
+				 
+			 },
+			 confirm : function(data) {
+				 $("div#messageOK").removeClass("hidden");
+				 $("span#message").html(data.message)
+		     },
+			 error : function(e) {
+		        console.log(e);
+		        $("div#messageKO").removeClass("hidden");
+				$("span#errorMessage").html("Error: " + e.status + " " + e.statusText);
+		     }
+
+};
 
 $(function(){
-
-  
-  $("#actionRegistro").click(function() {
-	  $("#containerRegistro").toggleClass("hidden");
-  });
-  
-  $("#altaAction").click(function(){
-		$("div.alert").addClass("hidden");
-		var clienteForm = {
-						"idreserva":0,
-						"hotel": $("#hoteles").val(),
-						"vuelo": $("#vuelos").val(),
-						"nombre": $("#nombre").val(),
-						"dni": $("#dni").val(),
-						"totalPersonas": $("#totalPersonas").val()
-					
-		};
-		
-		viaje.save(JSON.stringify(reservaForm));
-		
+	 
+	debugger;
+	
+	 var usuario = sensor.getUsuario(nombreUsuario); 
+	
+	 var sensor = sensor.getCliente(idUsuario); 
+	
+	 sensor.listarSensores(id);
+	 
+	 $("#editClienteLink").click(function() {
+		  $("#containerEditCliente").toggleClass("hidden");
+	 });
+	 
+	 $("#editClienteAction").click(function(){
+			$("div.alert").addClass("hidden");
+			
+			`id`, `nombre`, `email`, `dni`, `cuenta`, `direccion`, `estado`, `policia`
+			
+			var clienteForm = {
+					"id" : $("#id").val(),
+					"nombre": $("#nombre").val(),
+					"email": $("#email").val(),
+					"cuenta": $("#email").val(),
+					"direccion": $("#email").val(),
+					"estado": true,
+					"policia": $("#policia").val(),
+			}
+			sensor.editCliente(JSON.stringify(clienteForm));
+			
+	});
+	 
+	 
+	
 });
-  
-
-}); 

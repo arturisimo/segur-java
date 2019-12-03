@@ -51,18 +51,73 @@
 				<p>Zona cliente</p>
 			</div>
 		</div>
-    
-
-    </div><!-- /.container -->
+		
+		<div id="listSensorContainer" class="container">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>zona</th><th>estado sensor</th>
+					</tr>
+				</thead>
+				<tbody>
+					
+				</tbody>
+			</table>
+		</div>
+		<div id="containerEditCliente" class="container hidden">
+			
+			<form action="" method="POST" role="form">
+				<legend>Datos personales</legend>
+				<input type="hidden" id="id" value="">
+			
+				<div class="form-group">
+					<label for="nombre">label</label>
+					<input type="text" class="form-control" id="nombre" value="" placeholder="nombre">
+				</div>
+				<div class="form-group">
+					<label for="email">label</label>
+					<input type="text" class="form-control" id="email" value="" placeholder="nombre">
+				</div>
+				<div class="form-group">
+					<label for="nombre">dni</label>
+					<input type="text" class="form-control" id="dni" value="" placeholder="nombre">
+				</div>
+				<div class="form-group">
+					<label for="cuenta">cuenta</label>
+					<input type="text" class="form-control" id="cuenta" value="" placeholder="nombre">
+				</div>
+				<div class="form-group">
+					<label for="direccion">direccion</label>
+					<input type="text" class="form-control" id="direccion" value="" placeholder="nombre">
+				</div>
+				<div class="form-group checkbox">
+					<label>
+						<input type="checkbox" id=policia value="">
+						Aviso a la policia
+					</label>
+				</div>
+				
+				<a id="editClienteSensor" href="#" class="btn btn-primary">Alta</a>
+			</form>
+		
+		</div>
+	
+	</div>
 
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
+    
+    <script type="text/javascript">
+		
+		var nombreUsuario = "${userPrincipal.username}";
+	
+	</script>
+    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     
-    <script src="<c:url value="/resources/js/admin.js" />"></script>
+    <script src="<c:url value="/resources/js/sensores.js" />"></script>
     
   </body>
 </html>
