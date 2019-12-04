@@ -9,15 +9,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>segurJava</title>
-
-    <!-- Bootstrap core CSS -->
+    <title>segurJava - ${userPrincipal.username}</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-   	
+   	<link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
   </head>
 
   <body>
@@ -39,7 +33,14 @@
             <li><a href="#about">Sensores</a></li>
             <li><a href="#contact">Tus datos</a></li>
           </ul>
-        </div><!--/.nav-collapse -->
+          <ul class="nav navbar-nav navbar-right">
+			<li>	
+				<a href="https://github.com/arturisimo/segur-java" title="github.com/arturisimo/segur-java"><img class="github" src='<c:url value="/resources/img/github.ico" />'></a>
+			</li>
+			<li class="separator"><a href="#">${userPrincipal.username}</a></li>
+			<li><a href="<c:url value="j_spring_security_logout" />"><span class="glyphicon glyphicon-off"></span> </a></li>
+		  </ul>
+        </div>
       </div>
     </nav>
 

@@ -33,9 +33,8 @@ public class Usuario implements Serializable {
 
 	private String usuario;
 	
-	//bi-directional many-to-one association to Role
 	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name="usuario", nullable = false, insertable = true, updatable = false)
+	@JoinColumn(name="id_usuario", nullable = false, insertable = true, updatable = false)
 	private List<Rol> roles;
 	
 	public Usuario() {

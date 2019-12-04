@@ -1,18 +1,6 @@
 clientes = {
 			urlClientes : "http://localhost:9000/clientes/clientes",
 			urlUsuario : "http://localhost:8080/segur-java-web/alta-usuario",
-			listar : function() {
-					console.log("peticion AJAX GET " +  clientes.urlClientes);
-					$.get(clientes.urlClientes, function(data,status){
-						var body = "";
-						$.each(data,function(i,cliente) {
-							body += "<tr><td>"+cliente.nombre+"</td><td>"+cliente.email+"</td><td>"+cliente.dni+"</td><td>"+cliente.cuenta+"</td><td>"+cliente.direccion+"</td><td>"+cliente.policia+"</td></tr>";
-						});
-						$("table tbody").html(body)
-					}).fail(function(e) {
-						clientes.error(e);
-					});
-			},
 			saveUsuario : function(usuarioForm) {
 				debugger;
 				 console.log("peticion AJAX POST " + usuarioForm);
@@ -23,14 +11,7 @@ clientes = {
 				        data: usuarioForm,
 				        dataType: 'json',
 				        success: function (data) {
-				        	debugger;
-				        	console.log("ei");
-				        	var clienteForm = {
-									"nombre": $("#nombre").val(),
-									"email": $("#email").val(),
-									"idUsuario": data.id
-							};
-				        	clientes.save(JSON.stringify(clienteForm));
+				        	clientes.save(data.id);
 				        },
 				        error: function (e) {
 				        	clientes.error(e);
@@ -38,18 +19,35 @@ clientes = {
 				    });
 				 
 			},
-			save : function(clienteForm) {
-				 console.log("peticion AJAX POST " + reservaForm);
+			save : function(idUsuario) {
+				 console.log("peticion AJAX POST " + clienteForm);
+				 
+				 var clienteForm = {
+							"nombre": $("#nombre").val(),
+							"email": $("#email").val(),
+							"estado": true,
+							"policia": false,
+							"idUsuario":idUsuario
+				 };
+				 
+				 console.log(JSON.stringify(clienteForm));
+				 
 				 $.ajax({
 					 	type: "POST",
 				        contentType: "application/json",
 				        url: clientes.urlClientes,
-				        data: clienteForm,
+				        data: JSON.stringify(clienteForm),
 				        dataType: 'json',
 				        success: function (data) {
+				        	debugger;
 				        	clientes.confirm(data);
+				        	$("#containerRegistro").toggleClass("hidden");
+				        	window.setTimeout(function() {
+				        	    window.location.href = 'http://localhost:8080/segur-java-web/cliente';
+				        	}, 5000);
 				        },
 				        error: function (e) {
+				        	debugger;
 				        	clientes.error(e);
 				        }
 				    });
@@ -69,7 +67,7 @@ clientes = {
 
 $(function(){
 	
-	 clientes.listar();
+	debugger;
 	 
 	 $("#actionRegistro").click(function() {
 		  $("#containerRegistro").toggleClass("hidden");

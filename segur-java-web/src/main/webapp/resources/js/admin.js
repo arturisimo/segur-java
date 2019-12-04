@@ -44,6 +44,8 @@ clientes = {
 
 $(function(){
 	
+	 debugger;
+	
 	 clientes.listar();
 	 
 	 $("#altaAction").click(function(){

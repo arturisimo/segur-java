@@ -1,7 +1,15 @@
 package com.sgj.web.model;
 
 import java.io.Serializable;
-import javax.persistence.*;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -21,19 +29,20 @@ public class Rol implements Serializable {
 	private int id;
 
 	private String authority;
-
+	
+	@JsonIgnore
 	@ManyToOne
-	@JoinColumn(name="usuario", nullable = false, insertable = false, updatable = false)
-	private Usuario usuarioBean;
+	@JoinColumn(name="id_usuario", nullable = false, insertable = false, updatable = false)
+	private Usuario usuario;
 
 	public Rol() {
 	}
 	
-	public Rol(int id, String authority, Usuario usuarioBean) {
+	public Rol(int id, String authority, Usuario usuario) {
 		super();
 		this.id = id;
 		this.authority = authority;
-		this.usuarioBean = usuarioBean;
+		this.usuario = usuario;
 	}
 
 	public int getId() {
@@ -52,12 +61,12 @@ public class Rol implements Serializable {
 		this.authority = authority;
 	}
 
-	public Usuario getUsuarioBean() {
-		return this.usuarioBean;
+	public Usuario getUsuario() {
+		return this.usuario;
 	}
 
-	public void setUsuarioBean(Usuario usuarioBean) {
-		this.usuarioBean = usuarioBean;
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 }

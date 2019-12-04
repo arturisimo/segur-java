@@ -32,11 +32,11 @@ public class Cliente implements Serializable {
 
 	private String email;
 
-	private byte estado;
+	private boolean estado;
 
 	private String nombre;
 
-	private byte policia;
+	private boolean policia;
 	
 	private Integer idUsuario;
 
@@ -83,28 +83,12 @@ public class Cliente implements Serializable {
 		this.email = email;
 	}
 
-	public byte getEstado() {
-		return this.estado;
-	}
-
-	public void setEstado(byte estado) {
-		this.estado = estado;
-	}
-
 	public String getNombre() {
 		return this.nombre;
 	}
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
-	}
-
-	public byte getPolicia() {
-		return this.policia;
-	}
-
-	public void setPolicia(byte policia) {
-		this.policia = policia;
 	}
 
 	public Integer getIdUsuario() {
@@ -114,5 +98,23 @@ public class Cliente implements Serializable {
 	public void setIdUsuario(Integer idUsuario) {
 		this.idUsuario = idUsuario;
 	}
+
+	public boolean isEstado() {
+		return estado;
+	}
+
+	public void setEstado(boolean estado) {
+		this.estado = estado;
+	}
+
+	public boolean isPolicia() {
+		return policia;
+	}
+
+	public void setPolicia(boolean policia) {
+		this.policia = policia;
+	}
+	
+	
 	
 }

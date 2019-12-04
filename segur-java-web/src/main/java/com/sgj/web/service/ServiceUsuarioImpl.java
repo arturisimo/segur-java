@@ -21,6 +21,9 @@ public class ServiceUsuarioImpl implements ServiceUsuario {
 	@Autowired
 	RolRepository rolRepository;
 	
+	/**
+	 * save cliente ROLE_USER
+	 */
 	@Override
 	public Usuario save(Usuario usuario) {
 		usuario.setPassword(Util.bcrypt(usuario.getPassword()));

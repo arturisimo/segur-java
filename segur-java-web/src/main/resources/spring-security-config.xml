@@ -13,11 +13,13 @@
 		<!-- recursos que requieren auth -->
 		<security:intercept-url pattern="/admin/**" access="ROLE_ADMIN"/>
 		<security:intercept-url pattern="/admin**" access="ROLE_ADMIN"/>
-		<security:intercept-url pattern="/cliente**" access="ROLE_USER"/>
+		<security:intercept-url pattern="/cliente/**" access="ROLE_USER"/>
 		<security:intercept-url pattern="/cliente**" access="ROLE_USER"/>
 		
 		<!-- deshabilitar token -->
 		<security:csrf disabled="true"/>
+		
+		<security:logout invalidate-session="true" delete-cookies="JSESSIONID" logout-success-url="/" logout-url="/j_spring_security_logout" />
 		
 	</security:http>
 	
@@ -29,7 +31,7 @@
 			
 			<!-- Usuarios en DDBB -->
 			<security:jdbc-user-service data-source-ref="dataServerSGJ" users-by-username-query="select usuario, password, enabled from usuarios where usuario=?"
-																	 authorities-by-username-query="select usuario, authority from roles where usuario = ?"  /> 
+																	 authorities-by-username-query="select usuario, authority from roles r, usuarios u where r.id_usuario = u.id and u.usuario = ?"  /> 
 					
 		</security:authentication-provider>
 	</security:authentication-manager>

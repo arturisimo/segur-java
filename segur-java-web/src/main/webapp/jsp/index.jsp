@@ -7,16 +7,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="/favicon.ico">
-
     <title>segurJava</title>
-
-    <!-- Bootstrap core CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-   
+    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
   </head>
 
   <body>
@@ -40,6 +33,7 @@
 			<li>	
 				<a href="https://github.com/arturisimo/segur-java" title="github.com/arturisimo/segur-java"><img class="github" src='<c:url value="/resources/img/github.ico" />'></a>
 			</li>
+			<li class="separator"><a href="<c:url value="/admin" />">admin</a></li>
 			<li><a href="#" id="actionRegistro">registro</a></li>
 			<li><a href="<c:url value="/cliente" />"><span class="glyphicon glyphicon-off"></span> </a></li>
 		  </ul>

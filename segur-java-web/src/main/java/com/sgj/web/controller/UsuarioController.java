@@ -6,6 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,8 +27,8 @@ public class UsuarioController {
 		return new ResponseEntity<>(usuario, HttpStatus.OK);
 	}
 	
-	@GetMapping(value="/usuario", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Usuario> alta(@RequestBody String nombreUsuario) {
+	@GetMapping(value="/usuario/{nombreUsuario:.+}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Usuario> get(@PathVariable String nombreUsuario) {
 		Usuario usuario = serviceUsuario.findByUsuario(nombreUsuario);
 		return new ResponseEntity<>(usuario, HttpStatus.OK);
 	}

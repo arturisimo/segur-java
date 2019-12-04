@@ -1,0 +1,13 @@
+.navbar-inverse {
+	background-color: #efefef;
+	border-color: #ccc;	
+}
+
+.navbar-inverse img {
+	width:20px;	
+}
+
+.navbar-inverse li.separator {
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+}
