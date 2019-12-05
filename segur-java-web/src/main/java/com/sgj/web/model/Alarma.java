@@ -1,31 +1,26 @@
 package com.sgj.web.model;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.sql.Timestamp;
+import java.util.Date;
+
+import javax.persistence.Id;
 
 
 /**
  * The persistent class for the alarmas database table.
  * 
  */
-@Entity
-@Table(name="alarmas")
-@NamedQuery(name="Alarma.findAll", query="SELECT a FROM Alarma a")
 public class Alarma implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	private int id;
 
-	private Timestamp fecha;
+	private Date fecha;
 
-	private byte policia;
+	private boolean policia;
 
-	//bi-directional many-to-one association to Sensore
-	@ManyToOne
-	@JoinColumn(name="idSensor")
-	private Sensor sensore;
+	private Integer idSensor;
 
 	public Alarma() {
 	}
@@ -38,28 +33,31 @@ public class Alarma implements Serializable {
 		this.id = id;
 	}
 
-	public Timestamp getFecha() {
-		return this.fecha;
+	public Date getFecha() {
+		return fecha;
 	}
 
-	public void setFecha(Timestamp fecha) {
+	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 	}
 
-	public byte getPolicia() {
-		return this.policia;
+	public boolean isPolicia() {
+		return policia;
 	}
 
-	public void setPolicia(byte policia) {
+	public void setPolicia(boolean policia) {
 		this.policia = policia;
 	}
 
-	public Sensor getSensore() {
-		return this.sensore;
+	public Integer getIdSensor() {
+		return idSensor;
 	}
 
-	public void setSensore(Sensor sensore) {
-		this.sensore = sensore;
+	public void setIdSensor(Integer idSensor) {
+		this.idSensor = idSensor;
 	}
-
+	
+	
+	
+	
 }

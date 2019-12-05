@@ -1,7 +1,7 @@
 package com.sgj.sensores.modelo;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,10 +10,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 
 /**
@@ -29,22 +25,21 @@ public class Alarma implements Serializable {
 	@Id
 	private int id;
 
-	private Timestamp fecha;
+	private Date fecha;
 
-	private byte policia;
+	private boolean policia;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="idSensor")
-	private Sensor sensor;
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(name="idSensor")
+//	private Sensor sensor;
 
 	public Alarma() {
 	}
 
-	public Alarma(Timestamp fecha, byte policia, Sensor sensor) {
+	public Alarma(Date fecha, boolean policia, Sensor sensor) {
 		super();
 		this.fecha = fecha;
 		this.policia = policia;
-		this.sensor = sensor;
 	}
 
 	public int getId() {
@@ -55,28 +50,22 @@ public class Alarma implements Serializable {
 		this.id = id;
 	}
 
-	public Timestamp getFecha() {
-		return this.fecha;
+	public Date getFecha() {
+		return fecha;
 	}
 
-	public void setFecha(Timestamp fecha) {
+	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 	}
 
-	public byte getPolicia() {
-		return this.policia;
+	public boolean isPolicia() {
+		return policia;
 	}
 
-	public void setPolicia(byte policia) {
+	public void setPolicia(boolean policia) {
 		this.policia = policia;
 	}
-
-	public Sensor getSensor() {
-		return this.sensor;
-	}
-
-	public void setSensor(Sensor sensor) {
-		this.sensor = sensor;
-	}
-
+	
+	
+	
 }

@@ -12,8 +12,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 
 /**
  * The persistent class for the sensores database table.
@@ -32,7 +30,6 @@ public class Sensor implements Serializable {
 	
 	private Integer idCliente;
 	
-	@JsonIgnore
 	@OneToMany(mappedBy="sensor", fetch = FetchType.EAGER)
 	private List<Alarma> alarmas;
 	

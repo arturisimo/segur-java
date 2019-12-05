@@ -3,7 +3,9 @@ package com.sgj.sensores.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -58,12 +60,20 @@ public class SensoresController {
 	public void darBajaSensor (@PathVariable("idSensor") int idSensor){		
 		serviceSensores.darBajaSensor(idSensor);
 	}
-//	
-//	@PutMapping(value="provocarAlarma/{idSensor}")
-//	public void provocarAlarma (@PathVariable("idSensor") int idSensor){		
-//		serviceSensores.provocarAlarma(idSensor);
-//	}
+	
+	@PutMapping(value="provocarAlarma")
+	public ResponseEntity<String> provocarAlarma (@RequestBody Sensor sensor){	
+		try {
+			serviceSensores.provocarAlarma(sensor);
+			return new ResponseEntity<>("Alta de alarma", HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>("Fallo en la eliminacion " +e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 		
+	
+	
+	
 	@DeleteMapping(value="eliminarSensor/{idSensor}")
 	public void eliminarSensor (@PathVariable("idSensor") int idSensor){		
 		serviceSensores.eliminarSensor(idSensor);

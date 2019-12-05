@@ -28,11 +28,11 @@ CREATE TABLE `clientes` (
   `id` int(10) UNSIGNED NOT NULL,
   `nombre` varchar(45) CHARACTER SET utf8 NOT NULL,
   `email` varchar(45) CHARACTER SET utf8 NOT NULL,
-  `dni` varchar(45) CHARACTER SET utf8 NOT NULL,
-  `cuenta` varchar(45) CHARACTER SET utf8 NOT NULL,
-  `direccion` varchar(45) CHARACTER SET utf8 NOT NULL,
-  `estado` tinyint(1) NOT NULL,
-  `policia` tinyint(1) NOT NULL,
+  `dni` varchar(45) CHARACTER SET utf8 NULL,
+  `cuenta` varchar(45) CHARACTER SET utf8 NULL,
+  `direccion` varchar(45) CHARACTER SET utf8 NULL,
+  `estado` tinyint(1) NOT NULL DEFAULT 1,
+  `policia` tinyint(1) NOT NULL DEFAULT 0,
   `idUsuario` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
@@ -78,7 +78,7 @@ CREATE TABLE `policias` (
 
 CREATE TABLE `roles` (
   `id` int(10) UNSIGNED NOT NULL,
-  `usuario` varchar(45) CHARACTER SET utf8 NOT NULL,
+  `id_usuario` int(10) UNSIGNED NOT NULL,
   `authority` varchar(45) CHARACTER SET utf8 NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
@@ -116,11 +116,11 @@ INSERT INTO `usuarios` (`id`, `usuario`, `password`, `enabled`) VALUES
 (4, 'javi', '$2a$10$tS/VK7pGTGGz.6TPzthDN.s8Y/doz.4cxacPpSZYDuqaKgebeQaAm',  1);
 
 
-INSERT INTO `roles` (`id`, `usuario`, `authority`) VALUES
-(1, 'admin', 'ROLE_ADMIN'),
-(2, 'arturo', 'ROLE_USER'),
-(3, 'carlos', 'ROLE_USER'),
-(4, 'javi', 'ROLE_USER');
+INSERT INTO `roles` (`id`, `id_usuario`, `authority`) VALUES
+(1, 1, 'ROLE_ADMIN'),
+(2, 2, 'ROLE_USER'),
+(3, 3, 'ROLE_USER'),
+(4, 4, 'ROLE_USER');
 
 INSERT INTO `sensores` (`idCliente`, `estado`, `zona`) VALUES ('1', '3', 'Dormitorio');
 INSERT INTO `sensores` (`idCliente`, `estado`, `zona`) VALUES ('1', '3', 'Pasillo');
@@ -174,8 +174,7 @@ ALTER TABLE `sensores`
 -- Indices de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `idx_usuario` (`usuario`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -243,7 +242,7 @@ ALTER TABLE `clientes`
 -- Filtros para la tabla `roles`
 --
 ALTER TABLE `roles`
-  ADD CONSTRAINT `fk_usuarios2` FOREIGN KEY (`usuario`) REFERENCES `usuarios` (`usuario`);
+  ADD CONSTRAINT `fk_usuarios2` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`);
 
 --
 -- Filtros para la tabla `sensores`

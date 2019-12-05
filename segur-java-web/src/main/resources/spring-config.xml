@@ -16,6 +16,8 @@
 	<context:annotation-config/>
 	<aop:aspectj-autoproxy/>
 	
+	<context:property-placeholder location="classpath:config.properties"/>
+	
 	<jee:jndi-lookup jndi-name="refSGJ" id="dataServerSGJ"/>
 	
 	<context:component-scan base-package="com.sgj.web.service"/>

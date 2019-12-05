@@ -1,22 +1,25 @@
 package com.sgj.sensores.service;
 
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sgj.sensores.dao.DaoAlarma;
 import com.sgj.sensores.dao.DaoEstado;
 import com.sgj.sensores.dao.DaoSensor;
+import com.sgj.sensores.modelo.Alarma;
 import com.sgj.sensores.modelo.Estado;
 import com.sgj.sensores.modelo.Sensor;
 
 @Transactional
 @Service(value = "serviceSensores")
 public class ServiceSensoresImpl implements ServiceSensores {
-//	@Autowired
-//	DaoAlarma daoAlarma;
+	@Autowired
+	DaoAlarma daoAlarma;
 //	@Autowired
 //	DaoCliente daoCliente;
 	@Autowired
@@ -128,45 +131,22 @@ public class ServiceSensoresImpl implements ServiceSensores {
 			};
 		};
 	}	
-//	@Override	
-//	public void provocarAlarma (int idSensor){ // Update estado
-//		if(daoSensor.existsById(idSensor)) {
-//			int estado = 4; // 4 --> estado Alarma
-//		if(daoSensor.existsById(idSensor)) {
-//				Sensor sensor;
-//				try {
-//					sensor = daoSensor.findById(idSensor).orElseThrow(()-> new Exception("NO"));
-//					Estado estadoFinal = daoEstado.getOne(estado);
-//					// FASE 1: Cambiar el estado del sensor a modo Alarma si procede(si esta de baja o desactivado no puede ser)
-//					if(estadoFinal.getId()>2) { // es decir ni esta de baja ni desactivado	
-//						sensor.setEstadoBean(estadoFinal);
-//						daoSensor.save(sensor);
-//					
-//					// FASE 2: Consultar si el cliente tiene activado el servicio policia en caso afirmativo suscribirle al servicio FLUX policia.	
-//										
-//						Cliente cli = sensor.getCliente();
-//						byte estadoPolicia = cli.getEstado();
-//						
-//						// Suscripcion al FLUX de comisaria
-//						//if(estadoPolicia == 1) {
-//						//}						
-//
-//					// FASE 3: Inscribir ese salto de alarma en el registro de alarmas(tabla alarmas)
-//						
-//						daoAlarma.save(new Alarma(
-//										new Timestamp((long)(new Date()).getTime())
-//										,estadoPolicia
-//										,sensor));			
-//					}
-//		
-//				} catch (Exception e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//				
-//			};
-//		};
-//	}		
+	@Override	
+	public void provocarAlarma (Sensor sensor) throws Exception { // Update estado
+		sensor.setEstadoBean(new Estado(4));
+		daoSensor.save(sensor);
+		//TODO
+		    // FASE 2: Consultar si el cliente tiene activado el servicio policia en caso afirmativo suscribirle al servicio FLUX policia.	
+			
+			// Suscripcion al FLUX de comisaria
+			//if(estadoPolicia == 1) {
+			//}						
+
+		// FASE 3: Inscribir ese salto de alarma en el registro de alarmas(tabla alarmas)
+			
+		daoAlarma.save(new Alarma(new Date(), true, sensor));			
+		
+	}		
 		
 	@Override	
 	public void eliminarSensor (Integer idSensor){

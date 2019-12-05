@@ -8,13 +8,13 @@ public interface ServiceSensores {
 	
 //	public List<Alarma> saltosAlarmaPorFecha(int idCliente, Date fechaInicio, Date fechaFin);
 //	public List<Alarma> saltosAlarmaPorDni(String dni);
-	public List<Sensor> estadoSensores (Integer idCliente);
+	List<Sensor> estadoSensores (Integer idCliente);
 	//public List<Alarma> saltosAlarmaPorUsuario(Cliente cliente);
-	public void activarSensor (Integer idSensor);
-	public void desactivarSensor (Integer idSensor);
-	public void darBajaSensor (Integer idSensor);
-//	public void provocarAlarma (int idSensor);
-	public void eliminarSensor (Integer idSensor);
-	public void crearSensor (Sensor sensor);
-	public List<Sensor> listadoByCliente(Integer id);
+	void activarSensor (Integer idSensor);
+	void desactivarSensor (Integer idSensor);
+	void darBajaSensor (Integer idSensor);
+	void provocarAlarma (Sensor sensor) throws Exception;
+	void eliminarSensor (Integer idSensor);
+	void crearSensor (Sensor sensor);
+	List<Sensor> listadoByCliente(Integer id);
 }

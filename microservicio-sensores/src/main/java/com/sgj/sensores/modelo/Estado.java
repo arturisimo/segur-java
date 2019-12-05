@@ -30,13 +30,17 @@ public class Estado implements Serializable {
 	public Estado() {
 	}
 
+	public Estado(int id) {
+		super();
+		this.id = id;
+	}
+	
+	
 	public Estado(int id, String descripcion) {
 		super();
 		this.id = id;
 		this.descripcion = descripcion;
 	}
-
-
 
 	public int getId() {
 		return this.id;
