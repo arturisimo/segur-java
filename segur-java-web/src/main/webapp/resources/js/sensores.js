@@ -29,7 +29,7 @@ var cliente = {
 				if (c.policia)
 					$formCliente.find("#policia").attr("checked","checked");
 				
-				sensor.list(c.id,$table);
+				sensor.list(c.id, $table);
 			}).fail(function(e) {
 				sensor.error(e);
 			});
@@ -64,39 +64,60 @@ var cliente = {
 };
 
 var sensor = {
-		
+	
+	sensores : [],
+	
 	/**
-	 *  Listado de sensores del cliente
+	 *  Listado reactivo de sensores del cliente. 
+	 *  ms-servicios es un publicador que emite eventos si la lista de sensores del cliente cambia
+	 *  y este metodo es el suscriptor
 	 *
-	 *  @method sensor.list
+	 *  @method sensor.listReactive
 	 *
 	 *  @param {int} idCliente : id del cliente
 	 *  @param {dom object} $table : tabla de sensores
 	 */
-	list : function(idCliente, $table) {
-		console.log("peticion AJAX GET " +  urlSensores+"/"+idCliente);
-		$.get(urlSensores+"/"+idCliente, function(data,status){
-			var body = "";
-			$table.find("tbody").html(body);
-			$.each(data,function(i,sensor) {
-				
-				var classAlarma = "btn-info";
-				if (sensor.estado=='DESACTIVADO') {
-					classAlarma = "btn-default";
-				} else if (sensor.estado=='ALARMA') {
-					classAlarma = "btn-danger";
+	list: function(idCliente, $table) {
+		
+		var body = "";
+		$table.find("tbody").html(body);
+		var source = new EventSource(urlSensores+"/"+idCliente);	  
+		
+		source.addEventListener("message", function(flow){
+			
+			var sF = JSON.parse(flow.data);
+			
+			if (sensor.sensores.filter(s => s.id === sF.id).length == 0){
+				sensor.print(sF, $table);
+				sensor.sensores.push(sF);
+			} else {
+				var old = sensor.sensores.filter(s => s.id === sF.id)[0];
+				if (old.estado != sF.estado) {
+					$table.find("tbody").find("#sensor_"+sF.id).remove();
+					sensor.print(sF, $table);
+					sensor.sensores = sensor.sensores.filter(s => s.id != sF.id);
+					sensor.sensores.push(sF);
 				}
-				
-				body += "<tr><td>"+sensor.zona+"</td>";
-				body += "<td><a id='estado_"+ sensor.id + "' title='"+sensor.estado+"' href='#' class='btn "+classAlarma+" estadoAction'><span class='glyphicon glyphicon-bell'></span></a></td>";
-				body += "<td><a id='delete_"+ sensor.id + "' href='#' class='btn btn-default eliminarAction'><span class='glyphicon glyphicon-remove'></span></a></td>";
-			});
-			$table.find("tbody").html(body);
-			sensor.addEvents($table);
-		}).fail(function(e) {
-			sensor.error(e);
+			}
 		});
 	},
+	print : function(s, $table) {
+		var body = $table.find("tbody").html();
+		var tr = "";
+		var classAlarma = "btn-info";
+		if (s.estado=='DESACTIVADO') {
+			classAlarma = "btn-default";
+		} else if (s.estado=='ALARMA') {
+			classAlarma = "btn-danger";
+		}
+			
+		tr += "<tr id='sensor_"+s.id+"'><td>"+s.zona+"</td>";
+		tr += "<td><a id='estado_"+ s.id + "' title='"+s.estado+"' href='#' class='btn "+classAlarma+" estadoAction'><span class='glyphicon glyphicon-bell'></span></a></td>";
+		tr += "<td><a id='delete_"+ s.id + "' href='#' class='btn btn-default eliminarAction'><span class='glyphicon glyphicon-remove'></span></a></td></tr>";
+		$table.find("tbody").html(body+tr);
+		sensor.addEvents($table);
+	},
+	
 	/**
 	 *  Eventos componentes de la lista sensores
 	 *
@@ -107,12 +128,12 @@ var sensor = {
 	addEvents : function($table) {
 		$table.find(".eliminarAction").click(function(){ 
 			var idSensor = this.id.split("_")[1];
-			sensor.delete(idSensor, $("table"));
+			sensor.delete(idSensor, $(this));
 		});
 		
 		$table.find(".estadoAction").click(function(){ 
 			var idSensor = this.id.split("_")[1];
-			sensor.change(idSensor, $("table"));
+			sensor.change(idSensor);
 		});
 	},
 	/**
@@ -123,7 +144,7 @@ var sensor = {
 	 *  @param {object} sensorForm : datos sensor
 	 *  @param {dom object} $table : tabla de sensores
 	 */
-	save : function(sensorForm, $table) {
+	save : function(sensorForm) {
 		console.log("peticion AJAX POST " +  urlSensores);
 		 $.ajax({
 		 	type: "POST",
@@ -132,8 +153,7 @@ var sensor = {
 	        data: sensorForm,
 	        dataType: 'json',
 	        success: function (data) {
-	        	sensor.confirm(data);
-	        	sensor.list(sensor.idCliente,$table);
+	        	sensor.confirm(data);	       
 	        },
 	        error: function (e) {
 	        	sensor.error(e);
@@ -148,7 +168,7 @@ var sensor = {
 	 *  @param {int} idSensor : id sensor
 	 *  @param {dom object} $table : tabla de sensores
 	 */
-	delete : function(idSensor,$table) {
+	delete : function(idSensor, $a) {
 		 console.log("peticion AJAX DELETE " + urlSensores+"/"+idSensor);
 		 $.ajax({
 		 	type: "DELETE",
@@ -156,7 +176,8 @@ var sensor = {
 	        url: urlSensores+"/"+idSensor,
 	        success: function (data) {
 	        	sensor.confirm(data);
-	        	sensor.list(sensor.idCliente,$table);
+	        	$a.parents("tr").remove();
+	        	sensor.sensores = sensor.sensores.filter(s => s.id != idSensor);	        	
 	        },
 	        error: function (e) {
 	        	sensor.error(e);
@@ -172,14 +193,13 @@ var sensor = {
 	 *  @param {int} idSensor : id sensor
 	 *  @param {dom object} $table : tabla de sensores
 	 */
-	change : function(idSensor,$table) {
+	change : function(idSensor) {
 		 console.log("peticion AJAX PUT " +  urlSensores+"/status/"+idSensor);
 		 $.ajax({
 		 	type: "PUT",
 	        url: urlSensores+"/status/"+idSensor,
 	        success: function (data) {
-	        	sensor.confirm(data);
-	        	sensor.list(sensor.idCliente,$table);
+	        	sensor.confirm(data);	        	
 	        },
 	        error: function (e) {
 	        	sensor.error(e);

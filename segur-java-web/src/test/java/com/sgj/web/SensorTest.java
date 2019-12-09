@@ -54,19 +54,19 @@ public class SensorTest {
 					.orElseThrow(() -> new Exception("no hay clientes con servicio policia"));
 			
 			
-			System.out.println("llamada get " + urlSensor+cliente.getId());
-			ResponseEntity<Sensor[]> responseSensor = restTemplate.getForEntity(urlSensor+"sensores/"+cliente.getId(), Sensor[].class);
+			System.out.println("llamada get " + urlSensor+"sensores-json/"+cliente.getId());
+			ResponseEntity<Sensor[]> responseSensor = restTemplate.getForEntity(urlSensor+"sensores-json/"+cliente.getId(), Sensor[].class);
 			List<Sensor> sensores = Arrays.asList(responseSensor.getBody());	
 			
 			sensores.stream()
 				.filter(s -> s.getEstado().equals(EstadoSensor.ACTIVADO))
 				.forEach(sensor-> {
-				System.out.println("llamada a " + urlSensor+"actualizarSensor");
-				sensor.setEstadoBean(EstadoSensor.ALARMA);
-				sensor.setDireccion(cliente.getDireccion());
-				HttpEntity<Sensor> request = new HttpEntity<>(sensor);
-				ResponseEntity<String> responseAlarma = restTemplate.exchange(urlSensor+"provocarAlarma", HttpMethod.PUT, request, String.class);
-				System.out.println(responseAlarma);
+					System.out.println("llamada a " + urlSensor+"provocarAlarma");
+					sensor.setEstadoBean(EstadoSensor.ALARMA);
+					sensor.setDireccion(cliente.getDireccion());
+					HttpEntity<Sensor> request = new HttpEntity<>(sensor);
+					ResponseEntity<String> responseAlarma = restTemplate.exchange(urlSensor+"provocarAlarma", HttpMethod.PUT, request, String.class);
+					System.out.println(responseAlarma);
 			});
 		} catch (Exception e) {
 			System.out.println(e.getMessage());

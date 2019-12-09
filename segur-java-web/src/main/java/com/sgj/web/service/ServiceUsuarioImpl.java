@@ -30,7 +30,6 @@ public class ServiceUsuarioImpl implements ServiceUsuario {
 		Rol rol = new Rol(0, "ROLE_USER", usuario);
 		usuario.setRoles(Arrays.asList(rol));
 		usuarioRepository.save(usuario);
-		//rolRepository.save(rol);
 		return usuario;
 	}
 

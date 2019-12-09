@@ -32,8 +32,8 @@ public class SensoresController {
 	@Autowired
 	ServiceSensores serviceSensores;
 
-	@GetMapping(value="sensores/{id}",produces=MediaType.APPLICATION_JSON_VALUE)
-	public List<Sensor> list (@PathVariable("id") Integer id) {
+	@GetMapping(value="sensores-json/{id}",produces=MediaType.APPLICATION_JSON_VALUE)
+	public List<Sensor> listEstatic(@PathVariable("id") Integer id) {
 		try {
 			return serviceSensores.listadoByCliente(id);	
 		} catch (Exception e) {
@@ -42,64 +42,36 @@ public class SensoresController {
 		}
 	}
 	
-//	@CrossOrigin(origins="*")
-//	@GetMapping(value="/continuo",produces="text/event-stream")
-//	public Flux<List<Accion>> getContinuo(){
+	@GetMapping(value="sensores/{id}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+	public Flux<Sensor> list(@PathVariable("id") Integer id) {
+		return Flux.fromIterable(serviceSensores.findByCliente(id));
+	}
+	
+	
+//	@GetMapping(value="sensores/{id}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+//	public Flux<List<Sensor>> list(@PathVariable("id") Integer id) {
+//		
 //		return Flux.create(fs->{
-//			List<Accion> anterior=null;
+//			List<Sensor> previous = null;
 //			while(true) {
-//				List<Accion> lista = bolsaService.getAcciones();
-//				if(cambio(anterior,lista)) {
-//					fs.next(lista);
+//				List<Sensor> sensores = serviceSensores.findByCliente(id);	
+//				if (hasChanged(previous, sensores)) {
+//					fs.next(sensores);
 //				}
-//				anterior=lista;
-//				try {
-//					Thread.sleep(1000);
-//				} catch (InterruptedException e) {
-//					e.printStackTrace();
-//				}
+//				previous = sensores;
 //			}
 //		});
-//	}
-//	private boolean cambio(List<Accion> anterior, List<Accion> actual) {
 //		
+//	}
+//	
+//	private boolean hasChanged(List<Sensor> anterior, List<Sensor> actual) {
+//	
 //		if(anterior == null) {
 //			return true;
 //		} else {
-//			for(int i=0;i<actual.size();i++) {
-//				if(anterior.get(i).getValor()!=actual.get(i).getValor()){
-//					return true;
-//				}
-//			}
+//			return anterior.equals(actual);
 //		}
-//		return false;
 //	}
-	
-	
-	@GetMapping(value="sensores/{id}", produces="text/event-stream")
-	public Flux<List<Sensor>> listWF(@PathVariable("id") Integer id) {
-		
-		return Flux.create(fs->{
-			List<Sensor> anterior=null;
-			while(true) {
-				List<Sensor> sensores = serviceSensores.findByCliente(id);	
-				if(cambio(anterior, sensores)) {
-					fs.next(sensores);
-				}
-				anterior = sensores;
-			}
-		});
-		
-	}
-	
-	private boolean cambio(List<Sensor> anterior, List<Sensor> actual) {
-	
-		if(anterior == null) {
-			return true;
-		} else {
-			return anterior.equals(actual);
-		}
-	}
 	
 	
 	@DeleteMapping(value="sensores/{id}", produces=MediaType.APPLICATION_JSON_VALUE)
@@ -134,6 +106,12 @@ public class SensoresController {
 		}
 	}
 	
+	/**
+	 * Actualiza/desactualiza sensor
+	 * @param id
+	 * @return
+	 * @throws JsonProcessingException
+	 */
 	@PutMapping(value= "sensores/status/{id}", produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> updateState(@PathVariable("id") int id) throws JsonProcessingException {	
 		ResponseJson response = new ResponseJson();

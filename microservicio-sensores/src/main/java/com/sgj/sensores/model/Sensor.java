@@ -3,11 +3,12 @@ package com.sgj.sensores.model;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -35,9 +36,11 @@ public class Sensor implements Serializable {
 	
 	private Integer idCliente;
 	
-	@OneToMany(mappedBy="sensor", fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name="idSensor", nullable = false, insertable = true, updatable = false)
 	private List<Alarma> alarmas;
-
+	
+	
 	private EstadoSensor estado;
 	
 	@Transient

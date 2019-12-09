@@ -106,32 +106,40 @@ public class ServiceSensoresImpl implements ServiceSensores {
 	@Override
 	public void actualizarSensor(Sensor sensor, boolean aviso) throws JsonMappingException, JsonProcessingException{
 		
-		if (sensor.getEstado().equals(EstadoSensor.ALARMA)) {
-			alarmaRepository.save(new Alarma(new Date(), true, sensor));
-			sensorRepository.save(sensor);
-			if (aviso) {
-				HttpHeaders headers = new HttpHeaders();
-				headers.setContentType(MediaType.APPLICATION_JSON);
-				HttpEntity<String> request = new HttpEntity<>(sensor.getDireccion(), headers);				
-				try {
-					ResponseEntity<String> response = restTemplate.exchange(urlPolicia, HttpMethod.POST, request, String.class);
-							
-					ObjectMapper mapper = new ObjectMapper();
-					ResponseJson responseJson = mapper.readValue(response.getBody(), ResponseJson.class);
-					
-					if (!responseJson.isSuccess()) {
-						throw new ServiceException("No se ha podido efectuar la reserva. Error " + responseJson.getMessage());
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+		try {
+		
+			if (sensor.getEstado().equals(EstadoSensor.ALARMA)) {
+				List<Alarma> alarmas = sensor.getAlarmas();
+				alarmas.add(new Alarma(new Date(), true, sensor));
+				sensorRepository.save(sensor);
+				if (aviso) {
+					HttpHeaders headers = new HttpHeaders();
+					headers.setContentType(MediaType.APPLICATION_JSON);
+					HttpEntity<String> request = new HttpEntity<>(sensor.getDireccion(), headers);				
 				
+						ResponseEntity<String> response = restTemplate.exchange(urlPolicia, HttpMethod.POST, request, String.class);
 								
+						ObjectMapper mapper = new ObjectMapper();
+						ResponseJson responseJson = mapper.readValue(response.getBody(), ResponseJson.class);
+						
+						if (!responseJson.isSuccess()) {
+							throw new ServiceException("No se ha podido efectuar la reserva. Error " + responseJson.getMessage());
+						}
+				}
+			} else {
+				sensorRepository.save(sensor);
 			}
+			
+			
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			e.printStackTrace();
+			throw e;
 		}
 		
 	}
-
+	
+	
 	@Override
 	public void actualizarEstadoSensor(Integer id) throws Exception {
 		Sensor sensor = sensorRepository.findById(id).orElseThrow(() -> new Exception("No existe este sensor"));
