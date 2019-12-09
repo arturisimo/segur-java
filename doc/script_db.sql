@@ -30,32 +30,13 @@ CREATE TABLE `clientes` (
   `email` varchar(45) CHARACTER SET utf8 NOT NULL,
   `dni` varchar(45) CHARACTER SET utf8 NULL,
   `cuenta` varchar(45) CHARACTER SET utf8 NULL,
-  `direccion` varchar(45) CHARACTER SET utf8 NULL,
+  `direccion` varchar(255) CHARACTER SET utf8 NULL,
   `estado` tinyint(1) NOT NULL DEFAULT 1,
   `policia` tinyint(1) NOT NULL DEFAULT 0,
   `idUsuario` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `estados`
---
-
-CREATE TABLE `estados` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `descripcion` varchar(45) CHARACTER SET utf8 NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Estado del sensor';
-
---
--- Volcado de datos para la tabla `estados`
---
-
-INSERT INTO `estados` (`id`, `descripcion`) VALUES
-(1, 'baja'),
-(2, 'desactivado'),
-(3, 'activado'),
-(4, 'alarma');
 
 -- --------------------------------------------------------
 
@@ -65,7 +46,7 @@ INSERT INTO `estados` (`id`, `descripcion`) VALUES
 
 CREATE TABLE `policias` (
   `id` int(10) UNSIGNED NOT NULL,
-  `direccion` int(10) UNSIGNED NOT NULL,
+  `direccion` varchar(255) UNSIGNED NOT NULL,
   `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `zona` varchar(45) CHARACTER SET utf8 NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Log de avisos a la policía';
@@ -168,8 +149,8 @@ ALTER TABLE `roles`
 ALTER TABLE `sensores`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_sensores_clientes_idx` (`idCliente`),
-  ADD KEY `fk_sensores_estados` (`estado`);
-
+  ADD UNIQUE INDEX `uq_sensores` (`idCliente` ASC, `zona` ASC);
+  
 --
 -- Indices de la tabla `usuarios`
 --
@@ -191,12 +172,6 @@ ALTER TABLE `alarmas`
 --
 ALTER TABLE `clientes`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `estados`
---
-ALTER TABLE `estados`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `policias`
@@ -248,8 +223,7 @@ ALTER TABLE `roles`
 -- Filtros para la tabla `sensores`
 --
 ALTER TABLE `sensores`
-  ADD CONSTRAINT `fk_sensores_clientes` FOREIGN KEY (`idCliente`) REFERENCES `clientes` (`id`),
-  ADD CONSTRAINT `fk_sensores_estados` FOREIGN KEY (`estado`) REFERENCES `estados` (`id`);
+  ADD CONSTRAINT `fk_sensores_clientes` FOREIGN KEY (`idCliente`) REFERENCES `clientes` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

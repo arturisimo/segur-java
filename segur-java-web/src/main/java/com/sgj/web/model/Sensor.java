@@ -1,8 +1,10 @@
 package com.sgj.web.model;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.util.List;
+
+import com.sgj.web.util.Util.EstadoSensor;
+import com.sgj.web.util.Util.Estancia;
 
 
 /**
@@ -13,16 +15,17 @@ public class Sensor implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
-	@Id
 	private int id;
 
-	private String zona;
+	private Estancia zona;
 
 	private List<Alarma> alarmas;
 
-	private Estado estadoBean;
+	private EstadoSensor estado;
 	
 	private Integer idCliente;
+	
+	private String direccion;
 	
 	public Sensor() {
 	}
@@ -35,28 +38,12 @@ public class Sensor implements Serializable {
 		this.id = id;
 	}
 
-	public String getZona() {
-		return this.zona;
-	}
-
-	public void setZona(String zona) {
-		this.zona = zona;
-	}
-
 	public List<Alarma> getAlarmas() {
 		return this.alarmas;
 	}
 
 	public void setAlarmas(List<Alarma> alarmas) {
 		this.alarmas = alarmas;
-	}
-
-	public Estado getEstadoBean() {
-		return this.estadoBean;
-	}
-
-	public void setEstadoBean(Estado estadoBean) {
-		this.estadoBean = estadoBean;
 	}
 
 	public Integer getIdCliente() {
@@ -66,5 +53,31 @@ public class Sensor implements Serializable {
 	public void setIdCliente(Integer idCliente) {
 		this.idCliente = idCliente;
 	}
+
+	public Estancia getZona() {
+		return zona;
+	}
+
+	public void setZona(Estancia zona) {
+		this.zona = zona;
+	}
+
+	public EstadoSensor getEstado() {
+		return estado;
+	}
+
+	public void setEstadoBean(EstadoSensor estado) {
+		this.estado = estado;
+	}
+
+	public String getDireccion() {
+		return direccion;
+	}
+
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
+	
+	
 	
 }

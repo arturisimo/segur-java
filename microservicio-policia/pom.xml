@@ -7,9 +7,9 @@
 	    <artifactId>segur-java</artifactId>
 	    <version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<groupId>com.sgj.clientes</groupId>
-	<artifactId>microservicios-clientes</artifactId>
-	<name>microservicios-clientes</name>
-	<description>Editor Clientes</description>
+	<groupId>com.sgj.policia</groupId>
+	<artifactId>microservicio-policia</artifactId>
+	<name>microservicio-policia</name>
+	<description>Servicio de policias</description>
 
 </project>

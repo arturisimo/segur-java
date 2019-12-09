@@ -1,168 +1,145 @@
 package com.sgj.sensores.service;
 
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
-import com.sgj.sensores.dao.DaoAlarma;
-import com.sgj.sensores.dao.DaoEstado;
-import com.sgj.sensores.dao.DaoSensor;
-import com.sgj.sensores.modelo.Alarma;
-import com.sgj.sensores.modelo.Estado;
-import com.sgj.sensores.modelo.Sensor;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sgj.sensores.model.Alarma;
+import com.sgj.sensores.model.ResponseJson;
+import com.sgj.sensores.model.Sensor;
+import com.sgj.sensores.repository.AlarmaRepository;
+import com.sgj.sensores.repository.SensorRepository;
 
 @Transactional
 @Service(value = "serviceSensores")
 public class ServiceSensoresImpl implements ServiceSensores {
-	@Autowired
-	DaoAlarma daoAlarma;
-//	@Autowired
-//	DaoCliente daoCliente;
-	@Autowired
-	DaoEstado daoEstado;
-	@Autowired
-	DaoSensor daoSensor;
 	
-//	@Override	
-//	public List<Alarma> saltosAlarmaPorFecha(int idCliente, Timestamp fechaInicio, Timestamp fechaFin){
-//		return daoAlarma.alarmasPorFecha(fechaInicio, fechaFin);
-//	}
-//
-//	@Override		
-//	public List<Alarma> saltosAlarmaPorDni(String dni){
-//		//Falta la select Buscar cliente por DNI y sustituir la linea siguiente por el	
-//		List<Cliente> cliente = daoCliente.clientePorDni(dni);
-//		return saltosAlarmaPorUsuario(cliente.get(0));
-//	}
-
-//	@Override	
-//	public List<Alarma> saltosAlarmaPorUsuario(Cliente cliente){
-//		
-//		// Si Fuera EAGLE --> List<Sensor> listaSensores = cliente.getSensores(); // en caso contrario query personalizada de abajo
-//		 List<Sensor> listaSensores = daoSensor.sensorPorIdCliente(cliente.getId());
-//		
-//		//recorrer cada sensor y ver si tiene 1 o mas -> Lista saltos de alarma.
-//		List<Alarma> listaAlarmasAux = null;
-//		List<Alarma> listaAlarmasFinal = new ArrayList<Alarma>();
-//		if(listaSensores!=null) {
-//			for(Sensor s : listaSensores) {
-//				//Si fuera EAGLE --> listaAlarmasAux = s.getAlarmas(); // en caso contrario query personalizada de abajo
-//				listaAlarmasAux = daoAlarma.alarmaPorIdSensor(s.getId());
-//				if(listaAlarmasAux != null) {
-//					for(Alarma a : listaAlarmasAux){
-//						listaAlarmasFinal.add(new Alarma(a.getFecha(),a.getPolicia(),a.getSensor()));
-//					}
-//				}
-//			}
-//		}
-//		return listaAlarmasFinal;
-//	}
+	@Autowired
+	AlarmaRepository alarmaRepository;
 	
-	@Override	
-	public List<Sensor> estadoSensores (Integer idCliente){	
-		// si fuera EAGLE --> return cliente.getSensores(); --> al no serlo query concreta
-		return daoSensor.sensorPorIdCliente(idCliente);
-	}
-	@Override
-	public void crearSensor (Sensor sensor){
-		if(!daoSensor.existsById(sensor.getId()))
-		daoSensor.save(sensor);
-	}
+	@Autowired
+	SensorRepository sensorRepository;
 	
-	@Override	
-	public void activarSensor (Integer idSensor){
+	@Autowired
+	RestTemplate restTemplate;
+	
+	@Value("${url.servicio.policia}")
+	private String urlPolicia;
+	
+	public static enum EstadoSensor {
+		/** sensor quitado */
+		BAJA,
+		DESACTIVADO,
+		ACTIVADO,
+		ALARMA
+	};
+	
+	public static enum Estancia {
+		COCINA("Cocina"),
+		GARAJE("Garaje"),
+		PASILLO("Pasillo"),
+		DORMITORIO("Dormitorio"),
+		SALON("Salón");
 		
-		if(daoSensor.existsById(idSensor)) {
-			int estado = 3; // 3 -> estado activado
-			Sensor sensor;
-			try {
-				sensor = daoSensor.findById(idSensor).orElseThrow(()-> new Exception("No existe el sensor con" + idSensor));
-				Estado estadoFinal = daoEstado.getOne(estado);
-				sensor.setEstadoBean(estadoFinal);
-				daoSensor.save(sensor);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-		};
-	}
-	@Override	
-	public void desactivarSensor (Integer idSensor){
-		if(daoSensor.existsById(idSensor)) {
-			int estado = 2; // 2 --> estado desactivado
-		if(daoSensor.existsById(idSensor)) {
-				Sensor sensor;
-				try {
-					sensor = daoSensor.findById(idSensor).orElseThrow(()-> new Exception("NO"));
-					Estado estadoFinal = daoEstado.getOne(estado);
-					sensor.setEstadoBean(estadoFinal);
-					daoSensor.save(sensor);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-			};
-		};
-	}
-	@Override	
-	public void darBajaSensor (Integer idSensor){ 
-		if(daoSensor.existsById(idSensor)) {
-			int estado = 1; // 1 --> estado baja
-		if(daoSensor.existsById(idSensor)) {
-				Sensor sensor;
-				try {
-					sensor = daoSensor.findById(idSensor).orElseThrow(()-> new Exception("NO"));
-					// sensor.setEstadoBean(new Estado(estado,"baja")); // ALTERNATIVA 1
-					// alternativa 2 hacer una query para obtener el estado y meterle el resultado en el new Estado()
-					Estado estadoFinal = daoEstado.getOne(estado);
-					sensor.setEstadoBean(estadoFinal);
-					daoSensor.save(sensor);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-			};
-		};
-	}	
-	@Override	
-	public void provocarAlarma (Sensor sensor) throws Exception { // Update estado
-		sensor.setEstadoBean(new Estado(4));
-		daoSensor.save(sensor);
-		//TODO
-		    // FASE 2: Consultar si el cliente tiene activado el servicio policia en caso afirmativo suscribirle al servicio FLUX policia.	
-			
-			// Suscripcion al FLUX de comisaria
-			//if(estadoPolicia == 1) {
-			//}						
-
-		// FASE 3: Inscribir ese salto de alarma en el registro de alarmas(tabla alarmas)
-			
-		daoAlarma.save(new Alarma(new Date(), true, sensor));			
+		private String nombre;
 		
-	}		
-		
-	@Override	
-	public void eliminarSensor (Integer idSensor){
-		if(daoSensor.existsById(idSensor)) {
-		daoSensor.deleteById(idSensor);
+		private Estancia(String nombre) {
+			this.nombre = nombre;
 		}
 
+		public String getNombre() {
+			return nombre;
+		}
+		
+	};
+	
+	@Override
+	public List<Sensor> listadoByCliente(Integer id) throws Exception {
+		return sensorRepository.sensorPorIdCliente(id);
+	}
+	
+	@Override
+	public List<Sensor> findByCliente(Integer id) {
+		try {
+			return sensorRepository.findByIdCliente(id).stream()
+					.filter(s-> !s.getEstado().equals(EstadoSensor.BAJA))
+					.collect(Collectors.toList());	
+		} catch (Exception e) {
+			return new ArrayList<>();
+		} 
+	}
+	
+	@Override	
+	public void eliminarSensor (Integer id) throws Exception {
+		Sensor sensor = sensorRepository.findById(id).orElseThrow(() -> new Exception("No existe este sensor"));
+		sensor.setEstado(EstadoSensor.BAJA);
+		sensorRepository.save(sensor);
+	}
+	
+	@Override
+	public void crearSensor (Sensor sensorPost) throws Exception{
+		Sensor sensor = sensorRepository.findByIdCliente(sensorPost.getIdCliente()).stream()
+								.filter(s->s.getZona().equals(sensorPost.getZona()))
+								.findFirst()
+								.orElse(sensorPost);
+		sensor.setEstado(EstadoSensor.DESACTIVADO);
+		sensorRepository.save(sensor);
+	}
+	
+	@Override
+	public void actualizarSensor(Sensor sensor, boolean aviso) throws JsonMappingException, JsonProcessingException{
+		
+		if (sensor.getEstado().equals(EstadoSensor.ALARMA)) {
+			alarmaRepository.save(new Alarma(new Date(), true, sensor));
+			sensorRepository.save(sensor);
+			if (aviso) {
+				HttpHeaders headers = new HttpHeaders();
+				headers.setContentType(MediaType.APPLICATION_JSON);
+				HttpEntity<String> request = new HttpEntity<>(sensor.getDireccion(), headers);				
+				try {
+					ResponseEntity<String> response = restTemplate.exchange(urlPolicia, HttpMethod.POST, request, String.class);
+							
+					ObjectMapper mapper = new ObjectMapper();
+					ResponseJson responseJson = mapper.readValue(response.getBody(), ResponseJson.class);
+					
+					if (!responseJson.isSuccess()) {
+						throw new ServiceException("No se ha podido efectuar la reserva. Error " + responseJson.getMessage());
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+								
+			}
+		}
+		
 	}
 
 	@Override
-	public List<Sensor> listadoByCliente(Integer id) {
-		return daoSensor.sensorPorIdCliente(id);
+	public void actualizarEstadoSensor(Integer id) throws Exception {
+		Sensor sensor = sensorRepository.findById(id).orElseThrow(() -> new Exception("No existe este sensor"));
+		sensor.setEstado(EstadoSensor.DESACTIVADO.equals(sensor.getEstado()) ? EstadoSensor.ACTIVADO : EstadoSensor.DESACTIVADO);
+		sensorRepository.save(sensor);
+		
 	}
 
 	
 	
-	
-
 }

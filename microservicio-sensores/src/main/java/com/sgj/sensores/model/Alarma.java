@@ -1,4 +1,4 @@
-package com.sgj.sensores.modelo;
+package com.sgj.sensores.model;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -29,9 +29,9 @@ public class Alarma implements Serializable {
 
 	private boolean policia;
 
-//	@ManyToOne(fetch = FetchType.LAZY)
-//	@JoinColumn(name="idSensor")
-//	private Sensor sensor;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="idSensor")
+	private Sensor sensor;
 
 	public Alarma() {
 	}
@@ -64,6 +64,14 @@ public class Alarma implements Serializable {
 
 	public void setPolicia(boolean policia) {
 		this.policia = policia;
+	}
+
+	public Sensor getSensor() {
+		return sensor;
+	}
+
+	public void setSensor(Sensor sensor) {
+		this.sensor = sensor;
 	}
 	
 	

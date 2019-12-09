@@ -13,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sgj.web.model.Cliente;
 import com.sgj.web.model.Sensor;
+import com.sgj.web.util.Util.EstadoSensor;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -57,8 +58,12 @@ public class SensorTest {
 			ResponseEntity<Sensor[]> responseSensor = restTemplate.getForEntity(urlSensor+"sensores/"+cliente.getId(), Sensor[].class);
 			List<Sensor> sensores = Arrays.asList(responseSensor.getBody());	
 			
-			sensores.stream().forEach(sensor-> {
-				System.out.println("llamada a " + urlSensor+"provocarAlarma");
+			sensores.stream()
+				.filter(s -> s.getEstado().equals(EstadoSensor.ACTIVADO))
+				.forEach(sensor-> {
+				System.out.println("llamada a " + urlSensor+"actualizarSensor");
+				sensor.setEstadoBean(EstadoSensor.ALARMA);
+				sensor.setDireccion(cliente.getDireccion());
 				HttpEntity<Sensor> request = new HttpEntity<>(sensor);
 				ResponseEntity<String> responseAlarma = restTemplate.exchange(urlSensor+"provocarAlarma", HttpMethod.PUT, request, String.class);
 				System.out.println(responseAlarma);

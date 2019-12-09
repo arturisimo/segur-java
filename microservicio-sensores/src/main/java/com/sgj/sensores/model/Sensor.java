@@ -1,16 +1,20 @@
-package com.sgj.sensores.modelo;
+package com.sgj.sensores.model;
 
 import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.sgj.sensores.service.ServiceSensoresImpl.EstadoSensor;
+import com.sgj.sensores.service.ServiceSensoresImpl.Estancia;
 
 
 /**
@@ -24,24 +28,21 @@ public class Sensor implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 
-	private String zona;
+	private Estancia zona;
 	
 	private Integer idCliente;
 	
 	@OneToMany(mappedBy="sensor", fetch = FetchType.EAGER)
 	private List<Alarma> alarmas;
+
+	private EstadoSensor estado;
 	
-//	@JsonIgnore
-//	@ManyToOne(fetch = FetchType.LAZY)
-//	@JoinColumn(name="idCliente")
-//	private Cliente cliente;
-
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="estado")
-	private Estado estadoBean;
-
+	@Transient
+	private String direccion;
+	
 	public Sensor() {
 	}
 
@@ -53,11 +54,11 @@ public class Sensor implements Serializable {
 		this.id = id;
 	}
 
-	public String getZona() {
-		return this.zona;
+	public Estancia getZona() {
+		return zona;
 	}
 
-	public void setZona(String zona) {
+	public void setZona(Estancia zona) {
 		this.zona = zona;
 	}
 
@@ -69,22 +70,6 @@ public class Sensor implements Serializable {
 		this.alarmas = alarmas;
 	}
 
-//	public Cliente getCliente() {
-//		return this.cliente;
-//	}
-//
-//	public void setCliente(Cliente cliente) {
-//		this.cliente = cliente;
-//	}
-
-	public Estado getEstadoBean() {
-		return this.estadoBean;
-	}
-
-	public void setEstadoBean(Estado estadoBean) {
-		this.estadoBean = estadoBean;
-	}
-
 	public Integer getIdCliente() {
 		return idCliente;
 	}
@@ -93,7 +78,20 @@ public class Sensor implements Serializable {
 		this.idCliente = idCliente;
 	}
 	
-	
-	
+	public EstadoSensor getEstado() {
+		return estado;
+	}
+
+	public void setEstado(EstadoSensor estado) {
+		this.estado = estado;
+	}
+
+	public String getDireccion() {
+		return direccion;
+	}
+
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
 	
 }

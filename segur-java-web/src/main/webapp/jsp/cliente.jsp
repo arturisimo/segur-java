@@ -52,56 +52,83 @@
 			</div>
 		</div>
 		
-		<div id="listSensorContainer" class="container">
-			<table class="table table-hover">
-				<thead>
-					<tr>
-						<th>zona</th><th>estado sensor</th>
-					</tr>
-				</thead>
-				<tbody>
-					
-				</tbody>
-			</table>
-		</div>
-		<div id="containerEditCliente" class="container hidden">
+		<div id="containerEditCliente" class="container col-xs-12 col-sm-12 col-md-6 col-lg-6">
 			
-			<form action="" method="POST" role="form">
+			<form id="formCliente" action="" method="POST" role="form">
 				<legend>Datos personales</legend>
-				<input type="hidden" id="id" value="">
+				<input type="hidden" id="idCliente" value="">
 			
 				<div class="form-group">
-					<label for="nombre">label</label>
-					<input type="text" class="form-control" id="nombre" value="" placeholder="nombre">
+					<label for="nombre">nombre</label>
+					<input type="text" class="form-control" disabled id="nombre" value="" placeholder="nombre">
 				</div>
 				<div class="form-group">
-					<label for="email">label</label>
-					<input type="text" class="form-control" id="email" value="" placeholder="nombre">
+					<label for="email">email</label>
+					<input type="text" class="form-control" disabled id="email" value="" placeholder="email">
 				</div>
 				<div class="form-group">
-					<label for="nombre">dni</label>
-					<input type="text" class="form-control" id="dni" value="" placeholder="nombre">
+					<label for="dni">dni</label>
+					<input type="text" class="form-control" disabled id="dni" value="" placeholder="dni">
 				</div>
 				<div class="form-group">
 					<label for="cuenta">cuenta</label>
-					<input type="text" class="form-control" id="cuenta" value="" placeholder="nombre">
+					<input type="text" class="form-control" disabled id="cuenta" value="" placeholder="cuenta">
 				</div>
 				<div class="form-group">
 					<label for="direccion">direccion</label>
-					<input type="text" class="form-control" id="direccion" value="" placeholder="nombre">
+					<input type="text" class="form-control" disabled id="direccion" value="" placeholder="direccion">
 				</div>
 				<div class="form-group checkbox">
 					<label>
-						<input type="checkbox" id=policia value="">
+						<input type="checkbox" disabled id=policia value="">
 						Aviso a la policia
 					</label>
 				</div>
-				
-				<a id="editClienteSensor" href="#" class="btn btn-primary">Alta</a>
+				<a id="editClienteAction" href="#" class="btn btn-primary">Editar</a>
+				<a id="saveClienteAction" href="#" class="btn btn-danger" style="display: none;">Alta</a>
 			</form>
 		
 		</div>
-	
+		
+		<div class="row col-xs-12 col-sm-12 col-md-6 col-lg-6">
+			
+			<div id="listSensorContainer" class="container col-lg-12">
+				<legend>Sensores contratados</legend>
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>zona</th><th>estado sensor</th><th>Dar de baja</th>
+						</tr>
+					</thead>
+					<tbody>
+						
+					</tbody>
+				</table>
+				<button id="formSensorAction" type="button" class="btn btn-primary">Contratar nuevo sensor</button>
+			</div>
+			
+			<div id="formSensorContainer" class="container col-lg-12" style="display: none;">
+			
+				<form action="" method="POST" role="form">
+					<legend>Contratación de un nuevo sensor</legend>
+					<input type="hidden" id="idCliente" value="">
+				
+					<div class="form-group">
+						<label for="zona">Estancia de la casa</label>
+						<select name="zona" id="zona" class="form-control" required="required">
+							<c:forEach var="zona" items="${estancias}">
+								<option value="${zona}">${zona.nombre}</option>
+							</c:forEach>	
+						</select>
+					</div>
+					<a id="altaSensorAction" href="#" class="btn btn-danger">Alta</a>
+					<button id="listSensorAction" type="button" class="btn btn-default">Cancelar</button>
+				</form>
+			
+			</div>
+			
+		</div>
+		
 	</div>
 
 
@@ -109,9 +136,10 @@
     ================================================== -->
     
     <script type="text/javascript">
-		
 		var nombreUsuario = "${userPrincipal.username}";
-	
+		var	urlSensores = "${urlSensores}";
+		var urlClientes = "${urlClientes}";
+		var urlUsuario = "<c:url value='/usuario' />"
 	</script>
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>

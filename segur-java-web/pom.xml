@@ -12,6 +12,12 @@
   <packaging>war</packaging>
   <dependencies>
   
+  	<dependency>
+		<groupId>org.slf4j</groupId>
+		<artifactId>slf4j-log4j12</artifactId>
+		<version>1.6.1</version>
+  	</dependency>
+  
 	<!-- web -->
 	<dependency>
 	    <groupId>javax.servlet</groupId>
@@ -87,14 +93,6 @@
     	<artifactId>spring-data-jpa</artifactId>
     	<version>2.1.8.RELEASE</version>
 	</dependency>
-	
-	<!-- test -->
-  	<dependency>
-   		<groupId>junit</groupId>
-   		<artifactId>junit</artifactId>
-        <version>4.12</version>
-        <scope>test</scope>
-    </dependency> 
 	
   </dependencies>
   
