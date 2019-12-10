@@ -21,13 +21,15 @@ public class InitController {
 	
 	
 	@GetMapping({"/index", "/"})
-	public String login(Model model) {
+	public String init(Model model) {
+		model.addAttribute("urlClientes", urlClientes);
 		return "index";
 	}
 	
 	@GetMapping({"/admin"})
 	public String admin(Model model) {
-		//model.addAttribute("cuentas", cajeroService.findAllCuentas());
+		model.addAttribute("urlSensores", urlSensores);
+		model.addAttribute("urlClientes", urlClientes);
 		return "admin";
 	}
 	

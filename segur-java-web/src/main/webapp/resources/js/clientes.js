@@ -1,42 +1,38 @@
-clientes = {
-			urlClientes : "http://localhost:9000/clientes/clientes",
-			urlUsuario : "http://localhost:8080/segur-java-web/alta-usuario",
-			saveUsuario : function(usuarioForm) {
-				debugger;
-				 console.log("peticion AJAX POST " + usuarioForm);
-				 $.ajax({
-				        type: "POST",
-				        contentType: "application/json",
-				        url: clientes.urlUsuario,
-				        data: usuarioForm,
-				        dataType: 'json',
-				        success: function (data) {
-				        	clientes.save(data.id);
-				        },
-				        error: function (e) {
-				        	clientes.error(e);
-				        }
-				    });
-				 
-			},
-			save : function(idUsuario) {
-				 console.log("peticion AJAX POST " + clienteForm);
-				 
-				 var clienteForm = {
-							"nombre": $("#nombre").val(),
-							"email": $("#email").val(),
-							"estado": true,
-							"policia": false,
-							"idUsuario":idUsuario
-				 };
-				 
-				 console.log(JSON.stringify(clienteForm));
+var usuario = {
+		
+		save : function(usuarioForm, clienteForm) {
+			debugger;
+			 console.log("peticion AJAX POST " + usuarioForm);
+			 $.ajax({
+			        type: "POST",
+			        contentType: "application/json",
+			        url: urlUsuario,
+			        data: usuarioForm,
+			        dataType: 'json',
+			        success: function (data) {
+			        	clienteForm.idUsuario = data.id;
+			        	clientes.save(JSON.stringify(clienteForm));
+			        },
+			        error: function (e) {
+			        	clientes.error(e);
+			        }
+			    });
+			 
+		}
+		
+		
+};
+
+var clientes = {
+	
+			save : function(clienteForm) {
+				 console.log("peticion AJAX POST " + urlClientes);
 				 
 				 $.ajax({
 					 	type: "POST",
 				        contentType: "application/json",
-				        url: clientes.urlClientes,
-				        data: JSON.stringify(clienteForm),
+				        url: urlClientes,
+				        data: clienteForm,
 				        dataType: 'json',
 				        success: function (data) {
 				        	debugger;
@@ -81,7 +77,13 @@ $(function(){
 					"password": $("#password").val(),
 					"enabled": true
 			}
-			clientes.saveUsuario(JSON.stringify(usuarioForm));
+			 var clienteForm = {
+					"nombre": $("#nombre").val(),
+					"email": $("#email").val(),
+					"estado": true,
+					"policia": false
+		 };
+		 usuario.save(JSON.stringify(usuarioForm), clienteForm);
 			
 	});
 	 

@@ -1,8 +1,28 @@
-clientes = {
-			urlClientes : "http://localhost:9000/clientes/clientes",
-			listar : function() {
-					console.log("peticion AJAX GET " +  clientes.urlClientes);
-					$.get(clientes.urlClientes, function(data,status){
+var usuario = {
+		save : function(usuarioForm, clienteForm) {
+			 console.log("peticion AJAX POST " + usuarioForm);
+			 $.ajax({
+			        type: "POST",
+			        contentType: "application/json",
+			        url: urlUsuario,
+			        data: usuarioForm,
+			        dataType: 'json',
+			        success: function (data) {
+			        	debugger;
+			        	clienteForm.idUsuario = data.id;
+			        	clientes.save(JSON.stringify(clienteForm));
+			        },
+			        error: function (e) {
+			        	clientes.error(e);
+			        }
+			    });
+			 
+		}
+}
+var clientes = {
+			list : function() {
+					console.log("peticion AJAX GET " +  urlClientes);
+					$.get(urlClientes, function(data,status){
 						var body = "";
 						$.each(data,function(i,cliente) {
 							body += "<tr><td>"+cliente.nombre+"</td><td>"+cliente.email+"</td><td>"+cliente.dni+"</td><td>"+cliente.cuenta+"</td><td>"+cliente.direccion+"</td><td>"+cliente.policia+"</td></tr>";
@@ -14,15 +34,15 @@ clientes = {
 					
 			},
 			save : function(clienteForm) {
-				 console.log("peticion AJAX POST " + reservaForm);
+				 console.log("peticion AJAX POST " + clienteForm);
 				 $.ajax({
 				        type: "POST",
 				        contentType: "application/json",
-				        url: clientes.urlClientes,
+				        url: urlClientes,
 				        data: clienteForm,
 				        dataType: 'json',
 				        success: function (data) {
-				        	clientes.confirm(data);
+				        	 clientes.list();
 				        },
 				        error: function (e) {
 				        	clientes.error(e);
@@ -43,27 +63,45 @@ clientes = {
 };
 
 $(function(){
-	
-	 debugger;
-	
-	 clientes.listar();
+		
+	 clientes.list();
 	 
-	 $("#altaAction").click(function(){
+	 $("#formClienteAction").click(function(){
+		 $("#containerListCliente").hide();
+		 $("#containerFormCliente").show();
+	 });
+	 $("#listClienteAction").click(function(){
+		 $("#containerListCliente").show();
+		 $("#containerFormCliente").hide();
+	 });
+	 
+	 $("#saveClienteAction").click(function(){
 			$("div.alert").addClass("hidden");
-			var clienteForm = {
-							"idreserva":0,
-							"hotel": $("#hoteles").val(),
-							"vuelo": $("#vuelos").val(),
-							"nombre": $("#nombre").val(),
-							"dni": $("#dni").val(),
-							"totalPersonas": $("#totalPersonas").val()
-						
+			
+			var usuarioForm = {
+					"usuario": $("#usuario").val(),
+					"password": $("#password").val(),
+					"enabled" : true
 			};
 			
-			viaje.save(JSON.stringify(reservaForm));
+			var clienteForm = {
+					"id" : 0,
+					"nombre": $("#nombre").val(),
+					"email": $("#email").val(),
+					"dni": $("#dni").val(),
+					"cuenta": $("#cuenta").val(),
+					"direccion": $("#direccion").val(),
+					"estado": true,
+					"policia": $("#policia").prop("checked"),
+			}
 			
-	});
-	 
-	 
+			usuario.save(JSON.stringify(usuarioForm), clienteForm);
+			$("#containerFormCliente").find("form")[0].reset();
+			$("#containerFormCliente").hide();
+			$("#containerListCliente").show();
+			
+			//cliente.save(JSON.stringify(clienteForm));
+			
+	 }); 
 	
 });

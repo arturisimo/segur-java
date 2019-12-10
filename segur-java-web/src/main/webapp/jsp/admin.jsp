@@ -30,8 +30,7 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="#about">Clientes</a></li>
+            <li class="active"><a href="#">Clientes</a></li>
             <li><a href="#contact">Informes</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
@@ -53,28 +52,75 @@
 				<p>Zona administador</p>
 			</div>
 		</div>
-	</div><!-- /.container -->
-	
-	<div class="container">
 		
-		<table class="table table-hover">
-			<thead>
-				<tr>
-					<th>nombre</th><th>email</th><th>dni</th><th>cuenta</th><th>direccion</th><th>policia</th>
-				</tr>
-			</thead>
-			<tbody>
+		<div id="containerListCliente" class="container">
+			
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>nombre</th><th>email</th><th>dni</th><th>cuenta</th><th>direccion</th><th>policia</th>
+					</tr>
+				</thead>
+				<tbody>
+					
+				</tbody>
+			</table>
+			<a id="formClienteAction" href="#" class="btn btn-primary">Nuevo Cliente</a>
+		
+		</div>
+	
+		<div id="containerFormCliente" class="container" style="display: none;">
 				
-			</tbody>
-		</table>
+				<form id="formCliente" action="" method="POST" role="form">
+					<legend>Alta de clientes</legend>
+					
+					<div class="form-group">
+						<label for="nombre">nombre</label>
+						<input type="text" class="form-control" id="nombre" value="" placeholder="nombre">
+					</div>
+					<div class="form-group">
+						<label for="email">email</label>
+						<input type="text" class="form-control" id="email" value="" placeholder="email">
+					</div>
+					<div class="form-group">
+						<label for="usuario">usuario</label>
+						<input type="text" class="form-control" id="usuario" value="" placeholder="usuario">
+					</div>
+					<div class="form-group">
+						<label for="password">password</label>
+						<input type="password" class="form-control" id="password" value="" placeholder="password">
+					</div>
+					<div class="form-group">
+						<label for="dni">dni</label>
+						<input type="text" class="form-control" id="dni" value="" placeholder="dni">
+					</div>
+					<div class="form-group">
+						<label for="cuenta">cuenta</label>
+						<input type="text" class="form-control" id="cuenta" value="" placeholder="cuenta">
+					</div>
+					<div class="form-group">
+						<label for="direccion">direccion</label>
+						<input type="text" class="form-control" id="direccion" value="" placeholder="direccion">
+					</div>
+					<div class="form-group checkbox">
+						<label>
+							<input type="checkbox" id=policia value="">
+							Aviso a la policia
+						</label>
+					</div>
+					<a id="saveClienteAction" href="#" class="btn btn-danger">Alta</a>
+					<a id="listClienteAction" href="#" class="btn btn-default">Cancelar</a>					
+				</form>
+			
+			</div>
+	</div>	
 	
-	
-	</div>
-	
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
+	<script type="text/javascript">
+		var	urlSensores = "${urlSensores}";
+		var urlClientes = "${urlClientes}";
+		var urlUsuario = "<c:url value='/alta-usuario' />";
+	</script>
+		
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="<c:url value="/resources/js/admin.js" />"></script> 
