@@ -52,6 +52,13 @@
 			</div>
 		</div>
 		
+		<div id="messageKO" class="alert alert-danger hidden">
+			<strong>Error:</strong><span id="errorMessage"></span>
+	    </div>
+	    <div id="messageOK" class="alert alert-success hidden">
+			<strong>OK:</strong><span id="message"></span>
+	    </div>
+		
 		<div id="containerEditCliente" class="container col-xs-12 col-sm-12 col-md-6 col-lg-6">
 			
 			<form id="formCliente" action="" method="POST" role="form">

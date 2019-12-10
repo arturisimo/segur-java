@@ -1,7 +1,6 @@
 package com.sgj.policia.model;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Date;
 
 import javax.persistence.Entity;

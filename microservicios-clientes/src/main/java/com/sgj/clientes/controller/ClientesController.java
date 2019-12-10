@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sgj.clientes.model.Cliente;
-import com.sgj.clientes.model.ResponseJson;
+import com.sgj.clientes.model.dto.ResponseJson;
 import com.sgj.clientes.service.ServiceClientes;
 
 @CrossOrigin(origins = "*")

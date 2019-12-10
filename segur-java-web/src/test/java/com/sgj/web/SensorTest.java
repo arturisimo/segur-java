@@ -11,8 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sgj.web.model.Cliente;
-import com.sgj.web.model.Sensor;
+import com.sgj.web.model.dto.Cliente;
+import com.sgj.web.model.dto.Sensor;
 import com.sgj.web.util.Util.EstadoSensor;
 
 import org.springframework.http.HttpEntity;

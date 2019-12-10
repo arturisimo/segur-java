@@ -1,4 +1,4 @@
-package com.sgj.web.model;
+package com.sgj.web.model.dto;
 
 import java.io.Serializable;
 import java.util.List;
@@ -6,11 +6,6 @@ import java.util.List;
 import com.sgj.web.util.Util.EstadoSensor;
 import com.sgj.web.util.Util.Estancia;
 
-
-/**
- * The persistent class for the sensores database table.
- * 
- */
 public class Sensor implements Serializable {
 	
 	private static final long serialVersionUID = 1L;

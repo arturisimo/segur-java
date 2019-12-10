@@ -1,5 +1,7 @@
 package com.sgj.web.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,17 +22,30 @@ public class UsuarioController {
 	
 	@Autowired
 	ServiceUsuario serviceUsuario;
+	
+	private static final Logger LOG = LoggerFactory.getLogger(UsuarioController.class);
 
 	@PostMapping(value="/alta-usuario", consumes=MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Usuario> alta(@RequestBody Usuario usuarioPost) {
-		Usuario usuario = serviceUsuario.save(usuarioPost);
-		return new ResponseEntity<>(usuario, HttpStatus.OK);
+		try {
+			Usuario usuario = serviceUsuario.save(usuarioPost);
+			return new ResponseEntity<>(usuario, HttpStatus.OK);
+		} catch (Exception e) {
+			LOG.error(e.getMessage());
+			return new ResponseEntity<>(new Usuario(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}	
 	}
 	
 	@GetMapping(value="/usuario/{nombreUsuario:.+}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Usuario> get(@PathVariable String nombreUsuario) {
-		Usuario usuario = serviceUsuario.findByUsuario(nombreUsuario);
-		return new ResponseEntity<>(usuario, HttpStatus.OK);
+		try {
+			Usuario usuario = serviceUsuario.findByUsuario(nombreUsuario);
+			return new ResponseEntity<>(usuario, HttpStatus.OK);	
+		} catch (Exception e) {
+			LOG.error(e.getMessage());
+			return new ResponseEntity<>(new Usuario(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
 	}
 	
 	

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sgj.policia.model.Policia;
-import com.sgj.policia.model.ResponseJson;
+import com.sgj.policia.model.dto.ResponseJson;
 import com.sgj.policia.service.PoliciaService;
 
 @CrossOrigin(origins = "*")

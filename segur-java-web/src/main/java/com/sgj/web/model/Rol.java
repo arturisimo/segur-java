@@ -14,10 +14,6 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
-/**
- * The persistent class for the roles database table.
- * 
- */
 @Entity
 @Table(name="roles")
 @NamedQuery(name="Rol.findAll", query="SELECT r FROM Rol r")

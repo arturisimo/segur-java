@@ -10,6 +10,7 @@
   	<module>segur-java-web</module>
   	<module>microservicio-sensores</module>
   	<module>microservicios-clientes</module>
+  	<module>microservicio-policia</module>
   </modules>
   <properties>
     <jackson.version>2.9.8</jackson.version>

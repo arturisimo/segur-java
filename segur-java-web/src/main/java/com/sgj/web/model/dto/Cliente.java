@@ -1,18 +1,11 @@
-package com.sgj.web.model;
+package com.sgj.web.model.dto;
 
 import java.io.Serializable;
 
-import javax.persistence.Id;
 
-
-/**
- * The persistent class for the clientes database table.
- * 
- */
 public class Cliente implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
 	private int id;
 
 	private String cuenta;

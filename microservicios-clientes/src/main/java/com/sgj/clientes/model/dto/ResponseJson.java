@@ -1,4 +1,4 @@
-package com.sgj.policia.model;
+package com.sgj.clientes.model.dto;
 
 import java.io.Serializable;
 

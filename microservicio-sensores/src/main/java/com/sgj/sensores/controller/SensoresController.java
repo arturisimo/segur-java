@@ -19,8 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sgj.sensores.model.ResponseJson;
+import com.sgj.sensores.model.Alarma;
 import com.sgj.sensores.model.Sensor;
+import com.sgj.sensores.model.dto.ResponseJson;
 import com.sgj.sensores.service.ServiceSensores;
 
 import reactor.core.publisher.Flux;
@@ -47,32 +48,10 @@ public class SensoresController {
 		return Flux.fromIterable(serviceSensores.findByCliente(id));
 	}
 	
-	
-//	@GetMapping(value="sensores/{id}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-//	public Flux<List<Sensor>> list(@PathVariable("id") Integer id) {
-//		
-//		return Flux.create(fs->{
-//			List<Sensor> previous = null;
-//			while(true) {
-//				List<Sensor> sensores = serviceSensores.findByCliente(id);	
-//				if (hasChanged(previous, sensores)) {
-//					fs.next(sensores);
-//				}
-//				previous = sensores;
-//			}
-//		});
-//		
-//	}
-//	
-//	private boolean hasChanged(List<Sensor> anterior, List<Sensor> actual) {
-//	
-//		if(anterior == null) {
-//			return true;
-//		} else {
-//			return anterior.equals(actual);
-//		}
-//	}
-	
+	@GetMapping(value="sensores/alarmas/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<Alarma> listAlarmas(@PathVariable("id") Integer id) {
+		return serviceSensores.listadoAlarmasByCliente(id);	
+	}
 	
 	@DeleteMapping(value="sensores/{id}", produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> delete (@PathVariable("id") int id) throws JsonProcessingException{	

@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -33,7 +32,8 @@ public class Alarma implements Serializable {
 	private Date fecha;
 
 	private boolean policia;
-
+	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="idSensor", nullable = false, insertable = false, updatable = false)
 	private Sensor sensor;

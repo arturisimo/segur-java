@@ -31,7 +31,7 @@
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="#">Clientes</a></li>
-            <li><a href="#contact">Informes</a></li>
+            <li><a id="informesAction" href="#">Informes</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
 			<li>	
@@ -53,12 +53,19 @@
 			</div>
 		</div>
 		
+		<div id="messageKO" class="alert alert-danger hidden">
+			<strong>Error:</strong><span id="errorMessage"></span>
+	    </div>
+	    <div id="messageOK" class="alert alert-success hidden">
+			<strong>OK:</strong><span id="message"></span>
+	    </div>
+		
 		<div id="containerListCliente" class="container">
 			
 			<table class="table table-hover">
 				<thead>
 					<tr>
-						<th>nombre</th><th>email</th><th>dni</th><th>cuenta</th><th>direccion</th><th>policia</th>
+						<th>nombre</th><th>email</th><th>dni</th><th>cuenta</th><th>direccion</th><th>policia</th><th></th>
 					</tr>
 				</thead>
 				<tbody>

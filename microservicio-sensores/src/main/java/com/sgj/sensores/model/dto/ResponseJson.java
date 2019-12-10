@@ -1,4 +1,4 @@
-package com.sgj.sensores.model;
+package com.sgj.sensores.model.dto;
 
 import java.io.Serializable;
 

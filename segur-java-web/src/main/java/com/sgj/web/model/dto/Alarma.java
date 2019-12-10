@@ -1,19 +1,13 @@
-package com.sgj.web.model;
+package com.sgj.web.model.dto;
 
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Id;
 
-
-/**
- * The persistent class for the alarmas database table.
- * 
- */
 public class Alarma implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 
-	@Id
 	private int id;
 
 	private Date fecha;

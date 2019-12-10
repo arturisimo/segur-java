@@ -12,11 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-
-/**
- * The persistent class for the usuarios database table.
- * 
- */
 @Entity
 @Table(name="usuarios")
 public class Usuario implements Serializable {

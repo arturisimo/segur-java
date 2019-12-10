@@ -22,8 +22,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sgj.sensores.model.Alarma;
-import com.sgj.sensores.model.ResponseJson;
 import com.sgj.sensores.model.Sensor;
+import com.sgj.sensores.model.dto.ResponseJson;
 import com.sgj.sensores.repository.AlarmaRepository;
 import com.sgj.sensores.repository.SensorRepository;
 
@@ -148,6 +148,54 @@ public class ServiceSensoresImpl implements ServiceSensores {
 		
 	}
 
+	/**
+	 * TODO flatmap
+	 */
+	@Override
+	public List<Alarma> listadoAlarmasByCliente(Integer id) {
+		List<Sensor> sensores = sensorRepository.sensorPorIdCliente(id);
+		List<Alarma> alarmas = new ArrayList<>();
+		for (Sensor sensor : sensores) {
+			alarmas.addAll(sensor.getAlarmas());
+		}
+		return alarmas;
+	}
+	
+	
+//	@Override	
+//	public List<Alarma> saltosAlarmaPorFecha(int idCliente, Date fechaInicio, Date fechaFin){
+//		return alarmaRepository.alarmasPorFecha(fechaInicio, fechaFin);
+//	}
+
+//	@Override		
+//	public List<Alarma> saltosAlarmaPorDni(String dni){
+//		List<Cliente> cliente = clienteRepository.findByDni(dni);
+//		return saltosAlarmaPorUsuario(cliente.get(0));
+//	}
+//
+//	private List<Alarma> saltosAlarmaPorUsuario(Cliente cliente){
+//		
+//		// Si Fuera EAGLE --> List<Sensor> listaSensores = cliente.getSensores(); // en caso contrario query personalizada de abajo
+//		 List<Sensor> listaSensores = daoSensor.sensorPorIdCliente(cliente.getId());
+//		
+//		//recorrer cada sensor y ver si tiene 1 o mas -> Lista saltos de alarma.
+//		List<Alarma> listaAlarmasAux = null;
+//		List<Alarma> listaAlarmasFinal = new ArrayList<Alarma>();
+//		if(listaSensores!=null) {
+//			for(Sensor s : listaSensores) {
+//				//Si fuera EAGLE --> listaAlarmasAux = s.getAlarmas(); // en caso contrario query personalizada de abajo
+//				listaAlarmasAux = alarmaRepository.alarmaPorIdSensor(s.getId());
+//				if(listaAlarmasAux != null) {
+//					for(Alarma a : listaAlarmasAux){
+//						listaAlarmasFinal.add(new Alarma(a.getFecha(),a.getPolicia(),a.getSensore()));
+//					}
+//				}
+//			}
+//		}
+//		return listaAlarmasFinal;
+//	}
+	
+	
 	
 	
 }
