@@ -22,3 +22,15 @@ tr.sensorCliente ul {
 tr.sensorCliente ul li {
   float: left;
 }
+
+body {
+	 background-image: url("../img/background.jpg");
+	 opacity: 0.9;
+}
+
+div.container {
+	 background-color: #efefef;
+	 border-color:1px solid #ccc;
+	 opacity: 0.9;
+	 padding-bottom:20px;	
+}

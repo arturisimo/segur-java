@@ -2,6 +2,8 @@ package com.sgj.clientes.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,6 +26,8 @@ import com.sgj.clientes.service.ServiceClientes;
 @CrossOrigin(origins = "*")
 @RestController
 public class ClientesController {
+	
+	private static final Logger LOG = LoggerFactory.getLogger(ClientesController.class);
 	
 	@Autowired
 	ServiceClientes serviceClientes;
@@ -63,6 +67,7 @@ public class ClientesController {
 			response.setMessage("Se ha registrado correctamente");
 			return ResponseEntity.status(HttpStatus.OK).body(mapper.writeValueAsString(response));
 		} catch (Exception e) {
+			LOG.error(e.getMessage());
 			response.setSuccess(false);
 			response.setMessage(e.getMessage());
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(mapper.writeValueAsString(response));

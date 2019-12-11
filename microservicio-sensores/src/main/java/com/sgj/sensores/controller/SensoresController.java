@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,13 +34,15 @@ public class SensoresController {
 	
 	@Autowired
 	ServiceSensores serviceSensores;
-
+	
+	private static final Logger LOG = LoggerFactory.getLogger(SensoresController.class);
+	
 	@GetMapping(value="sensores-json/{id}",produces=MediaType.APPLICATION_JSON_VALUE)
 	public List<Sensor> listEstatic(@PathVariable("id") Integer id) {
 		try {
 			return serviceSensores.listadoByCliente(id);	
 		} catch (Exception e) {
-			System.err.println(e.getMessage());
+			LOG.error(e.getMessage());
 			return new ArrayList<>();
 		}
 	}
@@ -63,6 +67,7 @@ public class SensoresController {
 			response.setMessage("Se ha eliminado correctamente");
 			return ResponseEntity.status(HttpStatus.OK).body(mapper.writeValueAsString(response));
 		} catch (Exception e) {
+			LOG.error(e.getMessage());
 			response.setSuccess(false);
 			response.setMessage(e.getMessage());
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(mapper.writeValueAsString(response));
@@ -79,6 +84,7 @@ public class SensoresController {
 			response.setMessage("Se ha dado de alta correctamente");
 			return ResponseEntity.status(HttpStatus.OK).body(mapper.writeValueAsString(response));
 		} catch (Exception e) {
+			LOG.error(e.getMessage());
 			response.setSuccess(false);
 			response.setMessage(e.getMessage());
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(mapper.writeValueAsString(response));
@@ -101,6 +107,7 @@ public class SensoresController {
 			response.setMessage("Se ha eliminado correctamente");
 			return ResponseEntity.status(HttpStatus.OK).body(mapper.writeValueAsString(response));
 		} catch (Exception e) {
+			LOG.error(e.getMessage());
 			response.setSuccess(false);
 			response.setMessage(e.getMessage());
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(mapper.writeValueAsString(response));
@@ -117,6 +124,7 @@ public class SensoresController {
 			response.setMessage("Se ha eliminado correctamente");
 			return ResponseEntity.status(HttpStatus.OK).body(mapper.writeValueAsString(response));
 		} catch (Exception e) {
+			LOG.error(e.getMessage());
 			response.setSuccess(false);
 			response.setMessage(e.getMessage());
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(mapper.writeValueAsString(response));
@@ -129,7 +137,8 @@ public class SensoresController {
 			serviceSensores.actualizarSensor(sensor, true);
 			return new ResponseEntity<>("Alta de alarma", HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<>("Fallo en la eliminacion " +e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			LOG.error(e.getMessage());
+			return new ResponseEntity<>("Fallo al provocar alarma " +e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}	
 }

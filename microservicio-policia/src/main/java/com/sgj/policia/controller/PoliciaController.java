@@ -1,5 +1,7 @@
 package com.sgj.policia.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,6 +21,8 @@ import com.sgj.policia.service.PoliciaService;
 @RestController
 public class PoliciaController {
 	
+	private static final Logger LOG = LoggerFactory.getLogger(PoliciaController.class);
+	
 	@Autowired
 	PoliciaService policiaService;
 	
@@ -32,6 +36,7 @@ public class PoliciaController {
 			response.setMessage("Se ha registrado correctamente");
 			return ResponseEntity.status(HttpStatus.OK).body(mapper.writeValueAsString(response));
 		} catch (Exception e) {
+			LOG.error(e.getMessage());
 			response.setSuccess(false);
 			response.setMessage(e.getMessage());
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(mapper.writeValueAsString(response));

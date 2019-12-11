@@ -1,5 +1,14 @@
 var usuario = {
-		save : function(usuarioForm, clienteForm) {
+		/**
+		 *  persistir usuario, llamada persistir cliente
+		 *
+		 *  @method usuario.save
+		 *
+		 *  @param {object} usuarioForm : formulario datos usuario
+		 *  @param {object} clienteForm : formulario datos cliente
+		 *  @param {dom object} $table : tabla de clientes
+		 */
+		save : function(usuarioForm, clienteForm, $table) {
 			 console.log("peticion AJAX POST " + usuarioForm);
 			 $.ajax({
 			        type: "POST",
@@ -9,7 +18,7 @@ var usuario = {
 			        dataType: 'json',
 			        success: function (data) {
 			        	clienteForm.idUsuario = data.id;
-			        	clientes.save(JSON.stringify(clienteForm));
+			        	clientes.save(JSON.stringify(clienteForm), $table);
 			        },
 			        error: function (e) {
 			        	clientes.error(e);
@@ -19,9 +28,18 @@ var usuario = {
 		}
 }
 var clientes = {
+		
+		/**
+		 *  Listado de clientes
+		 *
+		 *  @method clientes.list
+		 *
+		 *  @param {dom object} $table : tabla de clientes
+		 */
 		list : function($table) {
+				$table.find("tbody").html("");
 				console.log("peticion AJAX GET " +  urlClientes);
-				$.get(urlClientes, function(data,status){
+				$.get(urlClientes, function(data, status){
 					var body = "";
 					$.each(data,function(i,cliente) {
 						body += "<tr><td>"+cliente.nombre+"</td><td>"+cliente.email+"</td><td>"+cliente.dni+"</td><td>"+cliente.cuenta+"</td><td>"+cliente.direccion+"</td>";
@@ -34,15 +52,30 @@ var clientes = {
 				});
 				
 		},
+		/**
+		 *  eventos del listado de clientes
+		 *
+		 *  @method clientes.addEvents
+		 *
+		 *  @param {dom object} $table : tabla de clientes
+		 */
 		addEvents : function($table) {
 			$table.find(".alarmasAction").click(function(){
 				var idCliente = this.id.split("_")[1];
 				var $trCliente = $(this).parents("tr");
-				sensor.getAlarmas(idCliente, $trCliente);
+				sensor.alarmas(idCliente, $trCliente);
 			});
 			
 		},
-		save : function(clienteForm) {
+		/**
+		 *  persistir cliente
+		 *
+		 *  @method clientes.save
+		 *
+		 *  @param {object} clienteForm : formulario datos cliente
+		 *  @param {dom object} $table : tabla de clientes
+		 */
+		save : function(clienteForm, $table) {
 			 console.log("peticion AJAX POST " + clienteForm);
 			 $.ajax({
 			        type: "POST",
@@ -51,7 +84,7 @@ var clientes = {
 			        data: clienteForm,
 			        dataType: 'json',
 			        success: function (data) {
-			        	 clientes.list();
+			        	 clientes.list($table);
 			        },
 			        error: function (e) {
 			        	clientes.error(e);
@@ -71,10 +104,16 @@ var clientes = {
 
 };
 
-
 var sensor = {
-		getAlarmas : function(idCliente, $trCliente) {
-			debugger;
+		/**
+		 *  Listado de sensores y alarmas por cliente
+		 *
+		 *  @method clientes.alarmas
+		 *
+		 *  @param {int} idCliente : id del cliente
+		 *  @param {dom object} $trCliente : fila del cliente
+		 */
+		alarmas : function(idCliente, $trCliente) {
 			if ($trCliente.next().hasClass("sensorCliente")) {
 				$trCliente.next().remove();
 			} else {
@@ -98,44 +137,47 @@ var sensor = {
 };
 
 $(function(){
-		
-	 clientes.list($("table"));
+	
+	 var $contList = $("#containerListCliente");
+	 var $table = $contList.find("table");
+	 var $contForm = $("#containerFormCliente");
+	 var $form = $contForm.find("form");
+	 
+	 clientes.list($table);
 	 
 	 $("#formClienteAction").click(function(){
-		 $("#containerListCliente").hide();
-		 $("#containerFormCliente").show();
+		 $contList.hide();
+		 $contForm.show();
 	 });
 	 $("#listClienteAction").click(function(){
-		 $("#containerListCliente").show();
-		 $("#containerFormCliente").hide();
+		 $contList.show();
+		 $contForm.hide();
 	 });
 	 
 	 $("#saveClienteAction").click(function(){
 			$("div.alert").addClass("hidden");
 			
 			var usuarioForm = {
-					"usuario": $("#usuario").val(),
-					"password": $("#password").val(),
+					"usuario": $form.find("#usuario").val(),
+					"password": $form.find("#password").val(),
 					"enabled" : true
 			};
 			
 			var clienteForm = {
 					"id" : 0,
-					"nombre": $("#nombre").val(),
-					"email": $("#email").val(),
-					"dni": $("#dni").val(),
-					"cuenta": $("#cuenta").val(),
-					"direccion": $("#direccion").val(),
+					"nombre": $form.find("#nombre").val(),
+					"email": $form.find("#email").val(),
+					"dni": $form.find("#dni").val(),
+					"cuenta": $form.find("#cuenta").val(),
+					"direccion": $form.find("#direccion").val(),
 					"estado": true,
-					"policia": $("#policia").prop("checked"),
+					"policia": $form.find("#policia").prop("checked"),
 			}
 			
-			usuario.save(JSON.stringify(usuarioForm), clienteForm);
-			$("#containerFormCliente").find("form")[0].reset();
-			$("#containerFormCliente").hide();
-			$("#containerListCliente").show();
-			
-			//cliente.save(JSON.stringify(clienteForm));
+			usuario.save(JSON.stringify(usuarioForm), clienteForm, $table);
+			$form[0].reset();
+			$contForm.hide();
+			$contList.show();
 			
 	 }); 
 	

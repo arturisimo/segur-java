@@ -26,9 +26,6 @@
           <a class="navbar-brand" href="#">segurJava</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
-          </ul>
           <ul class="nav navbar-nav navbar-right">
 			<li>	
 				<a href="https://github.com/arturisimo/segur-java" title="github.com/arturisimo/segur-java"><img class="github" src='<c:url value="/resources/img/github.ico" />'></a>
@@ -41,12 +38,7 @@
       </div>
     </nav>
 
-    <div class="container">
-		<div class="jumbotron">
-			<div class="container">
-				<h1>hola pública</h1>
-			</div>
-		</div>
+    <div class="container background">
 		
 		<div id="containerRegistro" class="hidden">
 			
@@ -86,6 +78,7 @@
 	<script type="text/javascript">
 		var urlClientes = "${urlClientes}";
 		var urlUsuario = "<c:url value='/alta-usuario' />";
+		var urlLogin = "<c:url value='/cliente' />";
 	</script>
 	
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
