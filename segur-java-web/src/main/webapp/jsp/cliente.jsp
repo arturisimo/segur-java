@@ -45,13 +45,6 @@
 
     <div class="container">
 		
-		<div class="jumbotron">
-			<div class="container">
-				<h1>hola ${userPrincipal.username}</h1>
-				<p>Zona cliente</p>
-			</div>
-		</div>
-		
 		<div id="messageKO" class="alert alert-danger hidden">
 			<strong>Error:</strong><span id="errorMessage"></span>
 	    </div>
@@ -59,7 +52,7 @@
 			<strong>OK:</strong><span id="message"></span>
 	    </div>
 		
-		<div id="containerEditCliente" class="container col-xs-12 col-sm-12 col-md-6 col-lg-6">
+		<div id="containerEditCliente" class="container col-xs-12 col-sm-12 col-md-6 col-lg-6 content">
 			
 			<form id="formCliente" action="" method="POST" role="form">
 				<legend>Datos personales</legend>
@@ -97,7 +90,7 @@
 		
 		</div>
 		
-		<div class="row col-xs-12 col-sm-12 col-md-6 col-lg-6">
+		<div class="container col-xs-12 col-sm-12 col-md-6 col-lg-6 content">
 			
 			<div id="listSensorContainer" class="container col-lg-12">
 				<legend>Sensores contratados</legend>

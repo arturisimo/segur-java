@@ -38,9 +38,9 @@
       </div>
     </nav>
 
-    <div class="container background">
+    <div class="container">
 		
-		<div id="containerRegistro" class="hidden">
+		<div id="containerRegistro" class="content" style="display: none;">
 			
 			<div id="messageKO" class="alert alert-danger hidden">
 				<strong>Error:</strong><span id="errorMessage"></span>

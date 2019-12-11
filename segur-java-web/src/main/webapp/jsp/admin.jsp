@@ -46,13 +46,6 @@
 
     <div class="container">
 	
-		<div class="jumbotron">
-			<div class="container">
-				<h1>hola ${userPrincipal.username}</h1>
-				<p>Zona administador</p>
-			</div>
-		</div>
-		
 		<div id="messageKO" class="alert alert-danger hidden">
 			<strong>Error:</strong><span id="errorMessage"></span>
 	    </div>
@@ -60,7 +53,7 @@
 			<strong>OK:</strong><span id="message"></span>
 	    </div>
 		
-		<div id="containerListCliente" class="container">
+		<div id="containerListCliente" class="container content">
 			
 			<table class="table table-hover">
 				<thead>
@@ -76,7 +69,7 @@
 		
 		</div>
 	
-		<div id="containerFormCliente" class="container" style="display: none;">
+		<div id="containerFormCliente" class="container content" style="display: none;">
 				
 				<form id="formCliente" action="" method="POST" role="form">
 					<legend>Alta de clientes</legend>

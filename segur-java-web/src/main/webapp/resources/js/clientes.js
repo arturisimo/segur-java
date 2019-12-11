@@ -83,7 +83,7 @@ $(function(){
 	 var $contForm = $("#containerRegistro");
 	
 	 $("#actionRegistro").click(function() {
-		 $contForm.toggleClass("hidden");
+		 $contForm.show();
 	 });
 	 
 	 

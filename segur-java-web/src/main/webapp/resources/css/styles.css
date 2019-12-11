@@ -28,9 +28,10 @@ body {
 	 opacity: 0.9;
 }
 
-div.container {
+div.content {
 	 background-color: #efefef;
 	 border-color:1px solid #ccc;
 	 opacity: 0.9;
-	 padding-bottom:20px;	
+	 padding:20px;
+	 margin-top:50px;
 }
