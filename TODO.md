@@ -1,4 +1,4 @@
-##Proyecto para la gestión y control de alarmas
+## Proyecto para la gestión y control de alarmas
 
 **Motivación**
 
