@@ -1,0 +1,57 @@
+version: '2'
+
+services:
+  config:
+    container_name: config-server
+    build: 
+      context: ./config-server/
+    image: segur-java/config-server:v0.0.1-SNAPSHOT
+    ports:
+     - "8888:8888"
+  discovery:
+    container_name: discovery-server
+    build:
+      context: ./eureka-server/
+    image: segur-java/eureka-server:v0.0.1-SNAPSHOT
+    ports:
+     - "8761:8761"
+    links:
+    - config 
+    restart: always
+  gateway:
+    container_name: gateway-server
+    build:
+      context: ./zuul-server/
+    image: segur-java/zuul-server:v0.0.1-SNAPSHOT
+    ports:
+     - "7000:7000"
+    links:
+     - discovery
+     - config
+     - clientes
+     - policia
+     - sensores
+  clientes:
+    container_name: cliente-service
+    build:
+      context: ./microservicios-clientes/
+    image: segur-java/microservicios-clientes:v0.0.1-SNAPSHOT
+    links:
+     - discovery
+     - config
+  policia:
+    container_name: policia-service
+    build:
+      context: ./microservicio-policia/
+    image: segur-java/microservicio-policia:v0.0.1-SNAPSHOT
+    links:
+     - discovery
+     - config
+  sensores:
+    container_name: sensores-service
+    build:
+      context: ./microservicio-sensores/
+    image: segur-java/microservicio-sensores:v0.0.1-SNAPSHOT
+    links:
+     - discovery
+     - config

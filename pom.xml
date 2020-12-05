@@ -7,11 +7,20 @@
   <name>segur-java</name>
   <description>Empresa de seguridad</description>
   <modules>
+  	<!-- cliente web -->
   	<module>segur-java-web</module>
+  	<!-- microservicios  -->
   	<module>microservicio-sensores</module>
   	<module>microservicios-clientes</module>
   	<module>microservicio-policia</module>
+  	
+  	<!--  spring-cloud -->
+  	<module>config-server</module>
+   	<module>zuul-server</module>
+   	<module>eureka-server</module>
+  	
   </modules>
+  
   <properties>
     <jackson.version>2.9.8</jackson.version>
   	<mysql-version>5.1.48</mysql-version>
@@ -21,38 +30,48 @@
     <spring-version>5.1.5.RELEASE</spring-version>
     <hibernate-version>5.4.2.Final</hibernate-version>
     <springboot.version>2.2.1.RELEASE</springboot.version>
+    <spring.cloud.version>Hoxton.RELEASE</spring.cloud.version>
+    <docker.plugin.version>0.2.3</docker.plugin.version>
+    <docker.image.prefix>segur-java</docker.image.prefix>
   </properties>
+  <dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>${springboot.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring.cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			
+		</dependencies>
+  </dependencyManagement>
   <dependencies>
-  	<dependency>
-	    <groupId>mysql</groupId>
-	    <artifactId>mysql-connector-java</artifactId>
-	    <version>${mysql-version}</version>
-	</dependency>
-	<dependency>
-    	<groupId>junit</groupId>
-    	<artifactId>junit</artifactId>
-    	<version>4.12</version>
-    	<scope>test</scope>
-	</dependency>
-  	
-  	<dependency>
-		<groupId>org.slf4j</groupId>
-		<artifactId>slf4j-log4j12</artifactId>
-		<version>1.6.1</version>
-  	</dependency>
   	
   	<!--  spring boot   -->
   	<dependency>
 	    <groupId>org.springframework.boot</groupId>
 	    <artifactId>spring-boot-starter-parent</artifactId>
 	    <version>${springboot.version}</version>
+	    <exclusions>
+		    <exclusion>
+		      <groupId>org.springframework.boot</groupId>
+		      <artifactId>spring-boot-starter-logging</artifactId>
+		    </exclusion>
+		  </exclusions>
 	    <type>pom</type>
 	</dependency>
 	<dependency>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-web</artifactId>
-		<version>${springboot.version}</version>
-		 <exclusions>
+		<exclusions>
 		    <exclusion>
 		      <groupId>org.springframework.boot</groupId>
 		      <artifactId>spring-boot-starter-logging</artifactId>
@@ -61,23 +80,18 @@
 	</dependency>
 	<dependency>
 		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-test</artifactId>
-		<version>${springboot.version}</version>
-		<scope>test</scope>
-		<exclusions>
-			<exclusion>
-				<groupId>org.junit.vintage</groupId>
-				<artifactId>junit-vintage-engine</artifactId>
-			</exclusion>
-		</exclusions>
+		<artifactId>spring-boot-starter-actuator</artifactId>
 	</dependency>
-	
 	<dependency>
 		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-data-jpa</artifactId>
-		<version>${springboot.version}</version>
+		<artifactId>spring-boot-starter-test</artifactId>
+		<scope>test</scope>
 	</dependency>
-	
+	<dependency>
+	    <groupId>mysql</groupId>
+	    <artifactId>mysql-connector-java</artifactId>
+	    <version>${mysql-version}</version>
+	</dependency>
   </dependencies>
   <build>
 	<plugins>
