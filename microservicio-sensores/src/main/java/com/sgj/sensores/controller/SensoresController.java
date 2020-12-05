@@ -37,7 +37,7 @@ public class SensoresController {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(SensoresController.class);
 	
-	@GetMapping(value="sensores-json/{id}",produces=MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value="/sensores-json/{id}",produces=MediaType.APPLICATION_JSON_VALUE)
 	public List<Sensor> listEstatic(@PathVariable("id") Integer id) {
 		try {
 			return serviceSensores.listadoByCliente(id);	
@@ -47,17 +47,17 @@ public class SensoresController {
 		}
 	}
 	
-	@GetMapping(value="sensores/{id}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+	@GetMapping(value="/{id}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	public Flux<Sensor> list(@PathVariable("id") Integer id) {
 		return Flux.fromIterable(serviceSensores.findByCliente(id));
 	}
 	
-	@GetMapping(value="sensores/alarmas/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value="/alarmas/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<Alarma> listAlarmas(@PathVariable("id") Integer id) {
 		return serviceSensores.listadoAlarmasByCliente(id);	
 	}
 	
-	@DeleteMapping(value="sensores/{id}", produces=MediaType.APPLICATION_JSON_VALUE)
+	@DeleteMapping(value="/{id}", produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> delete (@PathVariable("id") int id) throws JsonProcessingException{	
 		ResponseJson response = new ResponseJson();
 		ObjectMapper mapper = new ObjectMapper();
@@ -74,7 +74,7 @@ public class SensoresController {
 		}
 	}
 		
-	@PostMapping(value="sensores",consumes=MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> save(@RequestBody Sensor s) throws JsonProcessingException {	
 		ResponseJson response = new ResponseJson();
 		ObjectMapper mapper = new ObjectMapper();
@@ -97,7 +97,7 @@ public class SensoresController {
 	 * @return
 	 * @throws JsonProcessingException
 	 */
-	@PutMapping(value= "sensores/status/{id}", produces=MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(value= "/status/{id}", produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> updateState(@PathVariable("id") int id) throws JsonProcessingException {	
 		ResponseJson response = new ResponseJson();
 		ObjectMapper mapper = new ObjectMapper();
@@ -114,7 +114,7 @@ public class SensoresController {
 		}
 	}
 	
-	@PutMapping(value= {"sensores", "sensores/{aviso}"}, consumes=MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(value= {"/", "/{aviso}"}, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> update(@PathVariable("aviso") Optional<String> aviso, @RequestBody Sensor s) throws JsonProcessingException {	
 		ResponseJson response = new ResponseJson();
 		ObjectMapper mapper = new ObjectMapper();
@@ -131,7 +131,7 @@ public class SensoresController {
 		}
 	}
 	
-	@PutMapping(value="provocarAlarma")
+	@PutMapping(value="/provocarAlarma")
 	public ResponseEntity<String> provocarAlarma (@RequestBody Sensor sensor){	
 		try {
 			serviceSensores.actualizarSensor(sensor, true);

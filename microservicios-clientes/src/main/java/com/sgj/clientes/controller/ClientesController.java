@@ -32,32 +32,32 @@ public class ClientesController {
 	@Autowired
 	ServiceClientes serviceClientes;
 	
-	@GetMapping(value="/clientes/{id}", produces=MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value="/{id}", produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Cliente> buscarCliente(@PathVariable("id") Integer id) {
 		Cliente cliente = serviceClientes.obtenerCliente(id);		
 		return new ResponseEntity<>(cliente, HttpStatus.OK);
 	}
 	
-	@GetMapping(value="/clientes/usuario/{idUsuario}", produces=MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value="/usuario/{idUsuario}", produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Cliente> buscarClienteByUsuario(@PathVariable("idUsuario") Integer idUsuario) {
 		Cliente cliente = serviceClientes.getClienteByIdUsuario(idUsuario);
 		return new ResponseEntity<>(cliente, HttpStatus.OK);
 	}
 	
-	@GetMapping(value="/clientes", produces=MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Cliente>> listarClientes(){
 		List<Cliente> clientes = serviceClientes.clientes();
 		return new ResponseEntity<>(clientes, HttpStatus.OK);
 	}
 	
-	@DeleteMapping(value="/clientes/{id}", produces= MediaType.APPLICATION_JSON_VALUE)
+	@DeleteMapping(value="/{id}", produces= MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> eliminar(@PathVariable("id") int idContacto) {
 		serviceClientes.eliminarCliente(idContacto);
 		return new ResponseEntity<>("La eliminación es correcta", HttpStatus.OK);
 	}
 	
-	@PostMapping(value="/clientes", consumes=MediaType.APPLICATION_JSON_VALUE, produces= MediaType.APPLICATION_JSON_VALUE)
-	@PutMapping(value="/clientes", consumes=MediaType.APPLICATION_JSON_VALUE, produces= MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(consumes=MediaType.APPLICATION_JSON_VALUE, produces= MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(consumes=MediaType.APPLICATION_JSON_VALUE, produces= MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> alta(@RequestBody Cliente cliente) throws JsonProcessingException {
 		ResponseJson response = new ResponseJson();
 		ObjectMapper mapper = new ObjectMapper();

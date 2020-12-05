@@ -8,3 +8,8 @@ INSERT INTO roles (id_usuario, authority) VALUES (1, 'ROLE_ADMIN');
 INSERT INTO roles (id_usuario, authority) VALUES (2, 'ROLE_USER');
 INSERT INTO roles (id_usuario, authority) VALUES (3, 'ROLE_USER');
 INSERT INTO roles (id_usuario, authority) VALUES (4, 'ROLE_USER');
+
+
+INSERT INTO clientes (email, estado, idUsuario, nombre, policia) VALUES ('arturo@arturo.es', 1, 2, 'Arturo Pérez', 1);
+INSERT INTO clientes (email, estado, idUsuario, nombre, policia) VALUES ('carlos@carlos.es', 1, 3, 'Carlos', 1);
+INSERT INTO clientes (email, estado, idUsuario, nombre, policia) VALUES ('javi@javi.es', 1, 4, 'Javier Pérez', 1);

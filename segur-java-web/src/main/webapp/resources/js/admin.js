@@ -117,7 +117,7 @@ var sensor = {
 			if ($trCliente.next().hasClass("sensorCliente")) {
 				$trCliente.next().remove();
 			} else {
-				$.get(urlSensores + "-json/"+ idCliente, function(data,status){
+				$.get(urlSensores + "/"+ idCliente, function(data,status){
 					var body = "";
 					$.each(data,function(i,sensor) {
 						body += "<tr class='sensorCliente' id='sensor_"+idCliente+"'><td><strong>zona:</strong></td><td>"+sensor.zona+"</td><td><strong>alarmas:</strong></td>";

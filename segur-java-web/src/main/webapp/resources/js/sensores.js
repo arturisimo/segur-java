@@ -146,12 +146,13 @@ var sensor = {
 	 */
 	save : function(sensorForm) {
 		console.log("peticion AJAX POST " +  urlSensores);
+		
 		 $.ajax({
 		 	type: "POST",
-	        contentType: "application/json",
 	        url: urlSensores,
 	        data: sensorForm,
 	        dataType: 'json',
+	        crossDomain: true,
 	        success: function (data) {
 	        	sensor.confirm(data);	       
 	        },

@@ -3,6 +3,7 @@ package com.sgj.sensores.app;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -19,6 +20,7 @@ public class SensoresApp {
 		SpringApplication.run(SensoresApp.class, args);
 	}
 	
+	@LoadBalanced
 	@Bean
 	public RestTemplate getTemplate() {
 		return new RestTemplate();
