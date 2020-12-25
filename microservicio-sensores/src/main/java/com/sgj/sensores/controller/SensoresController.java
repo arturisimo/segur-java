@@ -74,7 +74,7 @@ public class SensoresController {
 		}
 	}
 		
-	@PostMapping(consumes=MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value="/", consumes=MediaType.APPLICATION_JSON_VALUE, produces= MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> save(@RequestBody Sensor s) throws JsonProcessingException {	
 		ResponseJson response = new ResponseJson();
 		ObjectMapper mapper = new ObjectMapper();
@@ -90,6 +90,25 @@ public class SensoresController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(mapper.writeValueAsString(response));
 		}
 	}
+	
+	@PostMapping(value="/test", consumes=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> saveTest(@RequestBody Sensor s) throws JsonProcessingException {	
+		ResponseJson response = new ResponseJson();
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			serviceSensores.crearSensor(s);
+			response.setSuccess(true);
+			response.setMessage("Se ha dado de alta correctamente");
+			return ResponseEntity.status(HttpStatus.OK).body(mapper.writeValueAsString(response));
+		} catch (Exception e) {
+			LOG.error(e.getMessage());
+			response.setSuccess(false);
+			response.setMessage(e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(mapper.writeValueAsString(response));
+		}
+	}
+	
+	
 	
 	/**
 	 * Actualiza/desactualiza sensor

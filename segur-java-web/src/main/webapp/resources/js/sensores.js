@@ -49,7 +49,7 @@ var cliente = {
 		 $.ajax({
 		 	type: "POST",
 	        contentType: "application/json",
-	        url: urlClientes,
+	        url: urlClientes+"/",
 	        data: clienteForm,
 	        dataType: 'json',
 	        success: function (data) {
@@ -149,7 +149,8 @@ var sensor = {
 		
 		 $.ajax({
 		 	type: "POST",
-	        url: urlSensores,
+		 	contentType: "application/json",
+	        url: urlSensores+"/",
 	        data: sensorForm,
 	        dataType: 'json',
 	        crossDomain: true,
@@ -247,7 +248,7 @@ $(function(){
 				"direccion": $("#direccion").val(),
 				"estado": true,
 				"policia": $("#policia").prop("checked"),
-		}
+		};
 		cliente.save(JSON.stringify(clienteForm));
 		$("#formCliente input").attr("disabled","disabled")
 		$("#editClienteAction").show();
@@ -270,7 +271,7 @@ $(function(){
 		var sensorForm = {
 			"idCliente" : sensor.idCliente,
 			"zona": $("#zona").val()
-		}
+		};
 		sensor.save(JSON.stringify(sensorForm), $("table"));
 		$("#listSensorContainer").show();
 		$("#formSensorContainer").hide();

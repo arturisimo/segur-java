@@ -56,8 +56,8 @@ public class ClientesController {
 		return new ResponseEntity<>("La eliminación es correcta", HttpStatus.OK);
 	}
 	
-	@PostMapping(consumes=MediaType.APPLICATION_JSON_VALUE, produces= MediaType.APPLICATION_JSON_VALUE)
-	@PutMapping(consumes=MediaType.APPLICATION_JSON_VALUE, produces= MediaType.APPLICATION_JSON_VALUE)
+	//@PutMapping(consumes=MediaType.APPLICATION_JSON_VALUE, produces= MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value="/", consumes=MediaType.APPLICATION_JSON_VALUE, produces= MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> alta(@RequestBody Cliente cliente) throws JsonProcessingException {
 		ResponseJson response = new ResponseJson();
 		ObjectMapper mapper = new ObjectMapper();
