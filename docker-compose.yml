@@ -1,6 +1,32 @@
 version: '2'
 
+networks:
+  segur_java_network:
+
+volumes:
+  mysql.local.data:
+
 services:
+  rdbms:
+    container_name: mysql.local
+    image: mysql:latest
+    restart: always
+    volumes:
+     - mysql.local.data:/var/lib/mysql
+    ports:
+     - "5200:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: popeye00
+      MYSQL_DATABASE: segur_java
+      MYSQL_USER: arturo
+      MYSQL_PASSWORD: popeye00
+    healthcheck:
+      test: "/usr/bin/mysql --user=root --password=popeye00 --execute 'SHOW DATABASES;'"
+      interval: 2s
+      timeout: 20s
+      retries: 10
+    networks:
+     - segur_java_network  
   config:
     container_name: config-server
     build: 
@@ -8,50 +34,83 @@ services:
     image: segur-java/config-server:v0.0.1-SNAPSHOT
     ports:
      - "8888:8888"
+    expose:
+     - "8888" 
+    depends_on:
+     - discovery
+    networks:
+     - segur_java_network     
   discovery:
-    container_name: discovery-server
+    container_name: servidor-eureka
     build:
       context: ./eureka-server/
     image: segur-java/eureka-server:v0.0.1-SNAPSHOT
     ports:
      - "8761:8761"
-    links:
-    - config 
-    restart: always
+    expose:
+     - "8761" 
+    networks:
+     - segur_java_network 
   gateway:
-    container_name: gateway-server
+    container_name: zuul-server
     build:
       context: ./zuul-server/
     image: segur-java/zuul-server:v0.0.1-SNAPSHOT
     ports:
      - "7000:7000"
-    links:
+    expose:
+     - "7000" 
+    depends_on:
      - discovery
      - config
      - clientes
      - policia
-     - sensores
+     - sensores   
+    networks:
+     - segur_java_network 
   clientes:
-    container_name: cliente-service
+    container_name: microservicios-clientes
+    restart: on-failure
     build:
       context: ./microservicios-clientes/
     image: segur-java/microservicios-clientes:v0.0.1-SNAPSHOT
-    links:
+    depends_on:
      - discovery
      - config
+     - rdbms
+    networks:
+     - segur_java_network
   policia:
-    container_name: policia-service
+    container_name: microservicio-policia
+    restart: on-failure
     build:
       context: ./microservicio-policia/
     image: segur-java/microservicio-policia:v0.0.1-SNAPSHOT
-    links:
+    depends_on:
      - discovery
      - config
+     - rdbms
+    networks:
+     - segur_java_network
   sensores:
-    container_name: sensores-service
+    container_name: microservicio-sensores
+    restart: on-failure
     build:
       context: ./microservicio-sensores/
     image: segur-java/microservicio-sensores:v0.0.1-SNAPSHOT
-    links:
+    depends_on:
      - discovery
      - config
+     - rdbms
+    networks:
+     - segur_java_network
+  client:
+    container_name: segur-java-web
+    build:
+      context: ./segur-java-web/
+    restart: on-failure
+    image: segur-java/segur-java-web:v0.0.1-SNAPSHOT
+    depends_on:
+     - rdbms
+    networks:
+     - segur_java_network

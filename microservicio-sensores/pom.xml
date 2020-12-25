@@ -46,7 +46,6 @@
 		<dependency>
 		    <groupId>mysql</groupId>
 		    <artifactId>mysql-connector-java</artifactId>
-		     <version>${mysql-version}</version>
 		</dependency>
 		<dependency>
 	    	<groupId>junit</groupId>
@@ -74,6 +73,7 @@
 	                </execution>
 	            </executions>
 		    </plugin>
+		    <!-- 
 			<plugin>
 				<groupId>com.spotify</groupId>
 				<artifactId>dockerfile-maven-plugin</artifactId>
@@ -99,6 +99,7 @@
 					</resources>
 				</configuration>
 			</plugin>
+			 -->
 		</plugins>
 	
 	</build>
