@@ -47,14 +47,14 @@
 
     <div class="container">
 	
-		<div id="messageKO" class="alert alert-danger hidden">
-			<strong>Error:</strong><span id="errorMessage"></span>
-	    </div>
-	    <div id="messageOK" class="alert alert-success hidden">
-			<strong>OK:</strong><span id="message"></span>
-	    </div>
-		
 		<div id="containerListCliente" class="container content">
+			
+			<div id="messageKO" class="alert alert-danger hidden">
+				<strong>Error:</strong><span id="errorMessage"></span>
+		    </div>
+		    <div id="messageOK" class="alert alert-success hidden">
+				<strong>OK:</strong><span id="message"></span>
+		    </div>
 			
 			<table class="table table-hover">
 				<thead>
@@ -73,6 +73,7 @@
 		<div id="containerFormCliente" class="container content" style="display: none;">
 				
 				<form id="formCliente" action="" method="POST" role="form">
+					<input type="hidden" id="idCliente" value="">
 					<legend>Alta de clientes</legend>
 					
 					<div class="form-group">
@@ -83,11 +84,11 @@
 						<label for="email">email</label>
 						<input type="text" class="form-control" id="email" value="" placeholder="email">
 					</div>
-					<div class="form-group">
+					<div class="form-group noedit">
 						<label for="usuario">usuario</label>
 						<input type="text" class="form-control" id="usuario" value="" placeholder="usuario">
 					</div>
-					<div class="form-group">
+					<div class="form-group noedit">
 						<label for="password">password</label>
 						<input type="password" class="form-control" id="password" value="" placeholder="password">
 					</div>
@@ -119,6 +120,7 @@
 	<script type="text/javascript">
 		var	urlSensores = "${urlSensores}";
 		var urlClientes = "${urlClientes}";
+		var urlBase = "<c:url value='/' />";
 		var urlUsuario = "<c:url value='/alta-usuario' />";
 	</script>
 	<!-- 	

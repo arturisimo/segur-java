@@ -128,7 +128,7 @@ var sensor = {
 	addEvents : function($table) {
 		$table.find(".eliminarAction").click(function(){ 
 			var idSensor = this.id.split("_")[1];
-			sensor.delete(idSensor, $(this));
+			sensor.deleteSensor(idSensor, $(this));
 		});
 		
 		$table.find(".estadoAction").click(function(){ 
@@ -165,12 +165,12 @@ var sensor = {
 	/**
 	 *  Elimina sensor
 	 *  
-	 *  @method sensor.delete
+	 *  @method sensor.deleteSensor
 	 *  
 	 *  @param {int} idSensor : id sensor
 	 *  @param {dom object} $table : tabla de sensores
 	 */
-	delete : function(idSensor, $a) {
+	deleteSensor : function(idSensor, $a) {
 		 console.log("peticion AJAX DELETE " + urlSensores+"/"+idSensor);
 		 $.ajax({
 		 	type: "DELETE",

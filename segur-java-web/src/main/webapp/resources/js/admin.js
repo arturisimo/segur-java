@@ -25,6 +25,29 @@ var usuario = {
 			        }
 			    });
 			 
+		},
+		/**
+		 *  Eliminar usuario
+		 *
+		 *  @method usuario.deleteUser
+		 *
+		 *  @param {integer} id : id usuario
+		 *  @param {dom object} $contForm : contenedor formulario de registro
+		 */
+		deleteUser : function(id, $contForm) {
+			 console.log("peticion AJAX DELETE " + id);
+			 $.ajax({
+			        type: "DELETE",
+			        url: urlBase+"usuario/"+id,
+			        success: function (data) {
+			        	var e = {"status": "KO", "statusText":"Fallo en el registro "+data};
+			        	clientes.error(e);
+			        },
+			        error: function (e) {
+			        	clientes.error(e);
+			        }
+			    });
+			 
 		}
 }
 var clientes = {
@@ -36,17 +59,20 @@ var clientes = {
 		 *
 		 *  @param {dom object} $table : tabla de clientes
 		 */
-		list : function($table) {
+		list : function($table, $contForm) {
 				$table.find("tbody").html("");
 				console.log("peticion AJAX GET " +  urlClientes);
 				$.get(urlClientes, function(data, status){
 					var body = "";
 					$.each(data,function(i,cliente) {
-						body += "<tr><td>"+cliente.nombre+"</td><td>"+cliente.email+"</td><td>"+cliente.dni+"</td><td>"+cliente.cuenta+"</td><td>"+cliente.direccion+"</td>";
-						body += "<td>"+cliente.policia+"</td><td><a id='cliente_"+cliente.id +"' href='#' class='alarmasAction'>ver alarmas</a></td></tr>";
+						body += "<tr id='cliente_"+cliente.id +"'>";
+						body += "<td>"+cliente.nombre+"</td><td>"+cliente.email+"</td><td>"+cliente.dni+"</td><td>"+cliente.cuenta+"</td><td>"+cliente.direccion+"</td>";
+						body += "<td>"+cliente.policia+"</td><td><a id='cliente_"+cliente.id +"' href='#' class='alarmasAction'>ver alarmas</a></td>";
+						body += "<td><a href='#' class='editarAction'>editar</a></td>";
+						body += "</tr>";
 					});
 					$table.find("tbody").html(body);
-					clientes.addEvents($table);
+					clientes.addEvents($table, $contForm);
 				}).fail(function(e) {
 					clientes.error(e);
 				});
@@ -59,13 +85,38 @@ var clientes = {
 		 *
 		 *  @param {dom object} $table : tabla de clientes
 		 */
-		addEvents : function($table) {
+		addEvents : function($table, $contForm) {
 			$table.find(".alarmasAction").click(function(){
-				var idCliente = this.id.split("_")[1];
+				//var idCliente = this.id.split("_")[1];
 				var $trCliente = $(this).parents("tr");
+				var idCliente = $trCliente.attr("id").split("_")[1];
 				sensor.alarmas(idCliente, $trCliente);
 			});
+			$table.find(".editarAction").click(function(){
+				//var idCliente = this.id.split("_")[1];
+				var $trCliente = $(this).parents("tr");
+				var idCliente = $trCliente.attr("id").split("_")[1];
+				$table.parents("div#containerListCliente").hide();
+				clientes.edit(idCliente, $contForm);
+			});
 			
+		},
+		edit : function(idCliente, $contForm) {
+			$.get(urlClientes+"/"+idCliente, function(data, status){
+				$contForm.find(".noedit").hide();
+				$contForm.find("#idCliente").val(data.id);
+				$contForm.find("#nombre").val(data.nombre);
+				$contForm.find("#email").val(data.email);
+				$contForm.find("#dni").val(data.dni);
+				$contForm.find("#cuenta").val(data.cuenta);
+				$contForm.find("#direccion").val(data.direccion);
+				$contForm.find("#direccion").val(data.direccion);
+				if (data.policia)
+					$contForm.find("#policia").attr("checked","checked");
+				$contForm.show();
+			}).fail(function(e) {
+				clientes.error(e);
+			});
 		},
 		/**
 		 *  persistir cliente
@@ -73,34 +124,38 @@ var clientes = {
 		 *  @method clientes.save
 		 *
 		 *  @param {object} clienteForm : formulario datos cliente
-		 *  @param {dom object} $table : tabla de clientes
 		 */
 		save : function(clienteForm, $table) {
-			 console.log("peticion AJAX POST " + clienteForm);
+			 console.log("peticion AJAX POST " + urlClientes);
+			 
 			 $.ajax({
-			        type: "POST",
+				 	type: "POST",
 			        contentType: "application/json",
-			        url: urlClientes,
+			        url: urlClientes+"/",
 			        data: clienteForm,
 			        dataType: 'json',
-			        success: function (data) {
-			        	 clientes.list($table);
+			        success: function (feedback) {
+			        	feedback.message = "Registro finalizado. Ahora pueden entrar en tu zona de cliente."
+			        	clientes.confirm(feedback);
+			        	clientes.list($table);
 			        },
 			        error: function (e) {
+			        	var idUsuario = JSON.parse(clienteForm).idUsuario;
+						usuario.deleteUser(idUsuario, $contForm);
 			        	clientes.error(e);
 			        }
 			    });
 			 
-		 },
-		 confirm : function(data) {
+		},
+		confirm : function(data) {
 			 $("div#messageOK").removeClass("hidden");
 			 $("span#message").html(data.message)
-	     },
-		 error : function(e) {
+	    },
+		error : function(e) {
 	        console.log(e);
 	        $("divmessageKO").removeClass("hidden");
 			$("span#errorMessage").html("Error: " + e.status + " " + e.statusText);
-	     }
+	    }
 
 };
 
@@ -143,10 +198,14 @@ $(function(){
 	 var $contForm = $("#containerFormCliente");
 	 var $form = $contForm.find("form");
 	 
-	 clientes.list($table);
+	 clientes.list($table, $contForm);
 	 
 	 $("#formClienteAction").click(function(){
 		 $contList.hide();
+		 $contForm.find(".noedit").show();
+		 $.each($contForm.find("input"),function(i,input) {
+			 $(input).val("");
+		 });
 		 $contForm.show();
 	 });
 	 $("#listClienteAction").click(function(){

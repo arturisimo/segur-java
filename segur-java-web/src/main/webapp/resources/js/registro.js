@@ -27,6 +27,14 @@ var usuario = {
 			    });
 			 
 		},
+		/**
+		 *  Eliminar usuario
+		 *
+		 *  @method usuario.deleteUser
+		 *
+		 *  @param {integer} id : id usuario
+		 *  @param {dom object} $contForm : contenedor formulario de registro
+		 */
 		deleteUser : function(id, $contForm) {
 			 console.log("peticion AJAX DELETE " + id);
 			 $.ajax({
