@@ -12,4 +12,6 @@ public interface ServiceUsuario {
 
 	Usuario findByUsuario(String nombreUsuario);
 
+	void delete(Integer id);
+
 }

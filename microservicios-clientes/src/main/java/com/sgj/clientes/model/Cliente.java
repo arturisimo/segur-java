@@ -2,6 +2,7 @@ package com.sgj.clientes.model;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,21 +24,29 @@ public class Cliente implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
-
+	
+	@Column(name = "cuenta", nullable = true)
 	private String cuenta;
 
+	@Column(name = "direccion", nullable = true)
 	private String direccion;
 
+	@Column(name = "dni", nullable = true)
 	private String dni;
 
+	@Column(name = "email", nullable = false, unique = true)
 	private String email;
 
+	@Column(name = "estado", nullable = false)
 	private boolean estado;
 
+	@Column(name = "nombre", nullable = false)
 	private String nombre;
 
+	@Column(name = "policia", nullable = false)
 	private boolean policia;
 	
+	@Column(name = "idUsuario", nullable = false)
 	private Integer idUsuario;
 
 	public Cliente() {

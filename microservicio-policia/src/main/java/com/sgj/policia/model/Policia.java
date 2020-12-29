@@ -3,6 +3,7 @@ package com.sgj.policia.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,9 +25,11 @@ public class Policia implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
-
+	
+	@Column(name = "direccion", nullable = false)
 	private String direccion;
-
+	
+	@Column(name = "fecha", nullable = false)
 	private Date fecha;
 
 	public Policia() {

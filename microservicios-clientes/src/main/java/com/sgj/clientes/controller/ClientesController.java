@@ -56,9 +56,8 @@ public class ClientesController {
 		return new ResponseEntity<>("La eliminación es correcta", HttpStatus.OK);
 	}
 	
-	//@PutMapping(consumes=MediaType.APPLICATION_JSON_VALUE, produces= MediaType.APPLICATION_JSON_VALUE)
-	@PostMapping(value="/", consumes=MediaType.APPLICATION_JSON_VALUE, produces= MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> alta(@RequestBody Cliente cliente) throws JsonProcessingException {
+	@PutMapping(value="/{id}", consumes=MediaType.APPLICATION_JSON_VALUE, produces= MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> update(@RequestBody Cliente cliente) throws JsonProcessingException {
 		ResponseJson response = new ResponseJson();
 		ObjectMapper mapper = new ObjectMapper();
 		try {
@@ -73,6 +72,25 @@ public class ClientesController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(mapper.writeValueAsString(response));
 		}
 	}
+	
+	@PostMapping(value="/", consumes=MediaType.APPLICATION_JSON_VALUE, produces= MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> register(@RequestBody Cliente cliente) throws JsonProcessingException {
+		ResponseJson response = new ResponseJson();
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			serviceClientes.guardarCliente(cliente);
+			response.setSuccess(true);
+			response.setMessage("Se ha registrado correctamente");
+			return ResponseEntity.status(HttpStatus.OK).body(mapper.writeValueAsString(response));
+		} catch (Exception e) {
+			LOG.error(e.getMessage());
+			response.setSuccess(false);
+			response.setMessage(e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(mapper.writeValueAsString(response));
+		}
+	}
+	
+	
 	
 //	@PutMapping(value="/clientes", consumes=MediaType.APPLICATION_JSON_VALUE, produces= MediaType.APPLICATION_JSON_VALUE)
 //	public ResponseEntity<String> actualizar(@RequestBody Cliente cliente) {

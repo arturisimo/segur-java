@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,6 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+
+
 
 @Entity
 @Table(name="usuarios")
@@ -21,11 +25,14 @@ public class Usuario implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
-
+	
+	@Column(name = "enabled", nullable = false)
 	private boolean enabled;
 	
+	@Column(name = "password", nullable = false)
 	private String password;
 
+	@Column(name = "usuario", nullable = false, unique = true)
 	private String usuario;
 	
 	@OneToMany(cascade = CascadeType.ALL)
@@ -35,7 +42,6 @@ public class Usuario implements Serializable {
 	public Usuario() {
 		super();
 	}
-	
 	
 	public Usuario(int id, boolean enabled, String password, String usuario) {
 		super();

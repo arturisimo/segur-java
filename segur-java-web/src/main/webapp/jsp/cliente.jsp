@@ -43,17 +43,17 @@
       </div>
     </nav>
 
-    <div class="container">
-		
-		<div id="messageKO" class="alert alert-danger hidden">
-			<strong>Error:</strong><span id="errorMessage"></span>
-	    </div>
-	    <div id="messageOK" class="alert alert-success hidden">
-			<strong>OK:</strong><span id="message"></span>
-	    </div>
+    <div class="container"  >
 		
 		<div id="containerEditCliente" class="container col-xs-12 col-sm-12 col-md-6 col-lg-6 content">
 			
+			<div id="messageKO" class="alert alert-danger hidden">
+				<strong>Error:</strong><span id="errorMessage"></span>
+		    </div>
+		    <div id="messageOK" class="alert alert-success hidden">
+				<strong>OK:</strong><span id="message"></span>
+		    </div>
+				
 			<form id="formCliente" action="" method="POST" role="form">
 				<legend>Datos personales</legend>
 				<input type="hidden" id="idCliente" value="">
@@ -145,7 +145,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     
-    <script src="<c:url value="/resources/js/sensores.js" />"></script>
+    <script src="<c:url value="/resources/js/clientes.js" />"></script>
     
   </body>
 </html>

@@ -42,6 +42,7 @@
 		<div class="jumbotron">
 			<div class="container">
 				<h1>ERROR</h1>
+				<p>${errorMessage}</p>
 			</div>
 		</div>
 	</div><!-- /.container -->

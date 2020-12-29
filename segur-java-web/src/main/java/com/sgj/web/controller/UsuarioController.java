@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,6 +36,18 @@ public class UsuarioController {
 			return new ResponseEntity<>(new Usuario(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}	
 	}
+	
+	@DeleteMapping(value="/usuario/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> delete(@PathVariable Integer id) {
+		try {
+			serviceUsuario.delete(id);
+			return new ResponseEntity<>("Se ha eliminado correctamente", HttpStatus.OK);
+		} catch (Exception e) {
+			LOG.error(e.getMessage());
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}	
+	}
+	
 	
 	@GetMapping(value="/usuario/{nombreUsuario:.+}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Usuario> get(@PathVariable String nombreUsuario) {

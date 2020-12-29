@@ -23,6 +23,10 @@ tr.sensorCliente ul li {
   float: left;
 }
 
+tr.sensorCliente {
+	color:red;
+}
+
 body {
 	 background-image: url("../img/background.jpg");
 	 opacity: 0.9;
@@ -35,3 +39,4 @@ div.content {
 	 padding:20px;
 	 margin-top:50px;
 }
+

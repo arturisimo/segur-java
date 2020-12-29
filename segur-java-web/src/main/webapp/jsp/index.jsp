@@ -33,7 +33,6 @@
 			</li>
 			<li class="separator"><a href="<c:url value="/admin" />">admin</a></li>
 			<li><a href="#" id="actionRegistro">registro</a></li>
-			<li><a href="<c:url value="/cliente" />"><span class="glyphicon glyphicon-off"></span> </a></li>
 		  </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -79,6 +78,7 @@
 	<script type="text/javascript">
 		var urlClientes = "${urlClientes}";
 		var urlUsuario = "<c:url value='/alta-usuario' />";
+		var urlBase = "<c:url value='/' />";
 		var urlLogin = "<c:url value='/cliente' />";
 	</script>
 	
@@ -86,6 +86,6 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> -->
     <script src="<c:url value="/resources/js/lib/jquery.min.js" />"></script>
     <script src="<c:url value="/resources/js/lib/bootstrap.min.js" />"></script>
-    <script src="<c:url value="/resources/js/clientes.js" />"></script>
+    <script src="<c:url value="/resources/js/registro.js" />"></script>
   </body>
 </html>

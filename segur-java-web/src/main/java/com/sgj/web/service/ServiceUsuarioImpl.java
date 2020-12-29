@@ -27,7 +27,7 @@ public class ServiceUsuarioImpl implements ServiceUsuario {
 	@Override
 	public Usuario save(Usuario usuario) {
 		usuario.setPassword(Util.bcrypt(usuario.getPassword()));
-		Rol rol = new Rol(0, "ROLE_USER", usuario);
+		Rol rol = new Rol(0, Util.Roles.ROLE_USER.name(), usuario);
 		usuario.setRoles(Arrays.asList(rol));
 		usuarioRepository.save(usuario);
 		return usuario;
@@ -41,6 +41,11 @@ public class ServiceUsuarioImpl implements ServiceUsuario {
 	@Override
 	public Usuario findByUsuario(String nombreUsuario) {
 		return usuarioRepository.findByUsuario(nombreUsuario);
+	}
+	
+	@Override
+	public void delete(Integer idUsuario) {
+		usuarioRepository.deleteById(idUsuario);
 	}
 
 }
