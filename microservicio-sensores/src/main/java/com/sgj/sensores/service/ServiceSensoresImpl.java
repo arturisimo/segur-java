@@ -9,15 +9,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.sgj.sensores.model.Alarma;
 import com.sgj.sensores.model.Sensor;
+import com.sgj.sensores.model.dto.Cliente;
+import com.sgj.sensores.model.dto.Mensaje;
 import com.sgj.sensores.repository.AlarmaRepository;
 import com.sgj.sensores.repository.SensorRepository;
 
@@ -36,11 +38,11 @@ public class ServiceSensoresImpl implements ServiceSensores {
 	@Autowired
 	RestTemplate restTemplate;
 	
-	@Value("${url.servicio.policia}")
-	private String urlPolicia;
+	@Value("${url.servicio.cliente}")
+	private String urlCliente;
 	
 	@Autowired
-	private KafkaTemplate<String, Sensor> kafkaTemplate;
+	private KafkaTemplate<String, Mensaje> kafkaTemplate;
 	
 	@Value("${spring.application.name}")
 	private String serviceName;
@@ -52,8 +54,11 @@ public class ServiceSensoresImpl implements ServiceSensores {
 	public static enum EstadoSensor {
 		/** sensor quitado */
 		BAJA,
+		/** sensor quitado */
 		DESACTIVADO,
+		/** sensor activo */
 		ACTIVADO,
+		/** alerta */
 		ALARMA
 	};
 	
@@ -75,6 +80,13 @@ public class ServiceSensoresImpl implements ServiceSensores {
 		}
 		
 	};
+	
+	
+	@Override
+	public Sensor getById(Integer id) throws Exception {
+		return sensorRepository.findById(id).orElseThrow(() -> new Exception("No existe este sensor"));
+	}
+
 	
 	@Override
 	public List<Sensor> listadoByCliente(Integer id) throws Exception {
@@ -110,62 +122,53 @@ public class ServiceSensoresImpl implements ServiceSensores {
 	}
 	
 	@Override
-	public void actualizarSensor(Sensor sensor, boolean aviso) throws JsonMappingException, JsonProcessingException{
+	public Sensor update(Sensor sensor) throws Exception {
 		
 		try {
-		
-			if (sensor.getEstado().equals(EstadoSensor.ALARMA)) {
-				List<Alarma> alarmas = sensor.getAlarmas();
-				alarmas.add(new Alarma(new Date(), true, sensor));
-				sensorRepository.save(sensor);
-				if (aviso) {
-					produceMessage(sensor);
-					
-					
-//					HttpHeaders headers = new HttpHeaders();
-//					headers.setContentType(MediaType.APPLICATION_JSON);
-//					HttpEntity<String> request = new HttpEntity<>(sensor.getDireccion(), headers);				
-//				
-//						ResponseEntity<String> response = restTemplate.exchange(urlPolicia, HttpMethod.POST, request, String.class);
-//								
-//						ObjectMapper mapper = new ObjectMapper();
-//						ResponseJson responseJson = mapper.readValue(response.getBody(), ResponseJson.class);
-//						
-//						if (!responseJson.isSuccess()) {
-//							throw new ServiceException("No se ha podido efectuar la reserva. Error " + responseJson.getMessage());
-//						}
-				}
-			} else {
-				sensorRepository.save(sensor);
-			}
-			
+			produceAlert(sensor);
+			sensorRepository.save(sensor);
+			return sensor;
 			
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			e.printStackTrace();
 			throw e;
 		}
 		
 	}
 	
-	private void produceMessage(Sensor sensor) {
-		try {
-			kafkaTemplate.send(topic, sensor);
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-		}
+	/**
+	 * emitir alarma
+	 * @param sensor
+	 * @throws Exception
+	 */
+	private void produceAlert(Sensor sensor) throws Exception {
 		
+		if (sensor.getEstado().equals(EstadoSensor.ALARMA)) {
+			Cliente cliente = getCliente(sensor.getIdCliente());
+			List<Alarma> alarmas = sensor.getAlarmas();
+			alarmas.add(new Alarma(new Date(), true, sensor));
+			sensorRepository.save(sensor);
+			if (cliente.isPolicia() ) {
+				Mensaje mensaje = new Mensaje(cliente.getDireccion());
+				mensaje.setZona(sensor.getZona().getNombre());
+				kafkaTemplate.send(topic, mensaje);
+			}
+		}
 	}
 	
-	
-	@Override
-	public Sensor actualizarEstadoSensor(Integer id) throws Exception {
-		Sensor sensor = sensorRepository.findById(id).orElseThrow(() -> new Exception("No existe este sensor"));
-		sensor.setEstado(EstadoSensor.DESACTIVADO.equals(sensor.getEstado()) ? EstadoSensor.ACTIVADO : EstadoSensor.DESACTIVADO);
-		sensorRepository.save(sensor);
-		return sensor;
+	/**
+	 * GET api rest cliente
+	 * @param idCliente
+	 * @return
+	 * @throws Exception
+	 */
+	private Cliente getCliente(Integer idCliente) throws Exception {
+		ResponseEntity<Cliente> response = restTemplate.getForEntity(urlCliente+idCliente, Cliente.class);
+		if (!response.getStatusCode().equals(HttpStatus.OK))
+			throw new Exception("Error al obtener el cliente");
+		return response.getBody();
 	}
-
+	
 	/**
 	 * TODO flatmap
 	 */
@@ -215,5 +218,7 @@ public class ServiceSensoresImpl implements ServiceSensores {
 	
 	
 	*/
+
+
 	
 }

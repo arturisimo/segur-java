@@ -6,20 +6,20 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class SensorDeserializer implements Deserializer<Sensor> {
+public class SensorDeserializer implements Deserializer<Mensaje> {
 	
 	private static final Logger logger = LoggerFactory.getLogger(SensorDeserializer.class);
 	
 	@Override
-	public Sensor deserialize(String topic, byte[] data) {
+	public Mensaje deserialize(String topic, byte[] data) {
 		ObjectMapper mapper = new ObjectMapper();
-		Sensor sensor = null;
+		Mensaje sensor = null;
 	    try {
-	    	sensor = mapper.readValue(data, Sensor.class);
+	    	sensor = mapper.readValue(data, Mensaje.class);
 	    } catch (Exception e) {
 	    	logger.error(e.getMessage());
 	    }
-	    return sensor;
+      	    return sensor;
 	}
 
 }

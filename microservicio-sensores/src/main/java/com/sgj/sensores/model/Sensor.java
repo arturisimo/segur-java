@@ -13,7 +13,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import com.sgj.sensores.service.ServiceSensoresImpl.EstadoSensor;
 import com.sgj.sensores.service.ServiceSensoresImpl.Estancia;
@@ -45,9 +44,6 @@ public class Sensor implements Serializable {
 	
 	@Column(name = "estado", nullable = false)
 	private EstadoSensor estado;
-	
-	@Transient
-	private String direccion;
 	
 	public Sensor() {
 	}
@@ -90,14 +86,6 @@ public class Sensor implements Serializable {
 
 	public void setEstado(EstadoSensor estado) {
 		this.estado = estado;
-	}
-
-	public String getDireccion() {
-		return direccion;
-	}
-
-	public void setDireccion(String direccion) {
-		this.direccion = direccion;
 	}
 	
 }

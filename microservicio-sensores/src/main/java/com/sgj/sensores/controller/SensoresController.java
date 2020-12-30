@@ -2,7 +2,6 @@ package com.sgj.sensores.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +24,7 @@ import com.sgj.sensores.model.Alarma;
 import com.sgj.sensores.model.Sensor;
 import com.sgj.sensores.model.dto.ResponseJson;
 import com.sgj.sensores.service.ServiceSensores;
+import com.sgj.sensores.service.ServiceSensoresImpl.EstadoSensor;
 
 import reactor.core.publisher.Flux;
 
@@ -99,9 +99,11 @@ public class SensoresController {
 	@PutMapping(value= "/status/{id}", produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Sensor> updateState(@PathVariable("id") int id) throws JsonProcessingException {	
 		ResponseJson response = new ResponseJson();
-		ObjectMapper mapper = new ObjectMapper();
 		try {
-			Sensor sensor = serviceSensores.actualizarEstadoSensor(id);
+			Sensor sensor = serviceSensores.getById(id);
+			sensor.setEstado(EstadoSensor.DESACTIVADO.equals(sensor.getEstado()) ? EstadoSensor.ACTIVADO : EstadoSensor.DESACTIVADO);
+			
+			serviceSensores.update(sensor);
 			response.setSuccess(true);
 			response.setMessage("Se ha eliminado correctamente");
 			return ResponseEntity.status(HttpStatus.OK).body(sensor);
@@ -113,27 +115,12 @@ public class SensoresController {
 		}
 	}
 	
-	@PutMapping(value= {"/", "/{aviso}"}, consumes=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> update(@PathVariable("aviso") Optional<String> aviso, @RequestBody Sensor s) throws JsonProcessingException {	
-		ResponseJson response = new ResponseJson();
-		ObjectMapper mapper = new ObjectMapper();
+	@PutMapping(value="/alarma")
+	public ResponseEntity<String> alarma(@RequestBody Sensor sensor){	
 		try {
-			serviceSensores.actualizarSensor(s, aviso.isPresent());
-			response.setSuccess(true);
-			response.setMessage("Se ha eliminado correctamente");
-			return ResponseEntity.status(HttpStatus.OK).body(mapper.writeValueAsString(response));
-		} catch (Exception e) {
-			LOG.error(e.getMessage());
-			response.setSuccess(false);
-			response.setMessage(e.getMessage());
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(mapper.writeValueAsString(response));
-		}
-	}
-	
-	@PutMapping(value="/provocarAlarma")
-	public ResponseEntity<String> provocarAlarma (@RequestBody Sensor sensor){	
-		try {
-			serviceSensores.actualizarSensor(sensor, true);
+			sensor.setEstado(EstadoSensor.ALARMA);
+			sensor.setAlarmas(new ArrayList<>());
+			serviceSensores.update(sensor);
 			return new ResponseEntity<>("Alta de alarma", HttpStatus.OK);
 		} catch (Exception e) {
 			LOG.error(e.getMessage());
