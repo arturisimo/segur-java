@@ -2,3 +2,11 @@ spring:
   application:    name: microservicio-policia
   cloud:    config:      #uri: http://config-server:8888
       uri: http://localhost:8888
+  kafka:
+     topic: alertas
+     consumer:
+        bootstrap-servers: localhost:9092
+        group-id: group_id
+        auto-offset-reset: earliest
+        key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        value-deserializer: com.sgj.policia.model.dto.SensorDeserializer

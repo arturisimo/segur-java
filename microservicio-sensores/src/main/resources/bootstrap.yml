@@ -2,3 +2,9 @@ spring:
   application:    name: microservicio-sensores
   cloud:    config:      #uri: http://config-server:8888
       uri: http://localhost:8888
+  kafka:
+     topic: alertas
+     producer:
+        bootstrap-servers: localhost:9092
+        key-serializer: org.apache.kafka.common.serialization.StringSerializer
+        value-serializer: com.sgj.sensores.model.dto.SensorSerializer

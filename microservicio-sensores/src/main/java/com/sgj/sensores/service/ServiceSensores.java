@@ -1,5 +1,6 @@
 package com.sgj.sensores.service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.sgj.sensores.model.Alarma;
@@ -13,7 +14,7 @@ public interface ServiceSensores {
 	void actualizarSensor(Sensor sensor, boolean aviso) throws Exception;
 	Sensor actualizarEstadoSensor(Integer id)  throws Exception;
 	List<Sensor> findByCliente(Integer id);
-//	List<Alarma> saltosAlarmaPorFecha(int idCliente, Date fechaInicio, Date fechaFin);
 	List<Alarma> listadoAlarmasByCliente(Integer id);
+	List<Alarma> saltosAlarmaPorFecha(int idCliente, Date fechaInicio, Date fechaFin);
 	
 }
