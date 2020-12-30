@@ -29,7 +29,7 @@ public class ServiceClientesImpl implements ServiceClientes {
 	@Override
 	public List<Cliente> clientes() {
 		return clientesRepository.findAll().stream()
-				.filter(c->c.isEstado())
+				//.filter(c->c.isEstado())
 				.collect(Collectors.toList());
 	}
 

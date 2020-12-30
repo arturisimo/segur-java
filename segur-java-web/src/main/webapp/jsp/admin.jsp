@@ -59,7 +59,7 @@
 			<table class="table table-hover">
 				<thead>
 					<tr>
-						<th>nombre</th><th>email</th><th>dni</th><th>cuenta</th><th>direccion</th><th>policia</th><th></th>
+						<th>nombre</th><th>email</th><th>dni</th><th>cuenta</th><th>direccion</th><th>policia</th><th>activado</th><th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -74,16 +74,9 @@
 				
 				<form id="formCliente" action="" method="POST" role="form">
 					<input type="hidden" id="idCliente" value="">
+					<input type="hidden" id="idUsuario" value="">
 					<legend>Alta de clientes</legend>
 					
-					<div class="form-group">
-						<label for="nombre">nombre</label>
-						<input type="text" class="form-control" id="nombre" value="" placeholder="nombre">
-					</div>
-					<div class="form-group">
-						<label for="email">email</label>
-						<input type="text" class="form-control" id="email" value="" placeholder="email">
-					</div>
 					<div class="form-group noedit">
 						<label for="usuario">usuario</label>
 						<input type="text" class="form-control" id="usuario" value="" placeholder="usuario">
@@ -91,6 +84,20 @@
 					<div class="form-group noedit">
 						<label for="password">password</label>
 						<input type="password" class="form-control" id="password" value="" placeholder="password">
+					</div>
+					<div class="form-group checkbox">
+						<label>
+							<input type="checkbox" id="estado" value="">
+							Usuario activado
+						</label>
+					</div>
+					<div class="form-group">
+						<label for="nombre">nombre</label>
+						<input type="text" class="form-control" id="nombre" value="" placeholder="nombre">
+					</div>
+					<div class="form-group">
+						<label for="email">email</label>
+						<input type="text" class="form-control" id="email" value="" placeholder="email">
 					</div>
 					<div class="form-group">
 						<label for="dni">dni</label>
@@ -106,7 +113,7 @@
 					</div>
 					<div class="form-group checkbox">
 						<label>
-							<input type="checkbox" id=policia value="">
+							<input type="checkbox" id="policia" value="">
 							Aviso a la policia
 						</label>
 					</div>

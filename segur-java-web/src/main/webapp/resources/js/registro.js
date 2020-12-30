@@ -121,7 +121,7 @@ $(function(){
 					"id": 0,
 					"nombre": $("#nombre").val(),
 					"email": $("#email").val(),
-					"estado": true,
+					"estado": false,
 					"policia": false,
 					"cuenta": null,
 					"direccion": null,

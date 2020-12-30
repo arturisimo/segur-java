@@ -8,7 +8,7 @@ var usuario = {
 		 *  @param {object} clienteForm : formulario datos cliente
 		 *  @param {dom object} $table : tabla de clientes
 		 */
-		save : function(usuarioForm, clienteForm, $table) {
+		save : function(usuarioForm, clienteForm, $contForm, $table) {
 			 console.log("peticion AJAX POST " + usuarioForm);
 			 $.ajax({
 			        type: "POST",
@@ -18,7 +18,7 @@ var usuario = {
 			        dataType: 'json',
 			        success: function (data) {
 			        	clienteForm.idUsuario = data.id;
-			        	clientes.save(JSON.stringify(clienteForm), $table);
+			        	clientes.save(JSON.stringify(clienteForm), $contForm, $table);
 			        },
 			        error: function (e) {
 			        	clientes.error(e);
@@ -34,7 +34,7 @@ var usuario = {
 		 *  @param {integer} id : id usuario
 		 *  @param {dom object} $contForm : contenedor formulario de registro
 		 */
-		deleteUser : function(id, $contForm) {
+		deleteUser : function(id) {
 			 console.log("peticion AJAX DELETE " + id);
 			 $.ajax({
 			        type: "DELETE",
@@ -65,10 +65,12 @@ var clientes = {
 				$.get(urlClientes, function(data, status){
 					var body = "";
 					$.each(data,function(i,cliente) {
-						body += "<tr id='cliente_"+cliente.id +"'>";
+						body += "<tr id='cliente_"+cliente.id +"' class='"+ (cliente.estado ? '': 'disabled') + "' >";
 						body += "<td>"+cliente.nombre+"</td><td>"+cliente.email+"</td><td>"+cliente.dni+"</td><td>"+cliente.cuenta+"</td><td>"+cliente.direccion+"</td>";
-						body += "<td>"+cliente.policia+"</td><td><a id='cliente_"+cliente.id +"' href='#' class='alarmasAction'>ver alarmas</a></td>";
-						body += "<td><a href='#' class='editarAction'>editar</a></td>";
+						body += "<td><span class='btn btn-default glyphicon "+ (cliente.policia ? "glyphicon-ok" : "glyphicon-unchecked") +"'></span></td>"; 
+						body += "<td><span class='btn btn-default glyphicon "+ (cliente.estado ? "glyphicon-ok" : "glyphicon-unchecked") +"'></span></td>";
+						body += "<td><a id='cliente_"+cliente.id +"' href='#' class='alarmasAction btn btn-default'><span class='glyphicon glyphicon-bell'></span></a></td>";
+						body += "<td><a href='#' class='editarAction btn btn-default'><span class='glyphicon glyphicon-pencil'></span></a></td>";
 						body += "</tr>";
 					});
 					$table.find("tbody").html(body);
@@ -78,6 +80,8 @@ var clientes = {
 				});
 				
 		},
+		
+		
 		/**
 		 *  eventos del listado de clientes
 		 *
@@ -87,13 +91,11 @@ var clientes = {
 		 */
 		addEvents : function($table, $contForm) {
 			$table.find(".alarmasAction").click(function(){
-				//var idCliente = this.id.split("_")[1];
 				var $trCliente = $(this).parents("tr");
 				var idCliente = $trCliente.attr("id").split("_")[1];
 				sensor.alarmas(idCliente, $trCliente);
 			});
 			$table.find(".editarAction").click(function(){
-				//var idCliente = this.id.split("_")[1];
 				var $trCliente = $(this).parents("tr");
 				var idCliente = $trCliente.attr("id").split("_")[1];
 				$table.parents("div#containerListCliente").hide();
@@ -110,7 +112,9 @@ var clientes = {
 				$contForm.find("#dni").val(data.dni);
 				$contForm.find("#cuenta").val(data.cuenta);
 				$contForm.find("#direccion").val(data.direccion);
-				$contForm.find("#direccion").val(data.direccion);
+				$contForm.find("#idUsuario").val(data.idUsuario);
+				if (data.estado)
+					$contForm.find("#estado").attr("checked","checked");
 				if (data.policia)
 					$contForm.find("#policia").attr("checked","checked");
 				$contForm.show();
@@ -125,7 +129,7 @@ var clientes = {
 		 *
 		 *  @param {object} clienteForm : formulario datos cliente
 		 */
-		save : function(clienteForm, $table) {
+		save : function(clienteForm, $contForm, $table) {
 			 console.log("peticion AJAX POST " + urlClientes);
 			 
 			 $.ajax({
@@ -137,11 +141,38 @@ var clientes = {
 			        success: function (feedback) {
 			        	feedback.message = "Registro finalizado. Ahora pueden entrar en tu zona de cliente."
 			        	clientes.confirm(feedback);
-			        	clientes.list($table);
+			        	clientes.list($table, $contForm);
 			        },
 			        error: function (e) {
 			        	var idUsuario = JSON.parse(clienteForm).idUsuario;
-						usuario.deleteUser(idUsuario, $contForm);
+						usuario.deleteUser(idUsuario);
+			        	clientes.error(e);
+			        }
+			    });
+			 
+		},
+		/**
+		 *  persistir cliente
+		 *
+		 *  @method clientes.save
+		 *
+		 *  @param {object} clienteForm : formulario datos cliente
+		 */
+		saveEdit : function(clienteForm, $contForm, $table) {
+			 console.log("peticion AJAX POST " + urlClientes);
+			 
+			 $.ajax({
+				 	type: "PUT",
+			        contentType: "application/json",
+			        url: urlClientes+"/"+clienteForm.id,
+			        data: JSON.stringify(clienteForm),
+			        dataType: 'json',
+			        success: function (feedback) {
+			        	feedback.message = "Se ha modificado correctamente."
+			        	clientes.confirm(feedback);
+			        	clientes.list($table, $contForm);
+			        },
+			        error: function (e) {
 			        	clientes.error(e);
 			        }
 			    });
@@ -174,7 +205,9 @@ var sensor = {
 			} else {
 				$.get(urlSensores + "/sensores-json/"+ idCliente, function(data,status){
 					var body = "";
-					$.each(data,function(i,sensor) {
+					if (data.length == 0)
+						body += "<tr class='sensorCliente'><td>No hay sensores contratados</td>";
+					$.each(data, function(i,sensor) {
 						body += "<tr class='sensorCliente' id='sensor_"+idCliente+"'><td><strong>zona:</strong></td><td>"+sensor.zona+"</td><td><strong>alarmas:</strong></td>";
 						body += "<td colspan='3'><ul class='alarmas'>";
 						$.each(sensor.alarmas,function(i,alarma) {
@@ -216,24 +249,34 @@ $(function(){
 	 $("#saveClienteAction").click(function(){
 			$("div.alert").addClass("hidden");
 			
+			var idCliente = $form.find("#idCliente").val();
+			var idUsuario = $form.find("#idUsuario").val();
+			idCliente = idCliente == "" ? 0 : idCliente;
+			idUsuario = idUsuario == "" ? 0 : idUsuario;
+			
 			var usuarioForm = {
+					"id" : idUsuario,
 					"usuario": $form.find("#usuario").val(),
 					"password": $form.find("#password").val(),
 					"enabled" : true
 			};
 			
 			var clienteForm = {
-					"id" : 0,
+					"id" : idCliente,
+					"idUsuario" : idUsuario,
 					"nombre": $form.find("#nombre").val(),
 					"email": $form.find("#email").val(),
 					"dni": $form.find("#dni").val(),
 					"cuenta": $form.find("#cuenta").val(),
 					"direccion": $form.find("#direccion").val(),
-					"estado": true,
+					"estado": $form.find("#estado").prop("checked"),
 					"policia": $form.find("#policia").prop("checked"),
 			}
+			if (idCliente == 0)
+				usuario.save(JSON.stringify(usuarioForm), clienteForm, $contForm, $table);
+			else
+				clientes.saveEdit(clienteForm, $contForm, $table);
 			
-			usuario.save(JSON.stringify(usuarioForm), clienteForm, $table);
 			$form[0].reset();
 			$contForm.hide();
 			$contList.show();
