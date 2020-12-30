@@ -12,6 +12,10 @@
 	border-right: 1px solid #ccc;
 }
 
+th {
+	text-align: center;
+}
+
 tr.sensorCliente ul {
 	 list-style-type: none;
 	 margin: 0;

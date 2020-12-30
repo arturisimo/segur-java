@@ -201,14 +201,15 @@ var sensor = {
 		 */
 		alarmas : function(idCliente, $trCliente) {
 			if ($trCliente.next().hasClass("sensorCliente")) {
-				$trCliente.next().remove();
+				$trCliente.siblings(".sensorCliente").remove();
 			} else {
 				$.get(urlSensores + "/sensores-json/"+ idCliente, function(data,status){
 					var body = "";
+					debugger;
 					if (data.length == 0)
 						body += "<tr class='sensorCliente'><td colspan='2' >No hay sensores contratados</td>";
 					$.each(data, function(i,sensor) {
-						body += "<tr class='sensorCliente' id='sensor_"+idCliente+"'><td><strong>zona:</strong></td><td>"+sensor.zona+"</td><td><strong>alarmas:</strong></td>";
+						body += "<tr class='sensorCliente' id='sensor_"+sensor.id+"'><td><strong>zona:</strong></td><td>"+sensor.zona+"</td><td><strong>alarmas:</strong></td>";
 						body += "<td colspan='3'><ul class='alarmas'>";
 						$.each(sensor.alarmas,function(i,alarma) {
 							body += "<li class='alarma_"+sensor.id+"'>"+alarma.fecha+"</li>";

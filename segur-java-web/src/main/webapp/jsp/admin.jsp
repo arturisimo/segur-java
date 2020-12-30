@@ -59,7 +59,7 @@
 			<table class="table table-hover">
 				<thead>
 					<tr>
-						<th>nombre</th><th>email</th><th>dni</th><th>cuenta</th><th>direccion</th><th>policia</th><th>activado</th><th></th>
+						<th>nombre</th><th>email</th><th>dni</th><th>cuenta</th><th>direccion</th><th>policia</th><th>activado</th><th>acciones</th>
 					</tr>
 				</thead>
 				<tbody>
