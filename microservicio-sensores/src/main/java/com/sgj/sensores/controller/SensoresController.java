@@ -20,11 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sgj.commons.dto.ResponseJson;
+import com.sgj.commons.enums.EstadoSensor;
 import com.sgj.sensores.model.Alarma;
 import com.sgj.sensores.model.Sensor;
-import com.sgj.sensores.model.dto.ResponseJson;
 import com.sgj.sensores.service.ServiceSensores;
-import com.sgj.sensores.service.ServiceSensoresImpl.EstadoSensor;
 
 import reactor.core.publisher.Flux;
 

@@ -72,6 +72,12 @@
     	<artifactId>spring-data-jpa</artifactId>
 	</dependency>
 	
+	<dependency>
+	    <groupId>com.sgj</groupId>
+	    <artifactId>segur-java-commons</artifactId>
+	    <version>0.0.1-SNAPSHOT</version>
+	</dependency>
+	
   </dependencies>
   
   <build>

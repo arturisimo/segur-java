@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.sgj.commons.enums.Estancia;
 import com.sgj.web.util.Util;
 
 @Controller
@@ -44,7 +45,7 @@ public class InitController {
 		} 
 		
 		if (Util.isClient(auth)) {
-			model.addAttribute("estancias", Util.Estancia.values());
+			model.addAttribute("estancias", Estancia.values());
 			model.addAttribute("urlSensores", urlSensores);
 			model.addAttribute("urlClientes", urlClientes);
 			return "cliente";

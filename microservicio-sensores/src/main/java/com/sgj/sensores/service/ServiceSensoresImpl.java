@@ -16,10 +16,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import com.sgj.commons.dto.ClienteDto;
+import com.sgj.commons.dto.Mensaje;
+import com.sgj.commons.enums.EstadoSensor;
 import com.sgj.sensores.model.Alarma;
 import com.sgj.sensores.model.Sensor;
-import com.sgj.sensores.model.dto.Cliente;
-import com.sgj.sensores.model.dto.Mensaje;
 import com.sgj.sensores.repository.AlarmaRepository;
 import com.sgj.sensores.repository.SensorRepository;
 
@@ -49,38 +50,6 @@ public class ServiceSensoresImpl implements ServiceSensores {
 	
 	@Value("${spring.kafka.topic}")
 	private String topic;
-	
-	
-	public static enum EstadoSensor {
-		/** sensor quitado */
-		BAJA,
-		/** sensor quitado */
-		DESACTIVADO,
-		/** sensor activo */
-		ACTIVADO,
-		/** alerta */
-		ALARMA
-	};
-	
-	public static enum Estancia {
-		COCINA("Cocina"),
-		GARAJE("Garaje"),
-		PASILLO("Pasillo"),
-		DORMITORIO("Dormitorio"),
-		SALON("Salón");
-		
-		private String nombre;
-		
-		private Estancia(String nombre) {
-			this.nombre = nombre;
-		}
-
-		public String getNombre() {
-			return nombre;
-		}
-		
-	};
-	
 	
 	@Override
 	public Sensor getById(Integer id) throws Exception {
@@ -144,7 +113,7 @@ public class ServiceSensoresImpl implements ServiceSensores {
 	private void produceAlert(Sensor sensor) throws Exception {
 		
 		if (sensor.getEstado().equals(EstadoSensor.ALARMA)) {
-			Cliente cliente = getCliente(sensor.getIdCliente());
+			ClienteDto cliente = getCliente(sensor.getIdCliente());
 			List<Alarma> alarmas = sensor.getAlarmas();
 			alarmas.add(new Alarma(new Date(), true, sensor));
 			sensorRepository.save(sensor);
@@ -162,8 +131,8 @@ public class ServiceSensoresImpl implements ServiceSensores {
 	 * @return
 	 * @throws Exception
 	 */
-	private Cliente getCliente(Integer idCliente) throws Exception {
-		ResponseEntity<Cliente> response = restTemplate.getForEntity(urlCliente+idCliente, Cliente.class);
+	private ClienteDto getCliente(Integer idCliente) throws Exception {
+		ResponseEntity<ClienteDto> response = restTemplate.getForEntity(urlCliente+idCliente, ClienteDto.class);
 		if (!response.getStatusCode().equals(HttpStatus.OK))
 			throw new Exception("Error al obtener el cliente");
 		return response.getBody();

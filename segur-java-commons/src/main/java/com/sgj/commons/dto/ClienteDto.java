@@ -1,9 +1,9 @@
-package com.sgj.sensores.model.dto;
+package com.sgj.commons.dto;
 
 import java.io.Serializable;
 
 
-public class Cliente implements Serializable {
+public class ClienteDto implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private int id;
@@ -25,10 +25,10 @@ public class Cliente implements Serializable {
 	private Integer idUsuario;
 
 
-	public Cliente() {
+	public ClienteDto() {
 	}
 	
-	public Cliente(Integer idUsuario, String nombre, String email) {
+	public ClienteDto(Integer idUsuario, String nombre, String email) {
 		this.idUsuario = idUsuario;
 		this.email = email;
 		this.nombre = nombre;

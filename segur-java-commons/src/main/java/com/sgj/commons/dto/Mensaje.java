@@ -1,4 +1,4 @@
-package com.sgj.sensores.model.dto;
+package com.sgj.commons.dto;
 
 import java.io.Serializable;
 import java.util.Date;

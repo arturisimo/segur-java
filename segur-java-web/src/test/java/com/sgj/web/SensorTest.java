@@ -7,16 +7,15 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sgj.web.model.dto.Cliente;
-import com.sgj.web.model.dto.Sensor;
-import com.sgj.web.util.Util.EstadoSensor;
-
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
+import com.sgj.commons.dto.ClienteDto;
+import com.sgj.commons.dto.SensorDto;
+import com.sgj.commons.enums.EstadoSensor;
 
 @PropertySource("classpath:config.properties")
 public class SensorTest {
@@ -45,18 +44,18 @@ public class SensorTest {
 		try {
 		
 			System.out.println("llamada get " + urlCliente);
-			ResponseEntity<Cliente[]> responseClient = restTemplate.getForEntity(urlCliente, Cliente[].class);
-			Cliente[] clientesArray = responseClient.getBody();
+			ResponseEntity<ClienteDto[]> responseClient = restTemplate.getForEntity(urlCliente, ClienteDto[].class);
+			ClienteDto[] clientesArray = responseClient.getBody();
 			
-			Cliente cliente = Arrays.asList(clientesArray).stream()
+			ClienteDto cliente = Arrays.asList(clientesArray).stream()
 					.filter(c -> c.isPolicia())
 					.findFirst()
 					.orElseThrow(() -> new Exception("no hay clientes con servicio policia"));
 			
 			
 			System.out.println("llamada get " + urlSensor+"sensores-json/"+cliente.getId());
-			ResponseEntity<Sensor[]> responseSensor = restTemplate.getForEntity(urlSensor+"sensores-json/"+cliente.getId(), Sensor[].class);
-			List<Sensor> sensores = Arrays.asList(responseSensor.getBody());	
+			ResponseEntity<SensorDto[]> responseSensor = restTemplate.getForEntity(urlSensor+"sensores-json/"+cliente.getId(), SensorDto[].class);
+			List<SensorDto> sensores = Arrays.asList(responseSensor.getBody());	
 			
 			sensores.stream()
 				.filter(s -> s.getEstado().equals(EstadoSensor.ACTIVADO))
@@ -64,7 +63,7 @@ public class SensorTest {
 					System.out.println("llamada a " + urlSensor+"provocarAlarma");
 					sensor.setEstadoBean(EstadoSensor.ALARMA);
 					sensor.setDireccion(cliente.getDireccion());
-					HttpEntity<Sensor> request = new HttpEntity<>(sensor);
+					HttpEntity<SensorDto> request = new HttpEntity<>(sensor);
 					ResponseEntity<String> responseAlarma = restTemplate.exchange(urlSensor+"provocarAlarma", HttpMethod.PUT, request, String.class);
 					System.out.println(responseAlarma);
 			});

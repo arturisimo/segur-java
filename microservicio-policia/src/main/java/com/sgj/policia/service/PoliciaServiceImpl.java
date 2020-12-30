@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
+import com.sgj.commons.dto.Mensaje;
 import com.sgj.policia.model.Policia;
-import com.sgj.policia.model.dto.Mensaje;
 import com.sgj.policia.repository.PoliciaRepository;
 
 @Service

@@ -1,10 +1,10 @@
-package com.sgj.web.model.dto;
+package com.sgj.commons.dto;
 
 import java.io.Serializable;
 import java.util.Date;
 
 
-public class Alarma implements Serializable {
+public class AlarmaDto implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -16,7 +16,7 @@ public class Alarma implements Serializable {
 
 	private Integer idSensor;
 
-	public Alarma() {
+	public AlarmaDto() {
 	}
 
 	public int getId() {

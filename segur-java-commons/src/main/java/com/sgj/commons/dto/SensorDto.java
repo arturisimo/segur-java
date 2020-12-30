@@ -1,12 +1,12 @@
-package com.sgj.web.model.dto;
+package com.sgj.commons.dto;
 
 import java.io.Serializable;
 import java.util.List;
 
-import com.sgj.web.util.Util.EstadoSensor;
-import com.sgj.web.util.Util.Estancia;
+import com.sgj.commons.enums.EstadoSensor;
+import com.sgj.commons.enums.Estancia;
 
-public class Sensor implements Serializable {
+public class SensorDto implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -14,7 +14,7 @@ public class Sensor implements Serializable {
 
 	private Estancia zona;
 
-	private List<Alarma> alarmas;
+	private List<AlarmaDto> alarmas;
 
 	private EstadoSensor estado;
 	
@@ -22,7 +22,7 @@ public class Sensor implements Serializable {
 	
 	private String direccion;
 	
-	public Sensor() {
+	public SensorDto() {
 	}
 
 	public int getId() {
@@ -33,11 +33,11 @@ public class Sensor implements Serializable {
 		this.id = id;
 	}
 
-	public List<Alarma> getAlarmas() {
+	public List<AlarmaDto> getAlarmas() {
 		return this.alarmas;
 	}
 
-	public void setAlarmas(List<Alarma> alarmas) {
+	public void setAlarmas(List<AlarmaDto> alarmas) {
 		this.alarmas = alarmas;
 	}
 

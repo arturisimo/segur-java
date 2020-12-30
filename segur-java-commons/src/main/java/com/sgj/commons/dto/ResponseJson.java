@@ -1,4 +1,4 @@
-package com.sgj.clientes.model.dto;
+package com.sgj.commons.dto;
 
 import java.io.Serializable;
 

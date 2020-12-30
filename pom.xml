@@ -9,6 +9,8 @@
   <modules>
   	<!-- cliente web -->
   	<module>segur-java-web</module>
+  	<module>segur-java-commons</module>
+  	
   	<!-- microservicios  -->
   	<module>microservicio-sensores</module>
   	<module>microservicios-clientes</module>

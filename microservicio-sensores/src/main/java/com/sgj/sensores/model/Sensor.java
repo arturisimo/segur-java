@@ -14,8 +14,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.sgj.sensores.service.ServiceSensoresImpl.EstadoSensor;
-import com.sgj.sensores.service.ServiceSensoresImpl.Estancia;
+import com.sgj.commons.enums.EstadoSensor;
+import com.sgj.commons.enums.Estancia;
 
 
 /**
