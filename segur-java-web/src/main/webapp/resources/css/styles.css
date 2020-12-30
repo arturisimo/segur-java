@@ -26,6 +26,9 @@ tr.sensorCliente ul li {
 tr.sensorCliente {
 	color:red;
 }
+tr.disabled {
+	opacity: 0.5;
+}
 
 body {
 	 background-image: url("../img/background.jpg");

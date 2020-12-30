@@ -67,8 +67,8 @@ var clientes = {
 					$.each(data,function(i,cliente) {
 						body += "<tr id='cliente_"+cliente.id +"' class='"+ (cliente.estado ? '': 'disabled') + "' >";
 						body += "<td>"+cliente.nombre+"</td><td>"+cliente.email+"</td><td>"+cliente.dni+"</td><td>"+cliente.cuenta+"</td><td>"+cliente.direccion+"</td>";
-						body += "<td><span class='btn btn-default glyphicon "+ (cliente.policia ? "glyphicon-ok" : "glyphicon-unchecked") +"'></span></td>"; 
-						body += "<td><span class='btn btn-default glyphicon "+ (cliente.estado ? "glyphicon-ok" : "glyphicon-unchecked") +"'></span></td>";
+						body += "<td><span class='btn btn-default disabled glyphicon "+ (cliente.policia ? "glyphicon-ok" : "glyphicon-unchecked") +"'></span></td>"; 
+						body += "<td><span class='btn btn-default disabled glyphicon "+ (cliente.estado ? "glyphicon-ok" : "glyphicon-unchecked") +"'></span></td>";
 						body += "<td><a id='cliente_"+cliente.id +"' href='#' class='alarmasAction btn btn-default'><span class='glyphicon glyphicon-bell'></span></a></td>";
 						body += "<td><a href='#' class='editarAction btn btn-default'><span class='glyphicon glyphicon-pencil'></span></a></td>";
 						body += "</tr>";
@@ -206,7 +206,7 @@ var sensor = {
 				$.get(urlSensores + "/sensores-json/"+ idCliente, function(data,status){
 					var body = "";
 					if (data.length == 0)
-						body += "<tr class='sensorCliente'><td>No hay sensores contratados</td>";
+						body += "<tr class='sensorCliente'><td colspan='2' >No hay sensores contratados</td>";
 					$.each(data, function(i,sensor) {
 						body += "<tr class='sensorCliente' id='sensor_"+idCliente+"'><td><strong>zona:</strong></td><td>"+sensor.zona+"</td><td><strong>alarmas:</strong></td>";
 						body += "<td colspan='3'><ul class='alarmas'>";

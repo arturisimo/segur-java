@@ -85,12 +85,6 @@
 						<label for="password">password</label>
 						<input type="password" class="form-control" id="password" value="" placeholder="password">
 					</div>
-					<div class="form-group checkbox">
-						<label>
-							<input type="checkbox" id="estado" value="">
-							Usuario activado
-						</label>
-					</div>
 					<div class="form-group">
 						<label for="nombre">nombre</label>
 						<input type="text" class="form-control" id="nombre" value="" placeholder="nombre">
@@ -112,10 +106,14 @@
 						<input type="text" class="form-control" id="direccion" value="" placeholder="direccion">
 					</div>
 					<div class="form-group checkbox">
-						<label>
-							<input type="checkbox" id="policia" value="">
-							Aviso a la policia
-						</label>
+						<div class="form-check form-check-inline">
+						  <input class="form-check-input" type="checkbox" id="estado" value="">
+						  <label class="form-check-label" for="estado">Usuario activado</label>
+						</div>
+						<div class="form-check form-check-inline">
+  							<input class="form-check-input" type="checkbox" id="policia" value="">
+  							<label class="form-check-label" for="policia">Aviso a la policia</label>
+						</div>
 					</div>
 					<a id="saveClienteAction" href="#" class="btn btn-danger">Alta</a>
 					<a id="listClienteAction" href="#" class="btn btn-default">Cancelar</a>					

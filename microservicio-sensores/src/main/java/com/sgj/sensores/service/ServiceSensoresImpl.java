@@ -94,7 +94,7 @@ public class ServiceSensoresImpl implements ServiceSensores {
 	}
 	
 	@Override
-	public void crearSensor (Sensor sensorPost) throws Exception{
+	public void altaSensor (Sensor sensorPost) throws Exception{
 		Sensor sensor = sensorRepository.findByIdCliente(sensorPost.getIdCliente()).stream()
 								.filter(s->s.getZona().equals(sensorPost.getZona()))
 								.findFirst()
@@ -141,11 +141,11 @@ public class ServiceSensoresImpl implements ServiceSensores {
 	
 	
 	@Override
-	public void actualizarEstadoSensor(Integer id) throws Exception {
+	public Sensor actualizarEstadoSensor(Integer id) throws Exception {
 		Sensor sensor = sensorRepository.findById(id).orElseThrow(() -> new Exception("No existe este sensor"));
 		sensor.setEstado(EstadoSensor.DESACTIVADO.equals(sensor.getEstado()) ? EstadoSensor.ACTIVADO : EstadoSensor.DESACTIVADO);
 		sensorRepository.save(sensor);
-		
+		return sensor;
 	}
 
 	/**

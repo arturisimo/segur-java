@@ -9,9 +9,9 @@ public interface ServiceSensores {
 	
 	List<Sensor> listadoByCliente(Integer id) throws Exception;
 	void eliminarSensor (Integer idSensor) throws Exception;
-	void crearSensor (Sensor sensor) throws Exception;
+	void altaSensor (Sensor sensor) throws Exception;
 	void actualizarSensor(Sensor sensor, boolean aviso) throws Exception;
-	void actualizarEstadoSensor(Integer id)  throws Exception;
+	Sensor actualizarEstadoSensor(Integer id)  throws Exception;
 	List<Sensor> findByCliente(Integer id);
 //	List<Alarma> saltosAlarmaPorFecha(int idCliente, Date fechaInicio, Date fechaFin);
 	List<Alarma> listadoAlarmasByCliente(Integer id);

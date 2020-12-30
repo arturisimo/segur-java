@@ -29,6 +29,7 @@ var cliente = {
 				if (c.policia)
 					$formCliente.find("#policia").attr("checked","checked");
 				
+				//sensor.listReactive(c.id, $table);
 				sensor.list(c.id, $table);
 			}).fail(function(e) {
 				sensor.error(e);
@@ -68,21 +69,20 @@ var sensor = {
 	sensores : [],
 	
 	/**
-	 *  Listado reactivo de sensores del cliente. 
+	 *  Listado reactivo (spring webflux) de sensores del cliente. 
 	 *  ms-servicios es un publicador que emite eventos si la lista de sensores del cliente cambia
-	 *  y este metodo es el suscriptor
+	 *  y este metodo es el suscriptor. 
 	 *
 	 *  @method sensor.listReactive
 	 *
 	 *  @param {int} idCliente : id del cliente
 	 *  @param {dom object} $table : tabla de sensores
 	 */
-	list: function(idCliente, $table) {
+	listReactive: function(idCliente, $table) {
 		
 		var body = "";
 		$table.find("tbody").html(body);
 		var source = new EventSource(urlSensores+"/"+idCliente);	  
-		
 		source.addEventListener("message", function(flow){
 			
 			var sF = JSON.parse(flow.data);
@@ -101,12 +101,36 @@ var sensor = {
 			}
 		});
 	},
+	/**
+	 *  Listado reactivo (spring webflux) de sensores del cliente. 
+	 *  ms-servicios es un publicador que emite eventos si la lista de sensores del cliente cambia
+	 *  y este metodo es el suscriptor. 
+	 *
+	 *  @method sensor.listReactive
+	 *
+	 *  @param {int} idCliente : id del cliente
+	 *  @param {dom object} $table : tabla de sensores
+	 */
+	list: function(idCliente, $table) {
+		
+		var body = "";
+		$table.find("tbody").html(body);
+		
+		$.get(urlSensores+"/sensores-json/"+idCliente, function(data, status){
+			$.each(data, function(i, s) {
+				sensor.print(s, $table);
+			});
+		}).fail(function(e) {
+			console.log(e);
+		});
+		
+	},
 	print : function(s, $table) {
 		var body = $table.find("tbody").html();
 		var tr = "";
-		var classAlarma = "btn-info";
-		if (s.estado=='DESACTIVADO') {
-			classAlarma = "btn-default";
+		var classAlarma = "btn-default";
+		if (s.estado=='ACTIVADO') {
+			classAlarma = "btn-info";
 		} else if (s.estado=='ALARMA') {
 			classAlarma = "btn-danger";
 		}
@@ -133,7 +157,7 @@ var sensor = {
 		
 		$table.find(".estadoAction").click(function(){ 
 			var idSensor = this.id.split("_")[1];
-			sensor.change(idSensor);
+			sensor.change(idSensor, $table);
 		});
 	},
 	/**
@@ -144,7 +168,7 @@ var sensor = {
 	 *  @param {object} sensorForm : datos sensor
 	 *  @param {dom object} $table : tabla de sensores
 	 */
-	save : function(sensorForm) {
+	save : function(sensorForm, $table) {
 		console.log("peticion AJAX POST " +  urlSensores);
 		
 		 $.ajax({
@@ -155,7 +179,7 @@ var sensor = {
 	        dataType: 'json',
 	        crossDomain: true,
 	        success: function (data) {
-	        	sensor.confirm(data);	       
+	        	sensor.print(data, $table);
 	        },
 	        error: function (e) {
 	        	sensor.error(e);
@@ -195,13 +219,19 @@ var sensor = {
 	 *  @param {int} idSensor : id sensor
 	 *  @param {dom object} $table : tabla de sensores
 	 */
-	change : function(idSensor) {
+	change : function(idSensor, $table) {
 		 console.log("peticion AJAX PUT " +  urlSensores+"/status/"+idSensor);
 		 $.ajax({
 		 	type: "PUT",
 	        url: urlSensores+"/status/"+idSensor,
 	        success: function (data) {
-	        	sensor.confirm(data);	        	
+	        	$button = $table.find("#estado_"+idSensor);	      
+	        	if (data.estado=='ACTIVADO') {
+	    			$button.removeClass("btn-default").addClass("btn-info");
+	    		} else if (data.estado=='DESACTIVADO') {
+	    			$button.removeClass("btn-info").addClass("btn-default");
+	    		}
+	    
 	        },
 	        error: function (e) {
 	        	sensor.error(e);
@@ -256,7 +286,7 @@ $(function(){
 	});
 	
 	$("#formSensorAction").click(function(){ 
-		$("#listSensorContainer").hide();
+		//$("#listSensorContainer").hide();
 		$("#formSensorContainer").show();
 	});
 	

@@ -75,40 +75,20 @@ public class SensoresController {
 	}
 		
 	@PostMapping(value="/", consumes=MediaType.APPLICATION_JSON_VALUE, produces= MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> save(@RequestBody Sensor s) throws JsonProcessingException {	
+	public ResponseEntity<Sensor> save(@RequestBody Sensor s) throws JsonProcessingException {	
 		ResponseJson response = new ResponseJson();
-		ObjectMapper mapper = new ObjectMapper();
 		try {
-			serviceSensores.crearSensor(s);
+			serviceSensores.altaSensor(s);
 			response.setSuccess(true);
 			response.setMessage("Se ha dado de alta correctamente");
-			return ResponseEntity.status(HttpStatus.OK).body(mapper.writeValueAsString(response));
+			return ResponseEntity.status(HttpStatus.OK).body(s);
 		} catch (Exception e) {
 			LOG.error(e.getMessage());
 			response.setSuccess(false);
 			response.setMessage(e.getMessage());
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(mapper.writeValueAsString(response));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Sensor());
 		}
 	}
-	
-	@PostMapping(value="/test", consumes=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> saveTest(@RequestBody Sensor s) throws JsonProcessingException {	
-		ResponseJson response = new ResponseJson();
-		ObjectMapper mapper = new ObjectMapper();
-		try {
-			serviceSensores.crearSensor(s);
-			response.setSuccess(true);
-			response.setMessage("Se ha dado de alta correctamente");
-			return ResponseEntity.status(HttpStatus.OK).body(mapper.writeValueAsString(response));
-		} catch (Exception e) {
-			LOG.error(e.getMessage());
-			response.setSuccess(false);
-			response.setMessage(e.getMessage());
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(mapper.writeValueAsString(response));
-		}
-	}
-	
-	
 	
 	/**
 	 * Actualiza/desactualiza sensor
@@ -117,19 +97,19 @@ public class SensoresController {
 	 * @throws JsonProcessingException
 	 */
 	@PutMapping(value= "/status/{id}", produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> updateState(@PathVariable("id") int id) throws JsonProcessingException {	
+	public ResponseEntity<Sensor> updateState(@PathVariable("id") int id) throws JsonProcessingException {	
 		ResponseJson response = new ResponseJson();
 		ObjectMapper mapper = new ObjectMapper();
 		try {
-			serviceSensores.actualizarEstadoSensor(id);
+			Sensor sensor = serviceSensores.actualizarEstadoSensor(id);
 			response.setSuccess(true);
 			response.setMessage("Se ha eliminado correctamente");
-			return ResponseEntity.status(HttpStatus.OK).body(mapper.writeValueAsString(response));
+			return ResponseEntity.status(HttpStatus.OK).body(sensor);
 		} catch (Exception e) {
 			LOG.error(e.getMessage());
 			response.setSuccess(false);
 			response.setMessage(e.getMessage());
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(mapper.writeValueAsString(response));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Sensor());
 		}
 	}
 	
