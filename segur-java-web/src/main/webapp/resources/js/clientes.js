@@ -28,9 +28,10 @@ var cliente = {
 				$formCliente.find("#direccion").val(c.direccion);
 				if (c.policia)
 					$formCliente.find("#policia").attr("checked","checked");
-				
-				//sensor.listReactive(c.id, $table);
-				sensor.list(c.id, $table);
+				if (listReactive)
+					sensor.listReactive(c.id, $table);
+				else
+					sensor.list(c.id, $table);
 			}).fail(function(e) {
 				sensor.error(e);
 			});
@@ -102,11 +103,9 @@ var sensor = {
 		});
 	},
 	/**
-	 *  Listado reactivo (spring webflux) de sensores del cliente. 
-	 *  ms-servicios es un publicador que emite eventos si la lista de sensores del cliente cambia
-	 *  y este metodo es el suscriptor. 
-	 *
-	 *  @method sensor.listReactive
+	 *  Listado estatico de sensores del cliente. 
+	 *  
+	 *  @method sensor.list
 	 *
 	 *  @param {int} idCliente : id del cliente
 	 *  @param {dom object} $table : tabla de sensores
@@ -136,8 +135,8 @@ var sensor = {
 		}
 			
 		tr += "<tr id='sensor_"+s.id+"'><td>"+s.zona+"</td>";
-		tr += "<td><a id='estado_"+ s.id + "' title='"+s.estado+"' href='#' class='btn "+classAlarma+" estadoAction'><span class='glyphicon glyphicon-bell'></span></a></td>";
-		tr += "<td><a id='delete_"+ s.id + "' href='#' class='btn btn-default eliminarAction'><span class='glyphicon glyphicon-remove'></span></a></td></tr>";
+		tr += "<td style='text-align:center'><a id='estado_"+ s.id + "' title='"+s.estado+"' href='#' class='btn "+classAlarma+" estadoAction center'><span class='glyphicon glyphicon-bell'></span></a></td>";
+		tr += "<td style='text-align:center'><a id='delete_"+ s.id + "' href='#' class='btn btn-default eliminarAction'><span class='glyphicon glyphicon-remove'></span></a></td></tr>";
 		$table.find("tbody").html(body+tr);
 		sensor.addEvents($table);
 	},
@@ -179,7 +178,8 @@ var sensor = {
 	        dataType: 'json',
 	        crossDomain: true,
 	        success: function (data) {
-	        	sensor.print(data, $table);
+	        	if (!listReactive)
+	        		sensor.print(data, $table);
 	        },
 	        error: function (e) {
 	        	sensor.error(e);

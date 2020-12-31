@@ -27,6 +27,9 @@ public class InitController {
 	@Value("${url.servicio.clientes}")
 	private String urlClientes;
 	
+	@Value("${sensor.reactive}")
+	private boolean sensorReactive;
+	
 	
 	@GetMapping({"/index", "/"})
 	public String init(Model model) {
@@ -48,6 +51,7 @@ public class InitController {
 			model.addAttribute("estancias", Estancia.values());
 			model.addAttribute("urlSensores", urlSensores);
 			model.addAttribute("urlClientes", urlClientes);
+			model.addAttribute("sensorReactive", sensorReactive);
 			return "cliente";
 		}
 		throw new Exception("Fallo en el login");

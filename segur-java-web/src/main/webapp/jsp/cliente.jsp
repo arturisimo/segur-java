@@ -78,11 +78,9 @@
 					<label for="direccion">direccion</label>
 					<input type="text" class="form-control" disabled id="direccion" value="" placeholder="direccion">
 				</div>
-				<div class="form-group checkbox">
-					<label>
-						<input type="checkbox" disabled id=policia value="">
-						Aviso a la policia
-					</label>
+				<div class="form-check form-check-inline">
+ 					<input class="form-check-input" type="checkbox" id="policia" value="">
+ 					<label class="form-check-label" for="policia">Aviso a la policia</label>
 				</div>
 				<a id="editClienteAction" href="#" class="btn btn-primary">Editar</a>
 				<a id="saveClienteAction" href="#" class="btn btn-danger" style="display: none;">Alta</a>
@@ -140,6 +138,7 @@
 		var	urlSensores = "${urlSensores}";
 		var urlClientes = "${urlClientes}";
 		var urlUsuario = "<c:url value='/usuario' />"
+		var listReactive = "${sensorReactive}";	
 	</script>
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
